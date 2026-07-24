@@ -1,0 +1,50 @@
+# Gitignore for Debby's Fragrance Project
+
+# ─── Secrets & Credentials ───────────────────────────────
+.env
+credentials.json
+token.json
+*.pem
+*.key
+service_account.json
+
+# ─── Temporary Files ─────────────────────────────────────
+.tmp/
+*.tmp
+*.temp
+
+# ─── Python ──────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+.venv/
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ─── OS Files ────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── IDE / Editor ────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ─── Logs ────────────────────────────────────────────────
+*.log
+logs/
+
+# ─── Next.js ────────────────────────────────────────────
+.next/
+out/
+
+# ─── Dependencies ───────────────────────────────────────
+node_modules/
