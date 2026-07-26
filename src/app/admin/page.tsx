@@ -206,7 +206,7 @@ function AdminPageContent() {
             mode="add"
             onCancel={() => setView("list")}
             onSave={(product) => {
-              addProduct(product);
+              addProduct(product as Product);
               showSuccess(`"${product.name}" added to your catalogue!`);
               setView("list");
             }}
