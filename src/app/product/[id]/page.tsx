@@ -4,10 +4,11 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { INITIAL_PRODUCTS } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useAdmin } from "@/context/AdminContext";
+import { useReviews } from "@/context/ReviewContext";
+import { Product } from "@/types";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ImageZoom } from "@/components/ui/ImageZoom";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
@@ -18,11 +19,12 @@ export default function ProductDetailPage() {
   const params = useParams();
   const productId = params.id as string;
 
-  const product = INITIAL_PRODUCTS.find((p) => p.id === productId) || INITIAL_PRODUCTS[0];
-
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
-  const { overrides } = useAdmin();
+  const { overrides, allProducts } = useAdmin();
+  const { getProductReviews, addReview, getAverageRating } = useReviews();
+
+  const product = allProducts.find((p) => p.id === productId) || allProducts[0];
 
   const override = overrides[product.id];
   const displayImage = override?.customImage || product.images[0];
@@ -33,6 +35,14 @@ export default function ProductDetailPage() {
   const [isAdded, setIsAdded] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  // Review states
+  const [reviewName, setReviewName] = useState("");
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState("");
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
+  const productReviews = getProductReviews(product.id);
+  const avgUserRating = getAverageRating(product.id);
 
   useEffect(() => {
     setActiveImage(displayImage);
@@ -59,7 +69,23 @@ export default function ProductDetailPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const related = INITIAL_PRODUCTS.filter(
+  const handleReviewSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reviewName.trim() || !reviewComment.trim()) return;
+    addReview(product.id, {
+      userName: reviewName.trim(),
+      rating: reviewRating,
+      comment: reviewComment.trim(),
+      verified: false,
+    });
+    setReviewSubmitted(true);
+    setReviewName("");
+    setReviewRating(5);
+    setReviewComment("");
+    setTimeout(() => setReviewSubmitted(false), 4000);
+  };
+
+  const related = allProducts.filter(
     (p) => p.id !== product.id && (p.category === product.category || p.fragranceFamily === product.fragranceFamily)
   ).slice(0, 4);
 
@@ -345,6 +371,132 @@ export default function ProductDetailPage() {
               </div>
             </ScrollReveal>
           )}
+
+          {/* ── CUSTOMER REVIEWS SECTION ─────────────────── */}
+          <ScrollReveal className="space-y-8 pt-12 border-t border-zinc-800">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
+              <div>
+                <h2 className="font-serif text-2xl font-bold text-zinc-100">
+                  Customer Reviews
+                </h2>
+                <p className="text-xs text-zinc-400 mt-1">
+                  {productReviews.length > 0
+                    ? `${productReviews.length} review${productReviews.length !== 1 ? "s" : ""} · Average rating: ${avgUserRating}/5`
+                    : "No reviews yet. Be the first to share your experience!"}
+                </p>
+              </div>
+              {avgUserRating > 0 && (
+                <div className="flex items-center space-x-2 bg-gold-500/10 border border-gold-500/30 px-4 py-2 rounded-xl">
+                  <Star className="w-5 h-5 text-gold-400 fill-gold-400" />
+                  <span className="text-xl font-bold font-serif text-gold-400">{avgUserRating}</span>
+                  <span className="text-xs text-zinc-400">/5</span>
+                </div>
+              )}
+            </div>
+
+            {/* Existing Reviews */}
+            {productReviews.length > 0 && (
+              <div className="space-y-4">
+                {[...productReviews].reverse().map((review) => (
+                  <div
+                    key={review.id}
+                    className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 space-y-3"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-9 h-9 rounded-full bg-gold-500/20 border border-gold-500/30 text-gold-400 flex items-center justify-center text-xs font-bold">
+                          {review.userName.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-zinc-100">{review.userName}</p>
+                          <div className="flex items-center space-x-1">
+                            {[1, 2, 3, 4, 5].map((s) => (
+                              <Star
+                                key={s}
+                                className={`w-3 h-3 ${s <= review.rating ? "text-gold-400 fill-gold-400" : "text-zinc-700"}`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      <span className="text-[10px] text-zinc-500">
+                        {new Date(review.date).toLocaleDateString("en-NG", {
+                          year: "numeric", month: "short", day: "numeric",
+                        })}
+                      </span>
+                    </div>
+                    <p className="text-xs text-zinc-300 leading-relaxed">{review.comment}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Review Form */}
+            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-5">
+              <h3 className="font-serif text-base font-bold text-zinc-100">
+                Write a Review
+              </h3>
+
+              {reviewSubmitted ? (
+                <div className="bg-emerald-950/80 border border-emerald-500 text-emerald-300 p-4 rounded-xl text-xs font-semibold flex items-center space-x-2">
+                  <Check className="w-4 h-4 text-emerald-400" />
+                  <span>Thank you! Your review has been submitted.</span>
+                </div>
+              ) : (
+                <form onSubmit={handleReviewSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs text-zinc-400 block mb-1">Your Name *</label>
+                      <input
+                        type="text"
+                        required
+                        value={reviewName}
+                        onChange={(e) => setReviewName(e.target.value)}
+                        placeholder="Enter your name"
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-gold-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-zinc-400 block mb-1">Your Rating *</label>
+                      <div className="flex items-center space-x-1 pt-1">
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <button
+                            key={s}
+                            type="button"
+                            onClick={() => setReviewRating(s)}
+                            className="transition-transform hover:scale-110"
+                          >
+                            <Star
+                              className={`w-6 h-6 ${s <= reviewRating ? "text-gold-400 fill-gold-400" : "text-zinc-700 hover:text-zinc-500"}`}
+                            />
+                          </button>
+                        ))}
+                        <span className="text-xs text-zinc-500 ml-2">{reviewRating}/5</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-xs text-zinc-400 block mb-1">Your Review *</label>
+                    <textarea
+                      rows={3}
+                      required
+                      value={reviewComment}
+                      onChange={(e) => setReviewComment(e.target.value)}
+                      placeholder="Share your experience with this fragrance — how does it smell, how long does it last, where do you wear it?"
+                      className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-100 focus:outline-none focus:border-gold-500 leading-relaxed"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-zinc-950 font-bold text-xs px-6 py-3 rounded-xl uppercase tracking-wider flex items-center space-x-2 transition-all shadow-lg"
+                  >
+                    <Star className="w-4 h-4" />
+                    <span>Submit Review</span>
+                  </button>
+                </form>
+              )}
+            </div>
+          </ScrollReveal>
         </div>
 
         {/* Sticky Mobile Add-to-Cart Bar */}
@@ -367,7 +519,7 @@ function StickyMobileBar({
   onAddToCart,
   override,
 }: {
-  product: (typeof INITIAL_PRODUCTS)[0];
+  product: Product;
   selectedSize: { size: string; price: number; originalPrice?: number };
   isAdded: boolean;
   onAddToCart: () => void;

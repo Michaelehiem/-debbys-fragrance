@@ -6,6 +6,7 @@ import { useCart } from "@/context/CartContext";
 import { useAdmin } from "@/context/AdminContext";
 import { formatNaira } from "@/lib/utils";
 import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, Tag, Check, X } from "lucide-react";
+import { siteConfig } from "@/config/site";
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, subtotal, clearCart } = useCart();
@@ -15,11 +16,7 @@ export default function CartPage() {
   const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
   const [promoError, setPromoError] = useState(false);
 
-  const PROMO_CODES: Record<string, number> = {
-    DEBBY10: 10,
-    WELCOME15: 15,
-    VIP20: 20,
-  };
+  const PROMO_CODES: Record<string, number> = siteConfig.promoCodes;
 
   const handleApplyPromo = () => {
     const code = promoCode.trim().toUpperCase();

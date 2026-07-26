@@ -2,22 +2,21 @@
 
 import React, { useState } from "react";
 import { useCart } from "@/context/CartContext";
+import { useAdmin } from "@/context/AdminContext";
 import { formatNaira } from "@/lib/utils";
-import { Lock, ShieldCheck, CheckCircle2, ArrowRight, CreditCard, Building2, Truck, Tag, Check, X } from "lucide-react";
+import { siteConfig } from "@/config/site";
+import { Lock, Truck, Tag, Check, X, MessageCircle, ArrowRight, CheckCircle2, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 
 export default function CheckoutPage() {
   const { cart, subtotal, clearCart } = useCart();
+  const { overrides } = useAdmin();
   const [step, setStep] = useState<"details" | "success">("details");
   const [promoCode, setPromoCode] = useState("");
   const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
   const [promoError, setPromoError] = useState(false);
 
-  const PROMO_CODES: Record<string, number> = {
-    DEBBY10: 10,
-    WELCOME15: 15,
-    VIP20: 20,
-  };
+  const PROMO_CODES: Record<string, number> = siteConfig.promoCodes;
 
   const handleApplyPromo = () => {
     const code = promoCode.trim().toUpperCase();
@@ -34,28 +33,63 @@ export default function CheckoutPage() {
   const discountPercent = appliedPromo ? PROMO_CODES[appliedPromo] : 0;
   const discountAmount = Math.round(subtotal * (discountPercent / 100));
 
-  // Form State
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     phone: "",
     address: "",
     city: "",
-    state: "Abuja (FCT)",
-    paymentMethod: "card",
+    state: "Kebbi",
   });
 
   const shippingFee = subtotal >= 100000 || subtotal === 0 ? 0 : 5000;
   const grandTotal = subtotal - discountAmount + shippingFee;
 
+  const buildWhatsAppMessage = () => {
+    const lines: string[] = [];
+    lines.push(`${siteConfig.businessName} - New Order`);
+    lines.push("");
+
+    cart.forEach((item, i) => {
+      const override = overrides[item.product.id];
+      const name = override?.customName || item.product.name;
+      const price = override?.customPrice || item.selectedSize.price;
+      lines.push(`${i + 1}. ${name} (${item.selectedSize.size}) x${item.quantity} - ${formatNaira(price * item.quantity)}`);
+    });
+
+    lines.push("");
+    lines.push(`Subtotal: ${formatNaira(subtotal)}`);
+    if (discountAmount > 0) {
+      lines.push(`Promo (${appliedPromo} -${discountPercent}%): -${formatNaira(discountAmount)}`);
+    }
+    lines.push(`Delivery Fee: ${shippingFee === 0 ? "FREE (orders over " + formatNaira(100000) + ")" : formatNaira(shippingFee) + " (varies by location)"}`);
+    lines.push(`Total: ${formatNaira(grandTotal)}`);
+    lines.push("");
+    lines.push("---");
+    lines.push(`Name: ${formData.fullName}`);
+    lines.push(`Phone: ${formData.phone}`);
+    lines.push(`Email: ${formData.email}`);
+    lines.push(`Address: ${formData.address}, ${formData.city}, ${formData.state}`);
+    lines.push("");
+    lines.push("Note: Delivery fees apply based on your location. The final delivery cost will be confirmed by the seller.");
+
+    return lines.join("%0A");
+  };
+
   const handleSubmitOrder = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.fullName || !formData.phone || !formData.address) {
-      alert("Please fill in your shipping details.");
+    if (!formData.fullName || !formData.phone || !formData.address || !formData.city) {
+      alert("Please fill in all required shipping details.");
       return;
     }
+
+    const whatsappNumber = siteConfig.socials.whatsapp.replace("https://wa.me/", "").replace(/[^0-9]/g, "");
+    const message = buildWhatsAppMessage();
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+
     clearCart();
     setStep("success");
+    window.open(whatsappUrl, "_blank");
   };
 
   if (step === "success") {
@@ -68,13 +102,13 @@ export default function CheckoutPage() {
 
           <div className="space-y-2">
             <span className="text-xs text-gold-400 font-bold uppercase tracking-widest">
-              Order Confirmed #DF-2026-884
+              Order Submitted
             </span>
             <h1 className="font-serif text-2xl font-bold text-zinc-100">
               Thank You For Your Order!
             </h1>
             <p className="text-xs text-zinc-400 leading-relaxed">
-              Your fragrance order has been received. Our concierge team in Abuja is preparing your hand-sealed box for delivery.
+              Your order has been sent to {siteConfig.businessName} via WhatsApp. Our team will confirm your order and discuss delivery details.
             </p>
           </div>
 
@@ -85,12 +119,17 @@ export default function CheckoutPage() {
             </div>
             <div className="flex justify-between">
               <span className="text-zinc-500">Delivery Address:</span>
-              <span className="font-semibold text-zinc-200">{formData.address}, {formData.state}</span>
+              <span className="font-semibold text-zinc-200">{formData.address}, {formData.city}, {formData.state}</span>
             </div>
             <div className="flex justify-between border-t border-zinc-800 pt-2 text-gold-400 font-bold">
-              <span>Amount Paid:</span>
+              <span>Order Total:</span>
               <span>{formatNaira(grandTotal)}</span>
             </div>
+          </div>
+
+          <div className="flex items-start space-x-2 bg-gold-500/10 border border-gold-500/30 rounded-xl p-3 text-xs text-gold-300">
+            <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+            <span>Delivery fees vary by location and will be confirmed by the seller on WhatsApp.</span>
           </div>
 
           <Link
@@ -109,11 +148,11 @@ export default function CheckoutPage() {
       <div className="max-w-5xl mx-auto space-y-8">
         <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
           <h1 className="font-serif text-2xl sm:text-3xl font-bold text-zinc-100">
-            Secure Checkout
+            Checkout
           </h1>
           <div className="flex items-center space-x-1.5 text-xs text-gold-400">
             <Lock className="w-4 h-4" />
-            <span>256-Bit SSL Encrypted</span>
+            <span>Secure Order</span>
           </div>
         </div>
 
@@ -123,7 +162,7 @@ export default function CheckoutPage() {
             <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4">
               <h2 className="font-serif text-lg font-bold text-gold-400 flex items-center space-x-2">
                 <Truck className="w-5 h-5" />
-                <span>1. Shipping Address (Nigeria)</span>
+                <span>1. Delivery Information</span>
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
@@ -180,7 +219,7 @@ export default function CheckoutPage() {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Kubwa, Maitama, Ikeja"
+                    placeholder={`e.g. ${siteConfig.location.city}, Area name`}
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-zinc-100 focus:outline-none focus:border-gold-500"
@@ -194,47 +233,58 @@ export default function CheckoutPage() {
                     onChange={(e) => setFormData({ ...formData, state: e.target.value })}
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-zinc-100 focus:outline-none focus:border-gold-500"
                   >
-                    <option>Abuja (FCT)</option>
-                    <option>Lagos</option>
-                    <option>Rivers (Port Harcourt)</option>
-                    <option>Kano</option>
-                    <option>Oyo (Ibadan)</option>
-                    <option>Enugu</option>
+                    <option>Abia</option>
+                    <option>Adamawa</option>
+                    <option>Akwa Ibom</option>
+                    <option>Anambra</option>
+                    <option>Bauchi</option>
+                    <option>Bayelsa</option>
+                    <option>Benue</option>
+                    <option>Borno</option>
+                    <option>Cross River</option>
                     <option>Delta</option>
-                    <option>Other State in Nigeria</option>
+                    <option>Ebonyi</option>
+                    <option>Edo</option>
+                    <option>Ekiti</option>
+                    <option>Enugu</option>
+                    <option>FCT (Abuja)</option>
+                    <option>Gombe</option>
+                    <option>Imo</option>
+                    <option>Jigawa</option>
+                    <option>Kaduna</option>
+                    <option>Kano</option>
+                    <option>Katsina</option>
+                    <option>Kebbi</option>
+                    <option>Kogi</option>
+                    <option>Kwara</option>
+                    <option>Lagos</option>
+                    <option>Nasarawa</option>
+                    <option>Niger</option>
+                    <option>Ogun</option>
+                    <option>Ondo</option>
+                    <option>Osun</option>
+                    <option>Oyo</option>
+                    <option>Plateau</option>
+                    <option>Rivers</option>
+                    <option>Sokoto</option>
+                    <option>Taraba</option>
+                    <option>Yobe</option>
+                    <option>Zamfara</option>
                   </select>
                 </div>
               </div>
             </div>
 
-            {/* Payment Method */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4">
-              <h2 className="font-serif text-lg font-bold text-gold-400 flex items-center space-x-2">
-                <CreditCard className="w-5 h-5" />
-                <span>2. Payment Option</span>
-              </h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                <label className="border border-gold-500 bg-gold-500/10 rounded-xl p-4 cursor-pointer flex items-center space-x-3">
-                  <input
-                    type="radio"
-                    name="payment"
-                    defaultChecked
-                    className="accent-gold-500"
-                  />
-                  <div>
-                    <span className="font-bold text-zinc-100 block">Paystack / Flutterwave</span>
-                    <span className="text-[10px] text-zinc-400">Debit Card, Bank Transfer, USSD</span>
-                  </div>
-                </label>
-
-                <label className="border border-zinc-800 bg-zinc-950 rounded-xl p-4 cursor-pointer flex items-center space-x-3 opacity-60">
-                  <input type="radio" name="payment" disabled />
-                  <div>
-                    <span className="font-bold text-zinc-100 block">Pay on Delivery</span>
-                    <span className="text-[10px] text-zinc-400">Available in Abuja only</span>
-                  </div>
-                </label>
+            {/* Delivery Notice */}
+            <div className="bg-gold-500/10 border border-gold-500/30 rounded-2xl p-5 flex items-start space-x-3">
+              <AlertTriangle className="w-5 h-5 text-gold-400 flex-shrink-0 mt-0.5" />
+              <div className="text-xs space-y-1">
+                <p className="font-bold text-gold-300">Delivery Fees Apply Based on Location</p>
+                <p className="text-zinc-400">
+                  The final delivery fee will be confirmed by our team via WhatsApp after you place your order.
+                  Free delivery on orders over {formatNaira(100000)} within {siteConfig.location.city}.
+                  Interstate shipping rates vary by destination.
+                </p>
               </div>
             </div>
           </div>
@@ -246,9 +296,29 @@ export default function CheckoutPage() {
             </h2>
 
             <div className="space-y-3 text-xs text-zinc-300">
-              <div className="flex justify-between">
-                <span>Subtotal ({cart.length} items)</span>
-                <span className="font-semibold text-zinc-100">{formatNaira(subtotal)}</span>
+              {/* Cart Items */}
+              <div className="space-y-2 max-h-48 overflow-y-auto">
+                {cart.map((item) => {
+                  const override = overrides[item.product.id];
+                  const name = override?.customName || item.product.name;
+                  const price = override?.customPrice || item.selectedSize.price;
+                  return (
+                    <div key={`${item.product.id}-${item.selectedSize.size}`} className="flex justify-between items-start">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-zinc-200 truncate font-medium">{name}</p>
+                        <p className="text-[10px] text-zinc-500">{item.selectedSize.size} x{item.quantity}</p>
+                      </div>
+                      <span className="text-zinc-300 font-semibold ml-2">{formatNaira(price * item.quantity)}</span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="border-t border-zinc-800 pt-2">
+                <div className="flex justify-between">
+                  <span>Subtotal ({cart.length} items)</span>
+                  <span className="font-semibold text-zinc-100">{formatNaira(subtotal)}</span>
+                </div>
               </div>
 
               {/* Promo Code */}
@@ -301,22 +371,28 @@ export default function CheckoutPage() {
                   <span className="font-semibold">-{formatNaira(discountAmount)}</span>
                 </div>
               )}
+
               <div className="flex justify-between">
-                <span>Shipping Fee</span>
-                <span>{shippingFee === 0 ? "FREE" : formatNaira(shippingFee)}</span>
+                <span>Delivery Fee</span>
+                <span className="text-gold-400 font-medium">{shippingFee === 0 ? "FREE" : formatNaira(shippingFee) + " *"}</span>
               </div>
+
               <div className="flex justify-between pt-3 border-t border-zinc-800 text-sm font-bold text-gold-400">
                 <span>Total Due</span>
                 <span>{formatNaira(grandTotal)}</span>
               </div>
             </div>
 
+            <p className="text-[10px] text-zinc-500 leading-relaxed">
+              * Final delivery fee varies by location and will be confirmed via WhatsApp.
+            </p>
+
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-gold-600 via-gold-500 to-gold-400 hover:brightness-110 text-zinc-950 font-bold py-4 rounded-xl text-xs uppercase tracking-widest shadow-xl flex items-center justify-center space-x-2"
+              className="w-full bg-gradient-to-r from-green-600 via-green-500 to-green-400 hover:brightness-110 text-white font-bold py-4 rounded-xl text-xs uppercase tracking-widest shadow-xl flex items-center justify-center space-x-2"
             >
-              <span>Place Order · {formatNaira(grandTotal)}</span>
-              <ArrowRight className="w-4 h-4" />
+              <MessageCircle className="w-5 h-5" />
+              <span>Place Order via WhatsApp</span>
             </button>
           </div>
         </form>

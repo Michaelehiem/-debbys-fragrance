@@ -2,21 +2,23 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { INITIAL_PRODUCTS } from "@/data/products";
 import { ProductCard } from "@/components/product/ProductCard";
 import { QuickViewModal } from "@/components/product/QuickViewModal";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Product } from "@/types";
 import { Sparkles, ArrowRight, ShieldCheck, Award, HeartHandshake, Instagram, Send, Check } from "lucide-react";
 import { motion } from "framer-motion";
+import { siteConfig } from "@/config/site";
+import { useAdmin } from "@/context/AdminContext";
 
 export default function HomePage() {
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
+  const { allProducts } = useAdmin();
 
-  const bestSellers = INITIAL_PRODUCTS.filter((p) => p.isBestSeller);
-  const newArrivals = INITIAL_PRODUCTS.filter((p) => p.isNewArrival);
+  const bestSellers = allProducts.filter((p) => p.isBestSeller);
+  const newArrivals = allProducts.filter((p) => p.isNewArrival);
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,7 +51,7 @@ export default function HomePage() {
             className="inline-flex items-center space-x-2 bg-gold-500/10 border border-gold-500/30 px-4 py-1.5 rounded-full text-gold-300 text-xs font-semibold uppercase tracking-widest backdrop-blur-md"
           >
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Artisanal Luxury Perfumery · Abuja, Nigeria</span>
+            <span>Artisanal Luxury Perfumery · {siteConfig.location.city}, Nigeria</span>
           </motion.div>
 
           <motion.h1
@@ -183,7 +185,7 @@ export default function HomePage() {
             href="/shop"
             className="text-xs text-gold-400 hover:text-gold-300 flex items-center space-x-1 mt-2 sm:mt-0 font-medium"
           >
-            <span>View All Products ({INITIAL_PRODUCTS.length})</span>
+            <span>View All Products ({allProducts.length})</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -238,7 +240,7 @@ export default function HomePage() {
             </div>
             <h3 className="font-serif text-lg font-bold text-zinc-100">Concierge Service</h3>
             <p className="text-xs text-zinc-400 leading-relaxed">
-              Unsure which scent fits your aura? Chat with our fragrance consultants in Abuja for personalized recommendations.
+              Unsure which scent fits your aura? Chat with our fragrance consultants in {siteConfig.location.city} for personalized recommendations.
             </p>
           </motion.div>
         </div>

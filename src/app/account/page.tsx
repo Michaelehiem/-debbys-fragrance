@@ -2,15 +2,16 @@
 
 import React, { useState } from "react";
 import { useWishlist } from "@/context/WishlistContext";
-import { INITIAL_PRODUCTS } from "@/data/products";
+import { useAdmin } from "@/context/AdminContext";
 import { ProductCard } from "@/components/product/ProductCard";
 import { User, Heart, Package, Settings, Lock } from "lucide-react";
 
 export default function AccountPage() {
   const [activeTab, setActiveTab] = useState<"profile" | "wishlist" | "orders">("wishlist");
   const { wishlist } = useWishlist();
+  const { allProducts } = useAdmin();
 
-  const savedProducts = INITIAL_PRODUCTS.filter((p) => wishlist.includes(p.id));
+  const savedProducts = allProducts.filter((p) => wishlist.includes(p.id));
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 py-12 px-4 sm:px-6 lg:px-8 font-sans">

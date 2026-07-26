@@ -5,10 +5,13 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
 import { AdminProvider } from "@/context/AdminContext";
+import { ReviewProvider } from "@/context/ReviewContext";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/layout/CartDrawer";
 import { BackToTop } from "@/components/ui/BackToTop";
+import { CartToast } from "@/components/ui/CartToast";
+import { siteConfig } from "@/config/site";
 
 const playfair = localFont({
   src: [
@@ -30,9 +33,9 @@ const inter = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Debby's Fragrance | Discover Your Signature Scent in Nigeria",
-  description: "Debby's Fragrance is Nigeria's premier luxury perfume boutique offering authentic designer perfumes, oud oils, and artisanal fragrances. Located in Abuja, delivering nationwide.",
-  keywords: ["Perfumes in Nigeria", "Fragrance shop Abuja", "Debby's Fragrance", "Buy Perfumes online Nigeria", "Luxury fragrances", "Designer perfumes"],
+  title: siteConfig.seo.title,
+  description: siteConfig.seo.description,
+  keywords: siteConfig.seo.keywords,
   openGraph: {
     title: "Debby's Fragrance | Discover Your Signature Scent",
     description: "Authentic luxury perfumes, body oils, and bespoke signature fragrances delivered nationwide across Nigeria.",
@@ -54,11 +57,14 @@ export default function RootLayout({
           <ThemeProvider>
             <CartProvider>
               <WishlistProvider>
-                <Navbar />
-                <main className="flex-1">{children}</main>
-                <Footer />
-                <CartDrawer />
-                <BackToTop />
+                <ReviewProvider>
+                  <Navbar />
+                  <main className="flex-1">{children}</main>
+                  <Footer />
+                  <CartDrawer />
+                  <CartToast />
+                  <BackToTop />
+                </ReviewProvider>
               </WishlistProvider>
             </CartProvider>
           </ThemeProvider>

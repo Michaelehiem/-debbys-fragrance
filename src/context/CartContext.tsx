@@ -1,7 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { CartItem, Product, ProductSize } from "@/types";
+
+interface Toast {
+  id: number;
+  message: string;
+}
 
 interface CartContextType {
   cart: CartItem[];
@@ -13,13 +18,18 @@ interface CartContextType {
   setIsCartOpen: (open: boolean) => void;
   subtotal: number;
   totalItems: number;
+  toasts: Toast[];
+  removeToast: (id: number) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+let toastIdCounter = 0;
+
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [toasts, setToasts] = useState<Toast[]>([]);
 
   useEffect(() => {
     const saved = localStorage.getItem("debby_cart");
@@ -37,6 +47,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem("debby_cart", JSON.stringify(newCart));
   };
 
+  const removeToast = useCallback((id: number) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
+
   const addToCart = (product: Product, selectedSize: ProductSize, quantity: number = 1) => {
     const existingIndex = cart.findIndex(
       (item) => item.product.id === product.id && item.selectedSize.size === selectedSize.size
@@ -49,7 +63,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } else {
       saveCart([...cart, { product, selectedSize, quantity }]);
     }
-    setIsCartOpen(true);
+
+    // Show toast instead of opening cart drawer
+    const id = ++toastIdCounter;
+    const displayName = product.name;
+    setToasts((prev) => [...prev, { id, message: `${displayName} added to bag` }]);
+    setTimeout(() => removeToast(id), 2500);
   };
 
   const removeFromCart = (productId: string, sizeName: string) => {
@@ -96,6 +115,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsCartOpen,
         subtotal,
         totalItems,
+        toasts,
+        removeToast,
       }}
     >
       {children}

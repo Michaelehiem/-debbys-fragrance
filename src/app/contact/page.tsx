@@ -2,19 +2,27 @@
 
 import React, { useState } from "react";
 import { Mail, Phone, MapPin, Clock, Send, ChevronDown, Check } from "lucide-react";
+import { siteConfig } from "@/config/site";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
   const faqs = [
     {
       q: "Where is Debby's Fragrance physical store located?",
-      a: "Our flagship boutique is located at Shop K2, Trademore Estate Phase 2 Market, Kubwa, Abuja, Nigeria. You are welcome to visit for scent sampling!",
+      a: `Our boutique is located at ${siteConfig.location.shopAddress}. You are welcome to visit for scent sampling!`,
     },
     {
       q: "How long does shipping take across Nigeria?",
-      a: "Deliveries within Abuja take 24 hours. Express courier deliveries to Lagos, Port Harcourt, Kano, and other states take 2-4 business days.",
+      a: "Deliveries within Kebbi take 24 hours. Express courier deliveries to Lagos, Port Harcourt, Kano, and other states take 2-4 business days.",
     },
     {
       q: "Are your perfumes 100% authentic?",
@@ -28,7 +36,21 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const lines: string[] = [];
+    lines.push(`${siteConfig.businessName} - Contact Inquiry`);
+    lines.push("");
+    lines.push(`Name: ${formData.name}`);
+    lines.push(`Email: ${formData.email}`);
+    if (formData.subject) lines.push(`Subject: ${formData.subject}`);
+    lines.push(`Message: ${formData.message}`);
+
+    const whatsappNumber = siteConfig.socials.whatsapp.replace("https://wa.me/", "").replace(/[^0-9]/g, "");
+    const message = lines.join("%0A");
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+    window.open(whatsappUrl, "_blank");
+
     setSubmitted(true);
+    setFormData({ name: "", email: "", subject: "", message: "" });
     setTimeout(() => setSubmitted(false), 5000);
   };
 
@@ -63,6 +85,8 @@ export default function ContactPage() {
                     type="text"
                     required
                     placeholder="Enter your name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:outline-none focus:border-gold-500"
                   />
                 </div>
@@ -73,6 +97,8 @@ export default function ContactPage() {
                     type="email"
                     required
                     placeholder="name@example.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:outline-none focus:border-gold-500"
                   />
                 </div>
@@ -82,6 +108,8 @@ export default function ContactPage() {
                   <input
                     type="text"
                     placeholder="e.g. Scent Recommendation Request"
+                    value={formData.subject}
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:outline-none focus:border-gold-500"
                   />
                 </div>
@@ -92,16 +120,18 @@ export default function ContactPage() {
                     rows={4}
                     required
                     placeholder="How can we assist you with your fragrance search?"
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:outline-none focus:border-gold-500"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-zinc-950 font-bold py-3.5 rounded-xl uppercase tracking-wider flex items-center justify-center space-x-2 transition-all shadow-lg"
+                  className="w-full bg-gradient-to-r from-green-600 via-green-500 to-green-400 hover:from-green-500 hover:to-green-300 text-white font-bold py-3.5 rounded-xl uppercase tracking-wider flex items-center justify-center space-x-2 transition-all shadow-lg"
                 >
                   <Send className="w-4 h-4" />
-                  <span>Send Message</span>
+                  <span>Send via WhatsApp</span>
                 </button>
               </form>
             )}
@@ -116,8 +146,8 @@ export default function ContactPage() {
                 <div className="flex items-start space-x-3">
                   <MapPin className="w-4 h-4 text-gold-400 flex-shrink-0 mt-1" />
                   <div>
-                    <span className="font-bold text-zinc-100 block">Abuja Store Address</span>
-                    <span>Shop K2, Trademore Estate Phase 2 Market, Kubwa, Abuja, Nigeria</span>
+                    <span className="font-bold text-zinc-100 block">Store Address</span>
+                    <span>{siteConfig.location.shopAddress}</span>
                   </div>
                 </div>
 
@@ -125,7 +155,7 @@ export default function ContactPage() {
                   <Phone className="w-4 h-4 text-gold-400 flex-shrink-0" />
                   <div>
                     <span className="font-bold text-zinc-100 block">Phone / WhatsApp</span>
-                    <span>+234 (0) 800 DEBBY SCENT</span>
+                    <span>{siteConfig.contact.whatsapp}</span>
                   </div>
                 </div>
 
@@ -133,7 +163,7 @@ export default function ContactPage() {
                   <Mail className="w-4 h-4 text-gold-400 flex-shrink-0" />
                   <div>
                     <span className="font-bold text-zinc-100 block">Email Concierge</span>
-                    <span>concierge@debbysfragrance.com</span>
+                    <span>{siteConfig.contact.email}</span>
                   </div>
                 </div>
 
@@ -155,7 +185,7 @@ export default function ContactPage() {
               <div className="aspect-video w-full rounded-xl bg-zinc-950 border border-zinc-800 flex flex-col items-center justify-center space-y-2 p-4 text-xs">
                 <MapPin className="w-8 h-8 text-gold-400 animate-bounce" />
                 <span className="font-bold text-zinc-200">Debby's Fragrance Boutique</span>
-                <span className="text-[10px] text-zinc-400">Kubwa, Abuja, Nigeria</span>
+                <span className="text-[10px] text-zinc-400">{siteConfig.location.city}, {siteConfig.location.country}</span>
               </div>
             </div>
           </div>

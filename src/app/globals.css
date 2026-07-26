@@ -6,6 +6,12 @@
   body {
     @apply bg-zinc-950 text-zinc-100 font-sans;
   }
+
+  /* Light theme overrides */
+  .light body,
+  .light {
+    @apply bg-white text-zinc-900;
+  }
 }
 
 /* Custom Scrollbar for Luxury Feel */
@@ -17,13 +23,26 @@
   background: #09090b;
 }
 
+.light ::-webkit-scrollbar-track {
+  background: #f4f4f5;
+}
+
 ::-webkit-scrollbar-thumb {
   background: #27272a;
   border-radius: 4px;
 }
 
+.light ::-webkit-scrollbar-thumb {
+  background: #a1a1aa;
+  border-radius: 4px;
+}
+
 ::-webkit-scrollbar-thumb:hover {
   background: #d4af37;
+}
+
+.light ::-webkit-scrollbar-thumb:hover {
+  background: #b58e24;
 }
 
 /* Smooth Scrolling */

@@ -37,6 +37,25 @@
 
 ---
 
+## Site Config Update & Critical Fixes — Completed 2026-07-25
+- **Brief:** Apply site config corrections, fix critical data flow bugs, and make UX improvements
+- **Deliverable:** Updated source files in `src/`
+- **Key steps:**
+  - Fixed ShopPage, ProductDetailPage, AccountPage to use `useAdmin().allProducts` (admin overrides now work everywhere)
+  - Added URL query param reading to ShopPage for category filtering from homepage
+  - Added Suspense boundary for `useSearchParams()` in ShopPage
+  - Expanded checkout state dropdown to all 36 Nigerian states + FCT
+  - Integrated contact form with WhatsApp messaging
+  - Enhanced About page with siteConfig data and CTA section
+  - Added light theme scrollbar/body styles
+  - Fixed CartToast.tsx pre-existing TS error
+  - Replaced emoji in Navbar mobile menu with ShieldCheck icon
+- **Workflows used:** N/A
+- **Tools used:** File editing (8 files)
+- **Notes:** TypeScript compiles clean (zero errors). SEO metadata for individual pages deprioritized (would need server component conversion).
+
+---
+
 <!-- Template for future entries:
 ## [Project Name] — Completed YYYY-MM-DD
 - **Brief:** What the project was about

@@ -1,27 +1,47 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { INITIAL_PRODUCTS } from "@/data/products";
+import React, { useState, useMemo, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductListCard } from "@/components/product/ProductListCard";
 import { QuickViewModal } from "@/components/product/QuickViewModal";
 import { Product, GenderCategory, FragranceFamily } from "@/types";
 import { formatNaira } from "@/lib/utils";
-import { Filter, Grid, List, SlidersHorizontal, Search, RotateCcw } from "lucide-react";
+import { Grid, List, SlidersHorizontal, Search, RotateCcw } from "lucide-react";
+import { useAdmin } from "@/context/AdminContext";
 
 export default function ShopPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-gold-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    }>
+      <ShopPageContent />
+    </Suspense>
+  );
+}
+
+function ShopPageContent() {
+  const searchParams = useSearchParams();
+  const { allProducts } = useAdmin();
+
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
+  // Read initial filter values from URL query params
+  const initialCategory = (searchParams.get("category") as GenderCategory | "all") || "all";
+  const initialFamily = (searchParams.get("family") as FragranceFamily | "all") || "all";
+
   // Filter States
-  const [selectedCategory, setSelectedCategory] = useState<GenderCategory | "all">("all");
-  const [selectedFamily, setSelectedFamily] = useState<FragranceFamily | "all">("all");
+  const [selectedCategory, setSelectedCategory] = useState<GenderCategory | "all">(initialCategory);
+  const [selectedFamily, setSelectedFamily] = useState<FragranceFamily | "all">(initialFamily);
   const [maxPrice, setMaxPrice] = useState<number>(200000);
   const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "rating" | "newest">("featured");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredProducts = useMemo(() => {
-    return INITIAL_PRODUCTS.filter((product) => {
+    return allProducts.filter((product) => {
       // Category Filter
       if (selectedCategory !== "all" && product.category !== selectedCategory) return false;
       // Family Filter

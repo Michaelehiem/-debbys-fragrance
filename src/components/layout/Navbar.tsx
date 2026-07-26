@@ -18,10 +18,12 @@ import {
 } from "lucide-react";
 import { motion, useAnimation } from "framer-motion";
 import { INITIAL_PRODUCTS } from "@/data/products";
+import { useAdmin } from "@/context/AdminContext";
 import { formatNaira } from "@/lib/utils";
 
 export const Navbar: React.FC = () => {
   const { totalItems, setIsCartOpen } = useCart();
+  const { allProducts } = useAdmin();
   const { wishlist } = useWishlist();
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -42,7 +44,7 @@ export const Navbar: React.FC = () => {
   }, [totalItems, cartControls]);
 
   const filteredSearch = searchQuery.trim()
-    ? INITIAL_PRODUCTS.filter(
+    ? allProducts.filter(
         (p) =>
           p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           p.fragranceFamily.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -299,9 +301,10 @@ export const Navbar: React.FC = () => {
           <Link
             href="/admin"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-gold-400 font-semibold"
+            className="flex items-center space-x-2 text-gold-400 font-semibold"
           >
-            ⚙️ Admin Panel (Upload Images)
+            <ShieldCheck className="w-4 h-4" />
+            <span>Admin Panel</span>
           </Link>
         </div>
       )}

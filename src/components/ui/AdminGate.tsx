@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, Lock, Eye, EyeOff } from "lucide-react";
+import { siteConfig } from "@/config/site";
 
-const ADMIN_PASSWORD = "debbyfragrance2026";
+const ADMIN_PASSWORD = siteConfig.adminPassword;
 
 interface AdminGateProps {
   children: React.ReactNode;
