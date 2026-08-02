@@ -44,26 +44,26 @@ function AdminPageContent() {
   const selectedProduct = selectedId ? allProducts.find((p) => p.id === selectedId) : null;
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 py-12 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="min-h-screen bg-white text-zinc-900 py-12 px-4 sm:px-6 lg:px-8 font-sans dark:bg-zinc-950 dark:text-zinc-100">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Header */}
-        <div className="bg-gradient-to-r from-zinc-900 via-zinc-900 to-zinc-950 border border-gold-500/40 p-6 sm:p-8 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between shadow-2xl">
+        <div className="bg-gradient-to-r from-zinc-50 via-zinc-100 to-white border border-gold-500/40 p-6 sm:p-8 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between shadow-sm dark:from-zinc-900 dark:via-zinc-900 dark:to-zinc-950 dark:shadow-2xl">
           <div className="space-y-2">
-            <div className="flex items-center space-x-2 text-gold-400 font-semibold text-xs uppercase tracking-widest">
+            <div className="flex items-center space-x-2 text-gold-600 dark:text-gold-400 font-semibold text-xs uppercase tracking-widest">
               <ShieldCheck className="w-4 h-4" />
               <span>Debby&apos;s Fragrance Admin Portal</span>
             </div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-zinc-100">
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-zinc-100">
               Product Manager
             </h1>
-            <p className="text-xs text-zinc-400 max-w-xl">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-xl">
               Add new perfumes, edit details, upload photos, set prices, and manage your entire catalogue.
             </p>
           </div>
           <div className="mt-4 md:mt-0 flex space-x-3">
             <Link
               href="/shop"
-              className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold px-4 py-2.5 rounded-lg border border-zinc-700 transition-all"
+              className="bg-white hover:bg-zinc-50 text-zinc-700 text-xs font-bold px-4 py-2.5 rounded-lg border border-zinc-300 transition-all dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-200 dark:border-zinc-700"
             >
               View Shop
             </Link>
@@ -72,7 +72,7 @@ function AdminPageContent() {
 
         {/* Success */}
         {successMsg && (
-          <div className="bg-emerald-950/80 border border-emerald-500 text-emerald-300 p-4 rounded-xl text-xs font-semibold flex items-center space-x-2 animate-fade-in">
+          <div className="bg-emerald-50 border border-emerald-500 text-emerald-700 p-4 rounded-xl text-xs font-semibold flex items-center space-x-2 animate-fade-in dark:bg-emerald-950/80 dark:text-emerald-300">
             <Check className="w-4 h-4 text-emerald-400" />
             <span>{successMsg}</span>
           </div>
@@ -91,15 +91,15 @@ function AdminPageContent() {
               </div>
               <div className="flex items-center space-x-3">
                 {/* Category filter */}
-                <div className="flex items-center border border-zinc-800 rounded-lg bg-zinc-900 p-1">
+                <div className="flex items-center border border-zinc-200 rounded-lg bg-white p-1 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
                   {(["all", "women", "men", "unisex"] as const).map((cat) => (
                     <button
                       key={cat}
                       onClick={() => setFilterCategory(cat)}
                       className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded transition-all ${
                         filterCategory === cat
-                          ? "bg-gold-500/20 text-gold-400"
-                          : "text-zinc-500 hover:text-zinc-300"
+                          ? "bg-gold-500/20 text-gold-600 dark:text-gold-400"
+                          : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300"
                       }`}
                     >
                       {cat === "all" ? "All" : cat}
@@ -127,9 +127,9 @@ function AdminPageContent() {
                 return (
                   <div
                     key={prod.id}
-                    className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-zinc-700 transition-all group"
+                    className="bg-white border border-zinc-200 rounded-2xl overflow-hidden hover:border-zinc-300 transition-all group shadow-sm dark:bg-zinc-900 dark:border-zinc-800 dark:hover:border-zinc-700"
                   >
-                    <div className="aspect-[4/3] w-full bg-zinc-950 relative overflow-hidden">
+                    <div className="aspect-[4/3] w-full bg-zinc-100 relative overflow-hidden dark:bg-zinc-950">
                       <img
                         src={img}
                         alt={name}
@@ -149,8 +149,8 @@ function AdminPageContent() {
                         <p className="text-[10px] text-gold-500 font-semibold uppercase tracking-wider">
                           {prod.brand}
                         </p>
-                        <h3 className="font-serif font-bold text-zinc-100 text-sm truncate">{name}</h3>
-                        <p className="text-xs text-zinc-400 mt-0.5">{formatNaira(price)}</p>
+                        <h3 className="font-serif font-bold text-zinc-900 dark:text-zinc-100 text-sm truncate">{name}</h3>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">{formatNaira(price)}</p>
                       </div>
                       <p className="text-[11px] text-zinc-500 line-clamp-2 leading-relaxed">
                         {prod.description}
@@ -161,7 +161,7 @@ function AdminPageContent() {
                             setSelectedId(prod.id);
                             setView("edit");
                           }}
-                          className="flex-1 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-200 text-[10px] font-bold px-3 py-2 rounded-lg uppercase tracking-wider flex items-center justify-center space-x-1.5 transition-all"
+                          className="flex-1 bg-white hover:bg-zinc-50 border border-zinc-300 text-zinc-700 text-[10px] font-bold px-3 py-2 rounded-lg uppercase tracking-wider flex items-center justify-center space-x-1.5 transition-all dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:border-zinc-700 dark:text-zinc-200"
                         >
                           <Edit3 className="w-3 h-3" />
                           <span>Edit</span>
@@ -173,7 +173,7 @@ function AdminPageContent() {
                               showSuccess(`Deleted "${name}"`);
                             }
                           }}
-                          className="bg-rose-950/60 hover:bg-rose-900 text-rose-400 border border-rose-800 text-[10px] font-bold px-3 py-2 rounded-lg uppercase tracking-wider flex items-center justify-center space-x-1.5 transition-all"
+                          className="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 text-[10px] font-bold px-3 py-2 rounded-lg uppercase tracking-wider flex items-center justify-center space-x-1.5 transition-all dark:bg-rose-950/60 dark:hover:bg-rose-900 dark:text-rose-400 dark:border-rose-800"
                         >
                           <Trash2 className="w-3 h-3" />
                           <span>Delete</span>
@@ -186,9 +186,9 @@ function AdminPageContent() {
             </div>
 
             {filteredProducts.length === 0 && (
-              <div className="py-20 text-center bg-zinc-900/40 rounded-2xl border border-zinc-800 space-y-4">
-                <Package className="w-12 h-12 text-zinc-600 mx-auto" />
-                <p className="text-zinc-400 text-sm">No products in this category yet.</p>
+              <div className="py-20 text-center bg-zinc-50/60 rounded-2xl border border-zinc-200 space-y-4 dark:bg-zinc-900/40 dark:border-zinc-800">
+                <Package className="w-12 h-12 text-zinc-300 mx-auto dark:text-zinc-600" />
+                <p className="text-zinc-500 text-sm dark:text-zinc-400">No products in this category yet.</p>
                 <button
                   onClick={() => setView("add")}
                   className="bg-gold-600 hover:bg-gold-500 text-zinc-950 font-bold text-xs px-6 py-2.5 rounded-xl uppercase tracking-wider"
@@ -357,13 +357,13 @@ function ProductForm({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
-        <h2 className="font-serif text-xl font-bold text-zinc-100">
+      <div className="flex items-center justify-between border-b border-zinc-200 pb-4 dark:border-zinc-800">
+        <h2 className="font-serif text-xl font-bold text-zinc-900 dark:text-zinc-100">
           {mode === "add" ? "Add New Product" : `Edit: ${existing?.name}`}
         </h2>
         <button
           onClick={onCancel}
-          className="text-zinc-400 hover:text-zinc-200 p-2 rounded-lg hover:bg-zinc-800 transition-colors"
+          className="text-zinc-400 hover:text-zinc-900 p-2 rounded-lg hover:bg-zinc-100 transition-colors dark:hover:text-zinc-200 dark:hover:bg-zinc-800"
         >
           <X className="w-5 h-5" />
         </button>
@@ -372,13 +372,13 @@ function ProductForm({
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left: Image */}
         <div className="space-y-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4">
-            <h3 className="font-serif text-sm font-bold text-gold-400 flex items-center space-x-2">
+          <div className="bg-white border border-zinc-200 rounded-2xl p-6 space-y-4 shadow-sm dark:bg-zinc-900 dark:border-zinc-800">
+            <h3 className="font-serif text-sm font-bold text-gold-600 dark:text-gold-400 flex items-center space-x-2">
               <ImageIcon className="w-4 h-4" />
               <span>Product Image</span>
             </h3>
 
-            <div className="aspect-square w-full bg-zinc-950 rounded-xl overflow-hidden border-2 border-zinc-800">
+            <div className="aspect-square w-full bg-zinc-100 rounded-xl overflow-hidden border-2 border-zinc-200 dark:bg-zinc-950 dark:border-zinc-800">
               <img
                 src={previewImage}
                 alt="Preview"
@@ -412,8 +412,8 @@ function ProductForm({
           </div>
 
           {/* Badges */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-3">
-            <h3 className="text-xs font-bold text-zinc-300 uppercase tracking-wider">Badges</h3>
+          <div className="bg-white border border-zinc-200 rounded-2xl p-4 space-y-3 shadow-sm dark:bg-zinc-900 dark:border-zinc-800">
+            <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-wider dark:text-zinc-300">Badges</h3>
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -421,7 +421,7 @@ function ProductForm({
                 onChange={(e) => setIsBestSeller(e.target.checked)}
                 className="w-4 h-4 accent-gold-500 rounded"
               />
-              <span className="text-xs text-zinc-300">Best Seller</span>
+              <span className="text-xs text-zinc-600 dark:text-zinc-300">Best Seller</span>
             </label>
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
@@ -430,7 +430,7 @@ function ProductForm({
                 onChange={(e) => setIsNewArrival(e.target.checked)}
                 className="w-4 h-4 accent-gold-500 rounded"
               />
-              <span className="text-xs text-zinc-300">New Arrival</span>
+              <span className="text-xs text-zinc-600 dark:text-zinc-300">New Arrival</span>
             </label>
           </div>
         </div>
@@ -438,46 +438,46 @@ function ProductForm({
         {/* Right: Form Fields */}
         <div className="lg:col-span-2 space-y-6">
           {/* Basic Info */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4">
-            <h3 className="font-serif text-sm font-bold text-gold-400">Basic Information</h3>
+          <div className="bg-white border border-zinc-200 rounded-2xl p-6 space-y-4 shadow-sm dark:bg-zinc-900 dark:border-zinc-800">
+            <h3 className="font-serif text-sm font-bold text-gold-600 dark:text-gold-400">Basic Information</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
-                <label className="text-xs text-zinc-400 block mb-1">Product Name *</label>
+                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">Product Name *</label>
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Midnight Velvet"
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-gold-500"
+                  className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                 />
               </div>
               <div>
-                <label className="text-xs text-zinc-400 block mb-1">Brand</label>
+                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">Brand</label>
                 <input
                   type="text"
                   value={brand}
                   onChange={(e) => setBrand(e.target.value)}
                   placeholder="e.g. Debby's Signature"
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-gold-500"
+                  className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                 />
               </div>
               <div>
-                <label className="text-xs text-zinc-400 block mb-1">Tagline</label>
+                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">Tagline</label>
                 <input
                   type="text"
                   value={tagline}
                   onChange={(e) => setTagline(e.target.value)}
                   placeholder="e.g. Seduction in the Dark"
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-gold-500"
+                  className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                 />
               </div>
               <div>
-                <label className="text-xs text-zinc-400 block mb-1">Category *</label>
+                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">Category *</label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value as GenderCategory)}
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-gold-500"
+                  className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                 >
                   <option value="women">Women</option>
                   <option value="men">Men</option>
@@ -485,11 +485,11 @@ function ProductForm({
                 </select>
               </div>
               <div>
-                <label className="text-xs text-zinc-400 block mb-1">Fragrance Family *</label>
+                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">Fragrance Family *</label>
                 <select
                   value={fragranceFamily}
                   onChange={(e) => setFragranceFamily(e.target.value as FragranceFamily)}
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-gold-500"
+                  className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                 >
                   <option value="floral">Floral</option>
                   <option value="woody">Woody</option>
@@ -500,105 +500,105 @@ function ProductForm({
                 </select>
               </div>
               <div>
-                <label className="text-xs text-zinc-400 block mb-1">Stock Quantity</label>
+                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">Stock Quantity</label>
                 <input
                   type="number"
                   value={stock}
                   onChange={(e) => setStock(e.target.value)}
                   min="0"
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-gold-500"
+                  className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                 />
               </div>
             </div>
           </div>
 
           {/* Description */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4">
-            <h3 className="font-serif text-sm font-bold text-gold-400">Description *</h3>
+          <div className="bg-white border border-zinc-200 rounded-2xl p-6 space-y-4 shadow-sm dark:bg-zinc-900 dark:border-zinc-800">
+            <h3 className="font-serif text-sm font-bold text-gold-600 dark:text-gold-400">Description *</h3>
             <textarea
               rows={4}
               required
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Describe the fragrance — its character, mood, and what makes it special..."
-              className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-100 focus:outline-none focus:border-gold-500 leading-relaxed"
+              className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-3 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 leading-relaxed dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
             />
           </div>
 
           {/* Pricing */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4">
-            <h3 className="font-serif text-sm font-bold text-gold-400">Pricing (₦ Naira)</h3>
+          <div className="bg-white border border-zinc-200 rounded-2xl p-6 space-y-4 shadow-sm dark:bg-zinc-900 dark:border-zinc-800">
+            <h3 className="font-serif text-sm font-bold text-gold-600 dark:text-gold-400">Pricing (₦ Naira)</h3>
             <p className="text-[11px] text-zinc-500">Enter price for each size you want to offer. Leave blank to skip that size.</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="text-xs text-zinc-400 block mb-1">30ml Price</label>
+                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">30ml Price</label>
                 <input
                   type="number"
                   value={price30}
                   onChange={(e) => setPrice30(e.target.value)}
                   placeholder="e.g. 45000"
                   min="0"
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-gold-500"
+                  className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                 />
               </div>
               <div>
-                <label className="text-xs text-zinc-400 block mb-1">50ml Price</label>
+                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">50ml Price</label>
                 <input
                   type="number"
                   value={price50}
                   onChange={(e) => setPrice50(e.target.value)}
                   placeholder="e.g. 75000"
                   min="0"
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-gold-500"
+                  className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                 />
               </div>
               <div>
-                <label className="text-xs text-zinc-400 block mb-1">100ml Price</label>
+                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">100ml Price</label>
                 <input
                   type="number"
                   value={price100}
                   onChange={(e) => setPrice100(e.target.value)}
                   placeholder="e.g. 120000"
                   min="0"
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-gold-500"
+                  className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                 />
               </div>
             </div>
           </div>
 
           {/* Fragrance Notes */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4">
-            <h3 className="font-serif text-sm font-bold text-gold-400">Fragrance Notes</h3>
+          <div className="bg-white border border-zinc-200 rounded-2xl p-6 space-y-4 shadow-sm dark:bg-zinc-900 dark:border-zinc-800">
+            <h3 className="font-serif text-sm font-bold text-gold-600 dark:text-gold-400">Fragrance Notes</h3>
             <p className="text-[11px] text-zinc-500">Separate each note with a comma.</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="text-xs text-zinc-400 block mb-1">Top Notes</label>
+                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">Top Notes</label>
                 <input
                   type="text"
                   value={topNotes}
                   onChange={(e) => setTopNotes(e.target.value)}
                   placeholder="e.g. Bergamot, Pink Pepper"
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-gold-500"
+                  className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                 />
               </div>
               <div>
-                <label className="text-xs text-zinc-400 block mb-1">Heart Notes</label>
+                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">Heart Notes</label>
                 <input
                   type="text"
                   value={heartNotes}
                   onChange={(e) => setHeartNotes(e.target.value)}
                   placeholder="e.g. Jasmine, Rose"
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-gold-500"
+                  className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                 />
               </div>
               <div>
-                <label className="text-xs text-zinc-400 block mb-1">Base Notes</label>
+                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">Base Notes</label>
                 <input
                   type="text"
                   value={baseNotes}
                   onChange={(e) => setBaseNotes(e.target.value)}
                   placeholder="e.g. Oud, Vanilla"
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-gold-500"
+                  className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                 />
               </div>
             </div>
@@ -616,7 +616,7 @@ function ProductForm({
             <button
               type="button"
               onClick={onCancel}
-              className="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-300 font-bold text-xs px-6 py-3.5 rounded-xl uppercase tracking-wider transition-all"
+              className="bg-white hover:bg-zinc-50 border border-zinc-300 text-zinc-700 font-bold text-xs px-6 py-3.5 rounded-xl uppercase tracking-wider transition-all dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:border-zinc-700 dark:text-zinc-300"
             >
               Cancel
             </button>

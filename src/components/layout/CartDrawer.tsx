@@ -21,21 +21,21 @@ export const CartDrawer: React.FC = () => {
 
   if (!isCartOpen) return null;
 
-  const shippingFee = subtotal >= 100000 || subtotal === 0 ? 0 : 5000;
+  const shippingFee = subtotal >= 350000 || subtotal === 0 ? 0 : 5000;
   const grandTotal = subtotal + shippingFee;
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden font-sans">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-zinc-950/80 backdrop-blur-sm transition-opacity"
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity dark:bg-zinc-950/80"
         onClick={() => setIsCartOpen(false)}
       />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-zinc-950 border-l border-gold-500/30 text-zinc-100 flex flex-col shadow-2xl">
+        <div className="w-screen max-w-md bg-white border-l border-gold-500/30 text-zinc-900 flex flex-col shadow-2xl dark:bg-zinc-950 dark:text-zinc-100">
           {/* Header */}
-          <div className="p-6 border-b border-zinc-800 flex items-center justify-between">
+          <div className="p-6 border-b border-zinc-200 flex items-center justify-between dark:border-zinc-800">
             <div className="flex items-center space-x-2">
               <ShoppingBag className="w-5 h-5 text-gold-400" />
               <h2 className="font-serif text-lg font-bold text-gold-300">
@@ -51,7 +51,7 @@ export const CartDrawer: React.FC = () => {
           </div>
 
           {/* Cart List */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6 divide-y divide-zinc-800/80">
+          <div className="flex-1 overflow-y-auto p-6 space-y-6 divide-y divide-zinc-200 dark:divide-zinc-800/80">
             {cart.length > 0 ? (
               cart.map((item, index) => {
                 const override = overrides[item.product.id];
@@ -74,7 +74,7 @@ export const CartDrawer: React.FC = () => {
                     <div className="flex-1 min-w-0 flex flex-col justify-between">
                       <div>
                         <div className="flex justify-between items-start">
-                          <h3 className="text-sm font-medium text-zinc-100 truncate">
+                          <h3 className="text-sm font-medium text-zinc-900 truncate dark:text-zinc-100">
                             {displayName}
                           </h3>
                           <button
@@ -153,19 +153,19 @@ export const CartDrawer: React.FC = () => {
 
           {/* Footer Summary */}
           {cart.length > 0 && (
-            <div className="p-6 border-t border-zinc-800 bg-zinc-900/50 space-y-4">
+            <div className="p-6 border-t border-zinc-200 bg-zinc-50/50 space-y-4 dark:border-zinc-800 dark:bg-zinc-900/50">
               <div className="space-y-2 text-xs text-zinc-300">
                 <div className="flex justify-between">
-                  <span>Subtotal</span>
-                  <span className="font-semibold text-zinc-100">{formatNaira(subtotal)}</span>
+                  <span className="text-zinc-500 dark:text-zinc-400">Subtotal</span>
+                  <span className="font-semibold text-zinc-900 dark:text-zinc-100">{formatNaira(subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Estimated Shipping (Nigeria)</span>
+                  <span className="text-zinc-500 dark:text-zinc-400">Estimated Shipping (Nigeria)</span>
                   <span>{shippingFee === 0 ? "FREE" : formatNaira(shippingFee)}</span>
                 </div>
-                {subtotal < 100000 && (
-                  <p className="text-[10px] text-gold-400 pt-1">
-                    Add {formatNaira(100000 - subtotal)} more to qualify for Free Shipping!
+                {subtotal < 350000 && (
+                  <p className="text-[10px] text-gold-500 pt-1 dark:text-gold-400">
+                    Add {formatNaira(350000 - subtotal)} more to qualify for Free Shipping!
                   </p>
                 )}
                 <div className="flex justify-between pt-2 border-t border-zinc-800 text-sm font-bold text-gold-400">

@@ -32,13 +32,13 @@ export default function CartPage() {
 
   const discountPercent = appliedPromo ? PROMO_CODES[appliedPromo] : 0;
   const discountAmount = Math.round(subtotal * (discountPercent / 100));
-  const shippingFee = subtotal >= 100000 || subtotal === 0 ? 0 : 5000;
+  const shippingFee = subtotal >= 350000 || subtotal === 0 ? 0 : 5000;
   const grandTotal = subtotal - discountAmount + shippingFee;
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 py-12 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="min-h-screen bg-white text-zinc-900 py-12 px-4 sm:px-6 lg:px-8 font-sans dark:bg-zinc-950 dark:text-zinc-100">
       <div className="max-w-5xl mx-auto space-y-8">
-        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-zinc-100 border-b border-zinc-800 pb-4">
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-zinc-900 border-b border-zinc-200 pb-4 dark:text-zinc-100 dark:border-zinc-800">
           Shopping Cart ({cart.length} items)
         </h1>
 
@@ -54,9 +54,9 @@ export default function CartPage() {
                 return (
                   <div
                     key={`${item.product.id}-${item.selectedSize.size}`}
-                    className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 sm:p-6 flex items-center space-x-4"
+                    className="bg-white border border-zinc-200 rounded-2xl p-4 sm:p-6 flex items-center space-x-4 shadow-sm dark:bg-zinc-900 dark:border-zinc-800"
                   >
-                    <div className="w-24 h-24 bg-zinc-950 rounded-xl overflow-hidden flex-shrink-0 border border-zinc-800">
+                    <div className="w-24 h-24 bg-zinc-100 rounded-xl overflow-hidden flex-shrink-0 border border-zinc-200 dark:bg-zinc-950 dark:border-zinc-800">
                       <img
                         src={displayImage}
                         alt={displayName}
@@ -70,7 +70,7 @@ export default function CartPage() {
                           <span className="text-[10px] text-gold-400 font-semibold uppercase tracking-wider block">
                             {item.product.brand}
                           </span>
-                          <h3 className="font-serif font-bold text-zinc-100 truncate">
+                          <h3 className="font-serif font-bold text-zinc-900 truncate dark:text-zinc-100">
                             {displayName}
                           </h3>
                         </div>
@@ -88,7 +88,7 @@ export default function CartPage() {
 
                       <div className="flex justify-between items-center pt-2">
                         {/* Quantity controls */}
-                        <div className="flex items-center space-x-3 border border-zinc-800 rounded-lg bg-zinc-950 px-3 py-1">
+                        <div className="flex items-center space-x-3 border border-zinc-300 rounded-lg bg-white px-3 py-1 dark:border-zinc-800 dark:bg-zinc-950">
                           <button
                             onClick={() =>
                               updateQuantity(item.product.id, item.selectedSize.size, item.quantity - 1)
@@ -134,8 +134,8 @@ export default function CartPage() {
             </div>
 
             {/* Summary Sidebar */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-6 h-fit">
-              <h2 className="font-serif text-lg font-bold text-zinc-100 border-b border-zinc-800 pb-3">
+            <div className="bg-white border border-zinc-200 rounded-2xl p-6 space-y-6 h-fit shadow-sm dark:bg-zinc-900 dark:border-zinc-800">
+              <h2 className="font-serif text-lg font-bold text-zinc-900 border-b border-zinc-200 pb-3 dark:text-zinc-100 dark:border-zinc-800">
                 Order Summary
               </h2>
 
@@ -165,13 +165,13 @@ export default function CartPage() {
                       placeholder="e.g. DEBBY10"
                       value={promoCode}
                       onChange={(e) => setPromoCode(e.target.value)}
-                      className={`flex-1 bg-zinc-950 border rounded-lg px-3 py-2 text-xs text-zinc-100 focus:outline-none transition-colors ${
-                        promoError ? "border-rose-500" : "border-zinc-800 focus:border-gold-500"
+                      className={`flex-1 bg-white border rounded-lg px-3 py-2 text-xs text-zinc-900 focus:outline-none transition-colors dark:bg-zinc-950 dark:text-zinc-100 ${
+                        promoError ? "border-rose-500" : "border-zinc-300 focus:border-gold-500 dark:border-zinc-800"
                       }`}
                     />
                     <button
                       onClick={handleApplyPromo}
-                      className="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-200 text-xs font-bold px-4 py-2 rounded-lg transition-all"
+                      className="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition-all dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:border-zinc-600 dark:text-zinc-200"
                     >
                       Apply
                     </button>
@@ -182,10 +182,10 @@ export default function CartPage() {
                 )}
               </div>
 
-              <div className="space-y-3 text-xs text-zinc-300">
+              <div className="space-y-3 text-xs text-zinc-600 dark:text-zinc-300">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="font-semibold text-zinc-100">{formatNaira(subtotal)}</span>
+                  <span className="font-semibold text-zinc-900 dark:text-zinc-100">{formatNaira(subtotal)}</span>
                 </div>
                 {discountAmount > 0 && (
                   <div className="flex justify-between text-emerald-400">
@@ -197,7 +197,7 @@ export default function CartPage() {
                   <span>Estimated Shipping (Nigeria)</span>
                   <span>{shippingFee === 0 ? "FREE" : formatNaira(shippingFee)}</span>
                 </div>
-                <div className="flex justify-between pt-3 border-t border-zinc-800 text-sm font-bold text-gold-400">
+                <div className="flex justify-between pt-3 border-t border-zinc-200 text-sm font-bold text-gold-600 dark:border-zinc-800 dark:text-gold-400">
                   <span>Total</span>
                   <span>{formatNaira(grandTotal)}</span>
                 </div>
@@ -213,9 +213,9 @@ export default function CartPage() {
             </div>
           </div>
         ) : (
-          <div className="py-20 text-center bg-zinc-900/40 rounded-2xl border border-zinc-800 space-y-4">
+          <div className="py-20 text-center bg-zinc-50/60 rounded-2xl border border-zinc-200 space-y-4 dark:bg-zinc-900/40 dark:border-zinc-800">
             <ShoppingBag className="w-12 h-12 text-zinc-600 mx-auto" />
-            <p className="text-zinc-400 text-sm">Your shopping cart is empty.</p>
+            <p className="text-zinc-500 text-sm dark:text-zinc-400">Your shopping cart is empty.</p>
             <Link
               href="/shop"
               className="inline-block bg-gold-600 hover:bg-gold-500 text-zinc-950 font-bold text-xs px-6 py-3 rounded-xl uppercase tracking-wider"

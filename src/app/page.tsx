@@ -30,9 +30,9 @@ export default function HomePage() {
   };
 
   return (
-    <div className="space-y-24 pb-20 font-sans">
+    <div className="space-y-16 sm:space-y-24 pb-20 font-sans">
       {/* 1. Hero Section */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-zinc-950 text-zinc-100">
+      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-zinc-950 text-zinc-100 dark:bg-zinc-950 dark:text-zinc-100">
         <div className="absolute inset-0 z-0">
           <img
             src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=1920"
@@ -40,7 +40,7 @@ export default function HomePage() {
             className="w-full h-full object-cover object-center opacity-30 scale-105"
             style={{ animation: "pulse 12s ease-in-out infinite" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-zinc-950/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-zinc-950/40 dark:from-zinc-950 dark:via-zinc-950/70 dark:to-zinc-950/40" />
         </div>
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 text-center space-y-6 pt-12">
@@ -67,7 +67,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="text-sm sm:text-base text-zinc-300 max-w-2xl mx-auto leading-relaxed"
+            className="text-sm sm:text-base text-zinc-300 dark:text-zinc-300 max-w-2xl mx-auto leading-relaxed"
           >
             Immerse yourself in our curated collection of rare olfactory masterpieces. From intoxicating midnight ambers to delicate rose nectar, find a scent that defines your presence.
           </motion.p>
@@ -88,7 +88,7 @@ export default function HomePage() {
 
             <Link
               href="/about"
-              className="w-full sm:w-auto bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-700 text-zinc-200 font-semibold text-xs px-8 py-4 rounded-xl uppercase tracking-widest transition-all backdrop-blur-md"
+              className="w-full sm:w-auto bg-white/90 hover:bg-zinc-100 border border-zinc-200 text-zinc-800 font-semibold text-xs px-8 py-4 rounded-xl uppercase tracking-widest transition-all backdrop-blur-md dark:bg-zinc-900/80 dark:hover:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-200"
             >
               Our Story & Heritage
             </Link>
@@ -102,7 +102,7 @@ export default function HomePage() {
           <span className="text-xs font-semibold uppercase tracking-widest text-gold-400">
             Curated Collections
           </span>
-          <h2 className="font-serif text-3xl font-bold text-zinc-100">
+          <h2 className="font-serif text-3xl font-bold text-zinc-900 dark:text-zinc-100">
             Shop By Gender & Style
           </h2>
         </div>
@@ -110,7 +110,7 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Link
             href="/shop?category=women"
-            className="group relative h-80 rounded-2xl overflow-hidden border border-zinc-800 hover:border-gold-500/50 transition-all shadow-xl"
+            className="group relative h-64 sm:h-80 rounded-2xl overflow-hidden border border-zinc-800 hover:border-gold-500/50 transition-all shadow-xl"
           >
             <img
               src="https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=800"
@@ -130,7 +130,7 @@ export default function HomePage() {
 
           <Link
             href="/shop?category=men"
-            className="group relative h-80 rounded-2xl overflow-hidden border border-zinc-800 hover:border-gold-500/50 transition-all shadow-xl"
+            className="group relative h-64 sm:h-80 rounded-2xl overflow-hidden border border-zinc-800 hover:border-gold-500/50 transition-all shadow-xl"
           >
             <img
               src="https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=800"
@@ -150,7 +150,7 @@ export default function HomePage() {
 
           <Link
             href="/shop?category=unisex"
-            className="group relative h-80 rounded-2xl overflow-hidden border border-zinc-800 hover:border-gold-500/50 transition-all shadow-xl"
+            className="group relative h-64 sm:h-80 rounded-2xl overflow-hidden border border-zinc-800 hover:border-gold-500/50 transition-all shadow-xl"
           >
             <img
               src="https://images.unsplash.com/photo-1563178406-4cdc2923acbc?auto=format&fit=crop&q=80&w=800"
@@ -177,7 +177,7 @@ export default function HomePage() {
             <span className="text-xs font-semibold uppercase tracking-widest text-gold-400">
               Most Coveted
             </span>
-            <h2 className="font-serif text-3xl font-bold text-zinc-100 mt-1">
+            <h2 className="font-serif text-3xl font-bold text-zinc-900 dark:text-zinc-100 mt-1">
               Best Sellers
             </h2>
           </div>
@@ -203,17 +203,17 @@ export default function HomePage() {
       </ScrollReveal>
 
       {/* 4. Brand Value Highlight */}
-      <ScrollReveal className="bg-zinc-900 border-y border-gold-500/20 py-16">
+      <ScrollReveal className="bg-zinc-50 border-y border-gold-500/20 py-16 dark:bg-zinc-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           <motion.div
             whileHover={{ y: -4 }}
-            className="space-y-3 p-6 rounded-2xl bg-zinc-950/50 border border-zinc-800 hover:border-gold-500/30 transition-colors"
+            className="space-y-3 p-6 rounded-2xl bg-white border border-zinc-200 hover:border-gold-500/30 transition-colors shadow-sm dark:bg-zinc-950/50 dark:border-zinc-800"
           >
             <div className="w-12 h-12 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-400 mx-auto">
               <Award className="w-6 h-6" />
             </div>
-            <h3 className="font-serif text-lg font-bold text-zinc-100">Handcrafted Formulations</h3>
-            <p className="text-xs text-zinc-400 leading-relaxed">
+            <h3 className="font-serif text-lg font-bold text-zinc-900 dark:text-zinc-100">Handcrafted Formulations</h3>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
               Every bottle is formulated using high-concentration perfume oils sourced from Grasse, France and Arabia for unmatched 24-hour sillage.
             </p>
           </motion.div>
@@ -225,8 +225,8 @@ export default function HomePage() {
             <div className="w-12 h-12 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-400 mx-auto">
               <ShieldCheck className="w-6 h-6" />
             </div>
-            <h3 className="font-serif text-lg font-bold text-zinc-100">100% Genuine & Authentic</h3>
-            <p className="text-xs text-zinc-400 leading-relaxed">
+            <h3 className="font-serif text-lg font-bold text-zinc-900 dark:text-zinc-100">100% Genuine & Authentic</h3>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
               We stand against counterfeit scents. Every bottle comes with our hologram seal of authenticity and origin guarantee.
             </p>
           </motion.div>
@@ -238,8 +238,8 @@ export default function HomePage() {
             <div className="w-12 h-12 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-400 mx-auto">
               <HeartHandshake className="w-6 h-6" />
             </div>
-            <h3 className="font-serif text-lg font-bold text-zinc-100">Concierge Service</h3>
-            <p className="text-xs text-zinc-400 leading-relaxed">
+            <h3 className="font-serif text-lg font-bold text-zinc-900 dark:text-zinc-100">Concierge Service</h3>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
               Unsure which scent fits your aura? Chat with our fragrance consultants in {siteConfig.location.city} for personalized recommendations.
             </p>
           </motion.div>
@@ -253,7 +253,7 @@ export default function HomePage() {
             <span className="text-xs font-semibold uppercase tracking-widest text-gold-400">
               Fresh Off The Press
             </span>
-            <h2 className="font-serif text-3xl font-bold text-zinc-100 mt-1">
+            <h2 className="font-serif text-3xl font-bold text-zinc-900 dark:text-zinc-100 mt-1">
               New Arrivals
             </h2>
           </div>
@@ -277,10 +277,10 @@ export default function HomePage() {
           <span className="text-xs font-semibold uppercase tracking-widest text-gold-400">
             Follow Our Journey
           </span>
-          <h2 className="font-serif text-3xl font-bold text-zinc-100">
-            @debbysfragrance
+          <h2 className="font-serif text-3xl font-bold text-zinc-900 dark:text-zinc-100">
+            @debsfragrance
           </h2>
-          <p className="text-xs text-zinc-400 max-w-md mx-auto">
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-md mx-auto">
             Join our community of fragrance lovers. Tag us in your scents for a chance to be featured.
           </p>
         </div>
@@ -311,15 +311,15 @@ export default function HomePage() {
       </ScrollReveal>
 
       {/* 7. Newsletter Section */}
-      <ScrollReveal className="bg-zinc-900 border-y border-gold-500/20 py-16">
+      <ScrollReveal className="bg-zinc-50 border-y border-gold-500/20 py-16 dark:bg-zinc-900">
         <div className="max-w-2xl mx-auto px-4 text-center space-y-6">
           <span className="text-xs font-semibold uppercase tracking-widest text-gold-400">
             Stay In The Know
           </span>
-          <h2 className="font-serif text-3xl font-bold text-zinc-100">
+          <h2 className="font-serif text-3xl font-bold text-zinc-900 dark:text-zinc-100">
             Join The Fragrance Club
           </h2>
-          <p className="text-sm text-zinc-400 leading-relaxed">
+          <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
             Be the first to discover new arrivals, exclusive offers, and private invitation events. VIP members receive early access to limited editions.
           </p>
 
@@ -340,7 +340,7 @@ export default function HomePage() {
                 placeholder="Enter your email address"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
-                className="flex-1 bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-3 text-sm text-zinc-100 focus:outline-none focus:border-gold-500"
+                className="flex-1 bg-white border border-zinc-300 rounded-xl px-4 py-3 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-700 dark:text-zinc-100"
               />
               <button
                 type="submit"
@@ -352,7 +352,7 @@ export default function HomePage() {
             </form>
           )}
 
-          <p className="text-[10px] text-zinc-500">
+          <p className="text-[10px] text-zinc-400 dark:text-zinc-500">
             No spam, ever. Unsubscribe anytime. Read our Privacy Policy.
           </p>
         </div>

@@ -51,6 +51,7 @@ export default function ProductDetailPage() {
     setShareOpen(false);
     setCopied(false);
     window.scrollTo(0, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId]);
 
   const handleAddToCart = () => {
@@ -120,22 +121,22 @@ export default function ProductDetailPage() {
         }}
       />
 
-      <div className="min-h-screen bg-zinc-950 text-zinc-100 py-12 px-4 sm:px-6 lg:px-8 font-sans space-y-16">
+      <div className="min-h-screen bg-white text-zinc-900 py-12 px-4 sm:px-6 lg:px-8 font-sans space-y-16 dark:bg-zinc-950 dark:text-zinc-100">
         <div className="max-w-7xl mx-auto space-y-12">
           {/* Breadcrumb Navigation */}
-          <nav className="flex items-center space-x-2 text-xs text-zinc-400">
-            <Link href="/" className="hover:text-gold-400">Home</Link>
-            <ChevronRight className="w-3 h-3 text-zinc-600" />
-            <Link href="/shop" className="hover:text-gold-400">Shop</Link>
-            <ChevronRight className="w-3 h-3 text-zinc-600" />
-            <span className="text-gold-400 font-semibold">{displayName}</span>
+          <nav className="flex items-center space-x-2 text-xs text-zinc-500 dark:text-zinc-400">
+            <Link href="/" className="hover:text-gold-600 dark:hover:text-gold-400">Home</Link>
+            <ChevronRight className="w-3 h-3 text-zinc-400 dark:text-zinc-600" />
+            <Link href="/shop" className="hover:text-gold-600 dark:hover:text-gold-400">Shop</Link>
+            <ChevronRight className="w-3 h-3 text-zinc-400 dark:text-zinc-600" />
+            <span className="text-gold-600 font-semibold dark:text-gold-400">{displayName}</span>
           </nav>
 
           {/* Main Product Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
             {/* Gallery */}
             <ScrollReveal className="space-y-4">
-              <div className="aspect-square w-full rounded-2xl overflow-hidden bg-zinc-900 border border-gold-500/30 relative shadow-2xl">
+              <div className="aspect-square w-full rounded-2xl overflow-hidden bg-zinc-100 border border-gold-500/30 relative shadow-2xl dark:bg-zinc-900">
                 <ImageZoom
                   src={activeImage || displayImage}
                   alt={displayName}
@@ -171,21 +172,21 @@ export default function ProductDetailPage() {
             <ScrollReveal delay={0.15} className="space-y-6">
               <div>
                 <div className="flex items-center justify-between text-xs text-gold-400 uppercase font-semibold tracking-widest">
-                  <span>{product.brand} · {product.fragranceFamily}</span>
+                  <span className="text-gold-600 dark:text-gold-400">{product.brand} · {product.fragranceFamily}</span>
                   <div className="flex items-center space-x-1 text-zinc-400">
                     <Star className="w-4 h-4 text-gold-400 fill-gold-400" />
-                    <span className="font-bold text-zinc-100">{product.rating}</span>
+                    <span className="font-bold text-zinc-900 dark:text-zinc-100">{product.rating}</span>
                     <span>({product.reviewCount} customer reviews)</span>
                   </div>
                 </div>
 
-                <h1 className="font-serif text-3xl sm:text-4xl font-bold text-zinc-100 mt-2">
+                <h1 className="font-serif text-3xl sm:text-4xl font-bold text-zinc-900 mt-2 dark:text-zinc-100">
                   {displayName}
                 </h1>
-                <p className="text-sm italic text-gold-300 mt-1">&quot;{product.tagline}&quot;</p>
+                <p className="text-sm italic text-gold-600 mt-1 dark:text-gold-300">&quot;{product.tagline}&quot;</p>
 
                 <div className="mt-4 flex items-baseline space-x-3">
-                  <span className="text-3xl font-bold font-serif text-gold-400">
+                  <span className="text-3xl font-bold font-serif text-gold-600 dark:text-gold-400">
                     {formatNaira(
                       override?.customPrice ? override.customPrice : selectedSize.price
                     )}
@@ -198,13 +199,13 @@ export default function ProductDetailPage() {
                 </div>
               </div>
 
-              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed border-t border-b border-zinc-800 py-4">
+              <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed border-t border-b border-zinc-200 py-4 dark:text-zinc-300 dark:border-zinc-800">
                 {product.description}
               </p>
 
               {/* Size Picker */}
               <div className="space-y-3">
-                <label className="text-xs font-semibold uppercase tracking-wider text-zinc-400 block">
+                <label className="text-xs font-semibold uppercase tracking-wider text-zinc-500 block dark:text-zinc-400">
                   Select Bottle Volume
                 </label>
                 <div className="grid grid-cols-3 gap-3">
@@ -215,11 +216,11 @@ export default function ProductDetailPage() {
                       className={`py-3 px-4 rounded-xl border text-left transition-all ${
                         selectedSize.size === s.size
                           ? "bg-gold-500/20 border-gold-500 text-gold-300 font-bold"
-                          : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700"
+                          : "border-zinc-200 bg-white text-zinc-500 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:border-zinc-700"
                       }`}
                     >
                       <div className="text-sm">{s.size}</div>
-                      <div className="text-xs text-gold-400 font-semibold">{formatNaira(s.price)}</div>
+                      <div className="text-xs text-gold-600 font-semibold dark:text-gold-400">{formatNaira(s.price)}</div>
                     </button>
                   ))}
                 </div>
@@ -256,7 +257,7 @@ export default function ProductDetailPage() {
                     className={`p-4 rounded-xl border transition-all ${
                       isInWishlist(product.id)
                         ? "bg-rose-600 text-white border-rose-600"
-                        : "bg-zinc-900 border-zinc-800 text-zinc-300 hover:text-rose-400"
+                        : "bg-white border-zinc-200 text-zinc-500 hover:text-rose-500 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:hover:text-rose-400"
                     }`}
                   >
                     <Heart className="w-5 h-5 fill-current" />
@@ -267,7 +268,7 @@ export default function ProductDetailPage() {
                 <div className="relative">
                   <button
                     onClick={() => setShareOpen(!shareOpen)}
-                    className="flex items-center space-x-2 text-xs text-zinc-400 hover:text-gold-400 transition-colors"
+                    className="flex items-center space-x-2 text-xs text-zinc-500 hover:text-gold-600 transition-colors dark:text-zinc-400 dark:hover:text-gold-400"
                   >
                     <Share2 className="w-4 h-4" />
                     <span>Share this fragrance</span>
@@ -285,7 +286,7 @@ export default function ProductDetailPage() {
                           href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-2 bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-400 hover:text-blue-400 hover:border-blue-500/50 transition-all"
+                          className="p-2 bg-white border border-zinc-200 rounded-lg text-zinc-500 hover:text-blue-500 hover:border-blue-500/50 transition-all dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-blue-400"
                           aria-label="Share on Facebook"
                         >
                           <Facebook className="w-4 h-4" />
@@ -294,7 +295,7 @@ export default function ProductDetailPage() {
                           href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out ${displayName} from Debby's Fragrance!`)}&url=${encodeURIComponent(productUrl)}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-2 bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-400 hover:text-sky-400 hover:border-sky-500/50 transition-all"
+                          className="p-2 bg-white border border-zinc-200 rounded-lg text-zinc-500 hover:text-sky-500 hover:border-sky-500/50 transition-all dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-sky-400"
                           aria-label="Share on Twitter"
                         >
                           <Twitter className="w-4 h-4" />
@@ -303,14 +304,14 @@ export default function ProductDetailPage() {
                           href={`https://wa.me/?text=${encodeURIComponent(`Check out ${displayName} from Debby's Fragrance! ${productUrl}`)}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-2 bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-400 hover:text-emerald-400 hover:border-emerald-500/50 transition-all"
+                          className="p-2 bg-white border border-zinc-200 rounded-lg text-zinc-500 hover:text-emerald-500 hover:border-emerald-500/50 transition-all dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-emerald-400"
                           aria-label="Share on WhatsApp"
                         >
                           <MessageCircle className="w-4 h-4" />
                         </a>
                         <button
                           onClick={handleCopyLink}
-                          className="p-2 bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-400 hover:text-gold-400 hover:border-gold-500/50 transition-all"
+                          className="p-2 bg-white border border-zinc-200 rounded-lg text-zinc-500 hover:text-gold-600 hover:border-gold-500/50 transition-all dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-gold-400"
                           aria-label="Copy link"
                         >
                           {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <LinkIcon className="w-4 h-4" />}
@@ -322,36 +323,36 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Fragrance Notes Breakdown */}
-              <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4">
-                <h3 className="font-serif text-base font-bold text-gold-400 uppercase tracking-wider">
+              <div className="bg-white border border-zinc-200 rounded-2xl p-6 space-y-4 shadow-sm dark:bg-zinc-900 dark:border-zinc-800">
+                <h3 className="font-serif text-base font-bold text-gold-600 uppercase tracking-wider dark:text-gold-400">
                   Olfactory Notes Breakdown
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                  <div className="p-3 bg-zinc-950 rounded-xl border border-zinc-800">
-                    <span className="text-gold-400 font-bold uppercase text-[10px] block mb-1">Top Notes (0-15 mins)</span>
-                    <p className="text-zinc-300">{product.topNotes.join(", ")}</p>
-                  </div>
+                    <div className="p-3 bg-zinc-50 rounded-xl border border-zinc-200 dark:bg-zinc-950 dark:border-zinc-800">
+                      <span className="text-gold-600 font-bold uppercase text-[10px] block mb-1 dark:text-gold-400">Top Notes (0-15 mins)</span>
+                      <p className="text-zinc-600 dark:text-zinc-300">{product.topNotes.join(", ")}</p>
+                    </div>
 
-                  <div className="p-3 bg-zinc-950 rounded-xl border border-zinc-800">
-                    <span className="text-gold-400 font-bold uppercase text-[10px] block mb-1">Heart Notes (2-4 hrs)</span>
-                    <p className="text-zinc-300">{product.heartNotes.join(", ")}</p>
-                  </div>
+                    <div className="p-3 bg-zinc-50 rounded-xl border border-zinc-200 dark:bg-zinc-950 dark:border-zinc-800">
+                      <span className="text-gold-600 font-bold uppercase text-[10px] block mb-1 dark:text-gold-400">Heart Notes (2-4 hrs)</span>
+                      <p className="text-zinc-600 dark:text-zinc-300">{product.heartNotes.join(", ")}</p>
+                    </div>
 
-                  <div className="p-3 bg-zinc-950 rounded-xl border border-zinc-800">
-                    <span className="text-gold-400 font-bold uppercase text-[10px] block mb-1">Base Notes (6-24 hrs)</span>
-                    <p className="text-zinc-300">{product.baseNotes.join(", ")}</p>
-                  </div>
+                    <div className="p-3 bg-zinc-50 rounded-xl border border-zinc-200 dark:bg-zinc-950 dark:border-zinc-800">
+                      <span className="text-gold-600 font-bold uppercase text-[10px] block mb-1 dark:text-gold-400">Base Notes (6-24 hrs)</span>
+                      <p className="text-zinc-600 dark:text-zinc-300">{product.baseNotes.join(", ")}</p>
+                    </div>
                 </div>
               </div>
 
               {/* Delivery & Authenticity Highlights */}
-              <div className="grid grid-cols-2 gap-4 text-xs text-zinc-400">
-                <div className="flex items-center space-x-2.5 p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
-                  <Truck className="w-4 h-4 text-gold-400 flex-shrink-0" />
+              <div className="grid grid-cols-2 gap-4 text-xs text-zinc-500 dark:text-zinc-400">
+                <div className="flex items-center space-x-2.5 p-3 rounded-xl bg-white border border-zinc-200 dark:bg-zinc-900/50 dark:border-zinc-800">
+                  <Truck className="w-4 h-4 text-gold-600 flex-shrink-0 dark:text-gold-400" />
                   <span>Fast Nationwide Delivery in Nigeria</span>
                 </div>
-                <div className="flex items-center space-x-2.5 p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
-                  <ShieldCheck className="w-4 h-4 text-gold-400 flex-shrink-0" />
+                <div className="flex items-center space-x-2.5 p-3 rounded-xl bg-white border border-zinc-200 dark:bg-zinc-900/50 dark:border-zinc-800">
+                  <ShieldCheck className="w-4 h-4 text-gold-600 flex-shrink-0 dark:text-gold-400" />
                   <span>100% Certified Authentic Product</span>
                 </div>
               </div>
@@ -360,8 +361,8 @@ export default function ProductDetailPage() {
 
           {/* You May Also Like */}
           {related.length > 0 && (
-            <ScrollReveal className="space-y-6 pt-12 border-t border-zinc-800">
-              <h2 className="font-serif text-2xl font-bold text-zinc-100">
+            <ScrollReveal className="space-y-6 pt-12 border-t border-zinc-200 dark:border-zinc-800">
+              <h2 className="font-serif text-2xl font-bold text-zinc-900 dark:text-zinc-100">
                 You May Also Like
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -373,13 +374,13 @@ export default function ProductDetailPage() {
           )}
 
           {/* ── CUSTOMER REVIEWS SECTION ─────────────────── */}
-          <ScrollReveal className="space-y-8 pt-12 border-t border-zinc-800">
+          <ScrollReveal className="space-y-8 pt-12 border-t border-zinc-200 dark:border-zinc-800">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
               <div>
-                <h2 className="font-serif text-2xl font-bold text-zinc-100">
+                <h2 className="font-serif text-2xl font-bold text-zinc-900 dark:text-zinc-100">
                   Customer Reviews
                 </h2>
-                <p className="text-xs text-zinc-400 mt-1">
+                <p className="text-xs text-zinc-500 mt-1 dark:text-zinc-400">
                   {productReviews.length > 0
                     ? `${productReviews.length} review${productReviews.length !== 1 ? "s" : ""} · Average rating: ${avgUserRating}/5`
                     : "No reviews yet. Be the first to share your experience!"}
@@ -389,7 +390,7 @@ export default function ProductDetailPage() {
                 <div className="flex items-center space-x-2 bg-gold-500/10 border border-gold-500/30 px-4 py-2 rounded-xl">
                   <Star className="w-5 h-5 text-gold-400 fill-gold-400" />
                   <span className="text-xl font-bold font-serif text-gold-400">{avgUserRating}</span>
-                  <span className="text-xs text-zinc-400">/5</span>
+                  <span className="text-xs text-zinc-500 dark:text-zinc-400">/5</span>
                 </div>
               )}
             </div>
@@ -400,7 +401,7 @@ export default function ProductDetailPage() {
                 {[...productReviews].reverse().map((review) => (
                   <div
                     key={review.id}
-                    className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 space-y-3"
+                    className="bg-white border border-zinc-200 rounded-xl p-5 space-y-3 shadow-sm dark:bg-zinc-900 dark:border-zinc-800"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-3">
@@ -408,7 +409,7 @@ export default function ProductDetailPage() {
                           {review.userName.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="text-xs font-bold text-zinc-100">{review.userName}</p>
+                          <p className="text-xs font-bold text-zinc-900 dark:text-zinc-100">{review.userName}</p>
                           <div className="flex items-center space-x-1">
                             {[1, 2, 3, 4, 5].map((s) => (
                               <Star
@@ -425,15 +426,15 @@ export default function ProductDetailPage() {
                         })}
                       </span>
                     </div>
-                    <p className="text-xs text-zinc-300 leading-relaxed">{review.comment}</p>
+                    <p className="text-xs text-zinc-600 leading-relaxed dark:text-zinc-300">{review.comment}</p>
                   </div>
                 ))}
               </div>
             )}
 
             {/* Review Form */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-5">
-              <h3 className="font-serif text-base font-bold text-zinc-100">
+            <div className="bg-white border border-zinc-200 rounded-2xl p-6 space-y-5 shadow-sm dark:bg-zinc-900 dark:border-zinc-800">
+              <h3 className="font-serif text-base font-bold text-zinc-900 dark:text-zinc-100">
                 Write a Review
               </h3>
 
@@ -453,7 +454,7 @@ export default function ProductDetailPage() {
                         value={reviewName}
                         onChange={(e) => setReviewName(e.target.value)}
                         placeholder="Enter your name"
-                        className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-gold-500"
+                        className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                       />
                     </div>
                     <div>
@@ -483,7 +484,7 @@ export default function ProductDetailPage() {
                       value={reviewComment}
                       onChange={(e) => setReviewComment(e.target.value)}
                       placeholder="Share your experience with this fragrance — how does it smell, how long does it last, where do you wear it?"
-                      className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-100 focus:outline-none focus:border-gold-500 leading-relaxed"
+                      className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-3 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 leading-relaxed dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                     />
                   </div>
                   <button
@@ -543,12 +544,12 @@ function StickyMobileBar({
           animate={{ y: 0 }}
           exit={{ y: 100 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-zinc-950/95 backdrop-blur-md border-t border-gold-500/30 p-4 shadow-2xl"
+          className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white/95 backdrop-blur-md border-t border-gold-500/30 p-4 shadow-2xl dark:bg-zinc-950/95"
         >
           <div className="max-w-lg mx-auto flex items-center justify-between space-x-4">
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-zinc-400 truncate">{override?.customName || product.name}</p>
-              <p className="text-base font-bold font-serif text-gold-400">
+              <p className="text-xs text-zinc-500 truncate dark:text-zinc-400">{override?.customName || product.name}</p>
+              <p className="text-base font-bold font-serif text-gold-600 dark:text-gold-400">
                 {formatNaira(override?.customPrice ? override.customPrice : selectedSize.price)}
               </p>
             </div>

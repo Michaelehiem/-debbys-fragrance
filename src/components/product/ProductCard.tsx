@@ -43,9 +43,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
   const isLiked = isInWishlist(product.id);
 
   return (
-    <div className="group relative bg-zinc-900/60 dark:bg-zinc-900/80 border border-zinc-800/80 hover:border-gold-500/50 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between hover:shadow-xl hover:shadow-gold-950/20">
+    <div className="group relative bg-white border border-zinc-200 hover:border-gold-500/50 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between hover:shadow-xl dark:bg-zinc-900/80 dark:border-zinc-800/80 dark:hover:shadow-gold-950/20">
       {/* Top Image Container */}
-      <div className="relative aspect-square w-full overflow-hidden bg-zinc-950">
+      <div className="relative aspect-square w-full overflow-hidden bg-zinc-100 dark:bg-zinc-950">
         <img
           src={displayImage}
           alt={displayName}
@@ -60,7 +60,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
             </span>
           )}
           {product.isNewArrival && (
-            <span className="bg-zinc-100 text-zinc-950 font-bold text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow">
+            <span className="bg-zinc-800 text-zinc-100 font-bold text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow">
               New
             </span>
           )}
@@ -82,7 +82,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
             className={`p-2 rounded-full backdrop-blur-md transition-all shadow ${
               isLiked
                 ? "bg-rose-600 text-white"
-                : "bg-zinc-900/70 text-zinc-300 hover:text-rose-400 hover:bg-zinc-900"
+                : "bg-white/70 text-zinc-500 hover:text-rose-500 hover:bg-zinc-100 dark:bg-zinc-900/70 dark:text-zinc-300 dark:hover:text-rose-400 dark:hover:bg-zinc-900"
             }`}
             aria-label="Wishlist"
           >
@@ -96,7 +96,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
                 e.preventDefault();
                 onQuickView(product);
               }}
-              className="p-2 rounded-full bg-zinc-900/70 text-zinc-300 hover:text-gold-400 hover:bg-zinc-900 backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 shadow"
+              className="p-2 rounded-full bg-white/70 text-zinc-500 hover:text-gold-600 hover:bg-zinc-100 backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 shadow dark:bg-zinc-900/70 dark:text-zinc-300 dark:hover:text-gold-400 dark:hover:bg-zinc-900"
               aria-label="Quick View"
             >
               <Eye className="w-4 h-4" />
@@ -117,20 +117,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           </div>
 
           <Link href={`/product/${product.id}`} className="block mt-1">
-            <h3 className="font-serif text-base font-bold text-zinc-100 group-hover:text-gold-300 transition-colors line-clamp-1">
+            <h3 className="font-serif text-base font-bold text-zinc-900 group-hover:text-gold-600 transition-colors line-clamp-1 dark:text-zinc-100 dark:group-hover:text-gold-300">
               {displayName}
             </h3>
           </Link>
 
-          <p className="text-xs text-zinc-400 mt-1 line-clamp-2 leading-relaxed">
+          <p className="text-xs text-zinc-500 mt-1 line-clamp-2 leading-relaxed dark:text-zinc-400">
             {product.description}
           </p>
         </div>
 
         {/* Size Selection */}
-        <div className="space-y-2 pt-2 border-t border-zinc-800/60">
+        <div className="space-y-2 pt-2 border-t border-zinc-200 dark:border-zinc-800/60">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-zinc-400">Select Size:</span>
+            <span className="text-xs text-zinc-500 dark:text-zinc-400">Select Size:</span>
             <div className="flex space-x-1">
               {product.sizes.map((s) => (
                 <button
@@ -138,8 +138,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
                   onClick={() => setSelectedSize(s)}
                   className={`text-[10px] px-2 py-0.5 rounded border transition-all ${
                     selectedSize.size === s.size
-                      ? "bg-gold-500/20 border-gold-500 text-gold-300 font-bold"
-                      : "border-zinc-800 text-zinc-400 hover:border-zinc-700"
+                      ? "bg-gold-500/20 border-gold-500 text-gold-700 font-bold dark:text-gold-300"
+                      : "border-zinc-200 text-zinc-500 hover:border-zinc-300 dark:border-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-700"
                   }`}
                 >
                   {s.size}
@@ -151,7 +151,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           {/* Price & Add to Cart */}
           <div className="flex items-center justify-between pt-1">
             <div>
-              <span className="text-base font-bold text-gold-400 font-serif">
+              <span className="text-base font-bold text-gold-600 font-serif dark:text-gold-400">
                 {formatNaira(
                   override?.customPrice ? override.customPrice : selectedSize.price
                 )}

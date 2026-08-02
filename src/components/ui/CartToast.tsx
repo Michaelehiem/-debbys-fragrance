@@ -20,15 +20,15 @@ export const CartToast: React.FC = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, x: 80, scale: 0.95 }}
               transition={{ duration: 0.25 }}
-              className="pointer-events-auto bg-zinc-900 border border-gold-500/40 rounded-xl px-4 py-3 shadow-2xl flex items-center space-x-3 max-w-xs"
+              className="pointer-events-auto bg-white border border-gold-500/40 rounded-xl px-4 py-3 shadow-2xl flex items-center space-x-3 max-w-xs dark:bg-zinc-900"
             >
               <div className="w-7 h-7 rounded-full bg-emerald-950 border border-emerald-600 flex items-center justify-center flex-shrink-0">
                 <Check className="w-3.5 h-3.5 text-emerald-400" />
               </div>
-              <span className="text-xs text-zinc-200 font-medium flex-1">{toast.message}</span>
+              <span className="text-xs text-zinc-800 font-medium flex-1 dark:text-zinc-200">{toast.message}</span>
               <button
                 onClick={() => removeToast(toast.id)}
-                className="text-zinc-500 hover:text-zinc-300 flex-shrink-0"
+                className="text-zinc-400 hover:text-zinc-700 flex-shrink-0 dark:text-zinc-500 dark:hover:text-zinc-300"
               >
                 <X className="w-3.5 h-3.5" />
               </button>

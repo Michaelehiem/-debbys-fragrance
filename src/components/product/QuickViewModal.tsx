@@ -13,10 +13,13 @@ interface QuickViewModalProps {
 }
 
 export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose }) => {
+  if (!product) return null;
+  return <QuickViewModalContent key={product.id} product={product} onClose={onClose} />;
+};
+
+function QuickViewModalContent({ product, onClose }: QuickViewModalProps & { product: Product }) {
   const { addToCart } = useCart();
   const { overrides } = useAdmin();
-
-  if (!product) return null;
 
   const override = overrides[product.id];
   const displayImage = override?.customImage || product.images[0];
@@ -41,23 +44,23 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
     <div className="fixed inset-0 z-50 overflow-y-auto font-sans flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-zinc-950/80 backdrop-blur-md transition-opacity"
+        className="fixed inset-0 bg-black/40 backdrop-blur-md transition-opacity dark:bg-zinc-950/80"
         onClick={onClose}
       />
 
       {/* Modal Card */}
-      <div className="relative bg-zinc-900 border border-gold-500/30 rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl z-10 animate-fade-in text-zinc-100">
+      <div className="relative bg-white border border-gold-500/30 rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl z-10 animate-fade-in text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 p-2 rounded-full bg-zinc-950/60 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-950 transition-colors"
+          className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/10 text-zinc-500 hover:text-zinc-900 hover:bg-black/20 transition-colors dark:bg-zinc-950/60 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-950"
         >
           <X className="w-5 h-5" />
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Left Gallery */}
-          <div className="p-6 bg-zinc-950 flex flex-col justify-between">
-            <div className="aspect-square w-full rounded-xl overflow-hidden bg-zinc-900 relative">
+          <div className="p-6 bg-zinc-50 flex flex-col justify-between dark:bg-zinc-950">
+            <div className="aspect-square w-full rounded-xl overflow-hidden bg-zinc-100 relative dark:bg-zinc-900">
               <img
                 src={selectedImage || displayImage}
                 alt={displayName}
@@ -92,7 +95,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
           {/* Right Details */}
           <div className="p-6 flex flex-col justify-between space-y-4">
             <div>
-              <div className="flex justify-between items-center text-xs text-gold-400 uppercase font-semibold">
+              <div className="flex justify-between items-center text-xs text-gold-600 uppercase font-semibold dark:text-gold-400">
                 <span>{product.brand}</span>
                 <div className="flex items-center space-x-1">
                   <Star className="w-3.5 h-3.5 text-gold-400 fill-gold-400" />
@@ -102,49 +105,49 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
                 </div>
               </div>
 
-              <h2 className="font-serif text-2xl font-bold text-zinc-100 mt-1">
+              <h2 className="font-serif text-2xl font-bold text-zinc-900 mt-1 dark:text-zinc-100">
                 {displayName}
               </h2>
-              <p className="text-xs italic text-gold-300 mt-0.5">"{product.tagline}"</p>
+              <p className="text-xs italic text-gold-600 mt-0.5 dark:text-gold-300">&ldquo;{product.tagline}&rdquo;</p>
 
               <div className="mt-3">
-                <span className="text-2xl font-bold font-serif text-gold-400">
+                <span className="text-2xl font-bold font-serif text-gold-600 dark:text-gold-400">
                   {formatNaira(
                     override?.customPrice ? override.customPrice : selectedSize.price
                   )}
                 </span>
               </div>
 
-              <p className="text-xs text-zinc-300 leading-relaxed mt-3">
+              <p className="text-xs text-zinc-600 leading-relaxed mt-3 dark:text-zinc-300">
                 {product.description}
               </p>
 
               {/* Fragrance Notes */}
-              <div className="mt-4 p-3 bg-zinc-950/80 rounded-xl border border-zinc-800 space-y-2 text-xs">
-                <h4 className="font-semibold text-gold-400 uppercase text-[10px] tracking-wider">
+              <div className="mt-4 p-3 bg-zinc-50 rounded-xl border border-zinc-200 space-y-2 text-xs dark:bg-zinc-950/80 dark:border-zinc-800">
+                <h4 className="font-semibold text-gold-600 uppercase text-[10px] tracking-wider dark:text-gold-400">
                   Fragrance Pyramid
                 </h4>
                 <div className="grid grid-cols-3 gap-2 text-[11px]">
                   <div>
                     <span className="text-zinc-500 font-medium block">Top Notes</span>
-                    <span className="text-zinc-300">{product.topNotes.join(", ")}</span>
+                    <span className="text-zinc-600 dark:text-zinc-300">{product.topNotes.join(", ")}</span>
                   </div>
                   <div>
                     <span className="text-zinc-500 font-medium block">Heart Notes</span>
-                    <span className="text-zinc-300">{product.heartNotes.join(", ")}</span>
+                    <span className="text-zinc-600 dark:text-zinc-300">{product.heartNotes.join(", ")}</span>
                   </div>
                   <div>
                     <span className="text-zinc-500 font-medium block">Base Notes</span>
-                    <span className="text-zinc-300">{product.baseNotes.join(", ")}</span>
+                    <span className="text-zinc-600 dark:text-zinc-300">{product.baseNotes.join(", ")}</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Size & CTA */}
-            <div className="space-y-4 pt-4 border-t border-zinc-800">
+            <div className="space-y-4 pt-4 border-t border-zinc-200 dark:border-zinc-800">
               <div>
-                <label className="text-xs text-zinc-400 block mb-1.5 font-medium">
+                <label className="text-xs text-zinc-500 block mb-1.5 font-medium dark:text-zinc-400">
                   Select Bottle Size
                 </label>
                 <div className="grid grid-cols-3 gap-2">
@@ -154,12 +157,12 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
                       onClick={() => setSelectedSize(s)}
                       className={`py-2 text-xs font-bold rounded-lg border transition-all ${
                         selectedSize.size === s.size
-                          ? "bg-gold-500/20 border-gold-500 text-gold-300"
-                          : "border-zinc-800 bg-zinc-950 text-zinc-400 hover:border-zinc-700"
+                          ? "bg-gold-500/20 border-gold-500 text-gold-700 dark:text-gold-300"
+                          : "border-zinc-200 bg-white text-zinc-500 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:border-zinc-700"
                       }`}
                     >
                       <div>{s.size}</div>
-                      <div className="text-[10px] font-normal text-zinc-400">
+                      <div className="text-[10px] font-normal text-zinc-500 dark:text-zinc-400">
                         {formatNaira(s.price)}
                       </div>
                     </button>

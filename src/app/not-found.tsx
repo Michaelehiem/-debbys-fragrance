@@ -7,7 +7,7 @@ import { Search, ArrowRight } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex items-center justify-center px-4 font-sans">
+    <div className="min-h-screen bg-white text-zinc-900 flex items-center justify-center px-4 font-sans dark:bg-zinc-950 dark:text-zinc-100">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -25,10 +25,10 @@ export default function NotFound() {
           </motion.div>
 
           <h1 className="font-serif text-6xl font-bold text-gold-400">404</h1>
-          <p className="font-serif text-xl font-bold text-zinc-100">
+          <p className="font-serif text-xl font-bold text-zinc-900 dark:text-zinc-100">
             This Scent Has Vanished
           </p>
-          <p className="text-sm text-zinc-400 leading-relaxed">
+          <p className="text-sm text-zinc-500 leading-relaxed dark:text-zinc-400">
             The page you&apos;re looking for doesn&apos;t exist or has been moved.
             Let&apos;s guide you back to our collection.
           </p>

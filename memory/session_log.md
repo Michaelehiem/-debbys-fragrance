@@ -111,3 +111,56 @@
 - **Outputs:** Admin page fully rebuilt, ReviewContext created, product detail page updated
 - **Status:** ✅ Completed
 - **Notes:** All data stored in localStorage. Reviews persist across sessions. Admin can now fully manage the product catalogue without code changes.
+
+---
+
+## 2026-07-26 — First Production Deployment (Vercel)
+
+- **Goal:** Deploy Debby's Fragrance from localhost to live hosting via GitHub + Vercel
+- **Steps taken:**
+  - Verified GitHub remote was configured (`origin` → `Michaelehiem/-debbys-fragrance`)
+  - Found TypeScript build error in `src/app/admin/page.tsx:209` — `addProduct(product)` passed `Partial<Product>` where `Product` was required, causing `next build` to exit with code 1
+  - Fixed by casting: `addProduct(product as Product)` (safe because "add" mode always builds a full Product)
+  - Ran `npx tsc --noEmit` — zero TypeScript errors after fix
+  - Committed and pushed fix to GitHub
+  - User ran `npx vercel --prod` successfully
+- **Tools used:** `npx tsc --noEmit`, git commit/push, Vercel CLI
+- **Outputs:** Site deployed to production at **https://debbys-fragrance.vercel.app**
+- **Status:** ✅ Completed
+- **Notes:** Vercel project linked to GitHub repo. Auto-deploys on push to master. Vercel dashboard: https://vercel.com/ohaeriehiemmichael-5823s-projects/debbys-fragrance
+
+---
+
+## 2026-07-28 — Light Theme Redesign & Delivery Threshold Update
+
+- **Goal:** Make the site light and user-friendly (easy to see products), fix glitches/flickering, improve mobile responsiveness, fix @debbysfragrance → @debsfragrance, raise free delivery threshold to ₦350,000, and bold the store name in checkout
+- **Steps taken:**
+  - **Theme default changed from dark → light** in `ThemeContext.tsx`; dark mode still available via toggle
+  - **Flicker fix:** removed hardcoded `dark` class from `layout.tsx`, added `suppressHydrationWarning` + inline localStorage pre-hydration script, body now light-first (`bg-white text-zinc-900 dark:*` variants)
+  - **globals.css:** light-first scrollbar/body styles + broad `:root:not(.dark)` overrides for legacy dark-only utility classes
+  - **Converted all pages/components to light-first with `dark:` variants:** Navbar, Footer, CartDrawer, home, shop, product detail, cart, checkout, about, contact, account, admin, not-found, ProductCard, ProductListCard, QuickViewModal, CartToast, BackToTop, AdminGate
+  - **Free delivery threshold:** `100000` → `350000` in CartDrawer, cart page, checkout page + banner text "Free Delivery on orders over ₦350,000"
+  - **Handle fix:** `@debbysfragrance` → `@debsfragrance` on homepage Instagram section; account email placeholder aligned to `debsfragrance`
+  - **Bold store name in checkout:** WhatsApp message header `🏪 *DEBBY'S FRAGRANCE* - NEW ORDER`, gold `<strong>` store name in success message, gold bold badge beside Checkout heading
+  - **Mobile spacing:** reduced homepage section gaps (`space-y-16 sm:space-y-24`)
+  - Ran `npm run build` — ✅ compiles clean, all 11 routes generate
+- **Tools used:** File editing (26 files modified)
+- **Outputs:** All source files updated in `src/`
+- **Status:** ✅ Completed
+- **Notes:** ESLint is not installed locally (pre-existing) — build skips linting but compiles + type-checks cleanly. Site config IG handle is `debby.ib`, TikTok `@debsfragrance_`.
+
+---
+
+## 2026-07-28 — ESLint Install & Lint Fixes
+
+- **Goal:** Install ESLint so `next build` runs linting (previously skipped)
+- **Steps taken:**
+  - Installed `eslint` + `eslint-config-next@14.2.15` (npm install took ~9 min on this machine; needed 900s timeout)
+  - Ran `npm run lint` — surfaced 1 real bug + several build-blocking errors:
+  - **Fixed Rules of Hooks bug in QuickViewModal:** `useState` was called after `if (!product) return null`. Restructured into wrapper + `QuickViewModalContent` inner component, added `key={product.id}` so state resets when switching products
+  - **Fixed all `react/no-unescaped-entities` errors:** Navbar (DEBBY'S, "search" message, Women's/Men's Collection), Footer (DEBBY'S, description, links, copyright), contact page (Debby's), QuickViewModal (tagline quotes) — apostrophes → `&apos;`, quotes → `&ldquo;/&rdquo;`
+  - Ran `npm run build` with 30-min timeout — ✅ passes: compiles, type-checks, lints (warnings only), all 11 routes generate
+- **Tools used:** npm install, next lint, next build, file editing (5 files)
+- **Outputs:** ESLint in devDependencies, 5 source files fixed
+- **Status:** ✅ Completed
+- **Notes:** Remaining lint output is warnings only (no-img-element — intentional since admin uploads base64 images; 2 pre-existing exhaustive-deps warnings). Builds now need 30-min tool timeout on this machine.

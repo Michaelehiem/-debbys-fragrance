@@ -53,10 +53,10 @@ export const Navbar: React.FC = () => {
     : [];
 
   return (
-    <header className="sticky top-0 z-40 bg-zinc-950/90 dark:bg-zinc-950/95 backdrop-blur-md border-b border-gold-500/20 text-zinc-100 transition-colors duration-300">
+    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gold-500/20 text-zinc-900 transition-colors duration-300 dark:bg-zinc-950/95 dark:text-zinc-100">
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-gold-900 via-gold-600 to-gold-900 text-zinc-950 text-xs py-1.5 px-4 text-center font-medium tracking-wider uppercase">
-        Complimentary Express Shipping across Nigeria on orders over ₦100,000 | 100% Authentic Guaranteed
+      <div className="bg-gradient-to-r from-gold-600 via-gold-500 to-gold-400 text-white text-xs py-1.5 px-4 text-center font-bold tracking-wider uppercase">
+        Free Delivery on orders over ₦350,000 | 100% Authentic Guaranteed
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -76,7 +76,7 @@ export const Navbar: React.FC = () => {
           <Link href="/" className="flex items-center space-x-2 group">
             <div className="flex flex-col items-center">
               <span className="font-serif text-2xl sm:text-3xl tracking-widest font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-200 group-hover:scale-105 transition-transform duration-300">
-                DEBBY'S
+                DEBBY&apos;S
               </span>
               <span className="text-[9px] tracking-[0.3em] text-gold-400 font-sans uppercase -mt-1">
                 Fragrance · Luxury Perfumery
@@ -86,31 +86,31 @@ export const Navbar: React.FC = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8 font-sans text-sm tracking-wide font-medium">
-            <Link href="/" className="hover:text-gold-400 transition-colors py-1">
+            <Link href="/" className="text-zinc-700 hover:text-gold-500 transition-colors py-1 dark:text-zinc-200 dark:hover:text-gold-400">
               Home
             </Link>
 
-            <Link href="/shop" className="hover:text-gold-400 transition-colors py-1">
+            <Link href="/shop" className="text-zinc-700 hover:text-gold-500 transition-colors py-1 dark:text-zinc-200 dark:hover:text-gold-400">
               Shop All
             </Link>
 
-            <Link href="/shop?category=women" className="hover:text-gold-400 transition-colors py-1">
+            <Link href="/shop?category=women" className="text-zinc-700 hover:text-gold-500 transition-colors py-1 dark:text-zinc-200 dark:hover:text-gold-400">
               Women
             </Link>
 
-            <Link href="/shop?category=men" className="hover:text-gold-400 transition-colors py-1">
+            <Link href="/shop?category=men" className="text-zinc-700 hover:text-gold-500 transition-colors py-1 dark:text-zinc-200 dark:hover:text-gold-400">
               Men
             </Link>
 
-            <Link href="/shop?category=unisex" className="hover:text-gold-400 transition-colors py-1">
+            <Link href="/shop?category=unisex" className="text-zinc-700 hover:text-gold-500 transition-colors py-1 dark:text-zinc-200 dark:hover:text-gold-400">
               Unisex
             </Link>
 
-            <Link href="/about" className="hover:text-gold-400 transition-colors py-1">
+            <Link href="/about" className="text-zinc-700 hover:text-gold-500 transition-colors py-1 dark:text-zinc-200 dark:hover:text-gold-400">
               Our Story
             </Link>
 
-            <Link href="/contact" className="hover:text-gold-400 transition-colors py-1">
+            <Link href="/contact" className="text-zinc-700 hover:text-gold-500 transition-colors py-1 dark:text-zinc-200 dark:hover:text-gold-400">
               Contact
             </Link>
 
@@ -129,7 +129,7 @@ export const Navbar: React.FC = () => {
             <div className="relative">
               <button
                 onClick={() => setSearchOpen(!searchOpen)}
-                className="p-2 text-zinc-300 hover:text-gold-400 transition-colors"
+                className="p-2 text-zinc-500 hover:text-gold-500 transition-colors dark:text-zinc-300 dark:hover:text-gold-400"
                 aria-label="Search"
               >
                 <Search className="w-5 h-5" />
@@ -137,14 +137,14 @@ export const Navbar: React.FC = () => {
 
               {/* Search Dropdown Modal */}
               {searchOpen && (
-                <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-zinc-900 border border-gold-500/30 rounded-xl shadow-2xl p-4 z-50 animate-fade-in">
+                <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-white border border-gold-500/30 rounded-xl shadow-2xl p-4 z-50 animate-fade-in dark:bg-zinc-900">
                   <div className="relative">
                     <input
                       type="text"
                       placeholder="Search perfumes, notes, brands..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-gold-500"
+                      className="w-full bg-zinc-50 border border-zinc-300 rounded-lg px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-700 dark:text-zinc-100"
                       autoFocus
                     />
                     {searchQuery && (
@@ -187,7 +187,7 @@ export const Navbar: React.FC = () => {
                         ))
                       ) : (
                         <p className="text-xs text-zinc-400 text-center py-4">
-                          No fragrances found matching "{searchQuery}"
+                          No fragrances found matching &ldquo;{searchQuery}&rdquo;
                         </p>
                       )}
                     </div>
@@ -199,20 +199,20 @@ export const Navbar: React.FC = () => {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2 text-zinc-300 hover:text-gold-400 transition-colors"
+              className="p-2 text-zinc-500 hover:text-gold-500 transition-colors dark:text-zinc-300 dark:hover:text-gold-400"
               aria-label="Toggle Theme"
             >
               {theme === "dark" ? (
                 <Sun className="w-5 h-5 text-gold-400" />
               ) : (
-                <Moon className="w-5 h-5 text-zinc-700" />
+                <Moon className="w-5 h-5 text-zinc-600" />
               )}
             </button>
 
             {/* Wishlist Icon */}
             <Link
               href="/account"
-              className="p-2 text-zinc-300 hover:text-gold-400 transition-colors relative"
+              className="p-2 text-zinc-500 hover:text-gold-500 transition-colors relative dark:text-zinc-300 dark:hover:text-gold-400"
               aria-label="Wishlist"
             >
               <Heart className="w-5 h-5" />
@@ -226,7 +226,7 @@ export const Navbar: React.FC = () => {
             {/* User Account */}
             <Link
               href="/account"
-              className="p-2 text-zinc-300 hover:text-gold-400 transition-colors hidden sm:block"
+              className="p-2 text-zinc-500 hover:text-gold-500 transition-colors hidden sm:block dark:text-zinc-300 dark:hover:text-gold-400"
               aria-label="Account"
             >
               <User className="w-5 h-5" />
@@ -248,53 +248,53 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-zinc-950 border-b border-gold-500/20 px-6 py-6 space-y-4 font-sans animate-fade-in">
+        <div className="lg:hidden bg-white border-b border-gold-500/20 px-6 py-6 space-y-4 font-sans animate-fade-in dark:bg-zinc-950">
           <Link
             href="/"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-lg font-medium hover:text-gold-400"
+            className="block text-lg font-medium text-zinc-800 hover:text-gold-500 dark:text-zinc-100 dark:hover:text-gold-400"
           >
             Home
           </Link>
           <Link
             href="/shop"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-lg font-medium hover:text-gold-400"
+            className="block text-lg font-medium text-zinc-800 hover:text-gold-500 dark:text-zinc-100 dark:hover:text-gold-400"
           >
             Shop All Fragrances
           </Link>
           <Link
             href="/shop?category=women"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-zinc-400 hover:text-gold-400 pl-2"
+            className="block text-zinc-500 hover:text-gold-500 pl-2 dark:text-zinc-400 dark:hover:text-gold-400"
           >
-            · Women's Collection
+            · Women&apos;s Collection
           </Link>
           <Link
             href="/shop?category=men"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-zinc-400 hover:text-gold-400 pl-2"
+            className="block text-zinc-500 hover:text-gold-500 pl-2 dark:text-zinc-400 dark:hover:text-gold-400"
           >
-            · Men's Collection
+            · Men&apos;s Collection
           </Link>
           <Link
             href="/shop?category=unisex"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-zinc-400 hover:text-gold-400 pl-2"
+            className="block text-zinc-500 hover:text-gold-500 pl-2 dark:text-zinc-400 dark:hover:text-gold-400"
           >
             · Unisex Collection
           </Link>
           <Link
             href="/about"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-lg font-medium hover:text-gold-400"
+            className="block text-lg font-medium text-zinc-800 hover:text-gold-500 dark:text-zinc-100 dark:hover:text-gold-400"
           >
             Our Story
           </Link>
           <Link
             href="/contact"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-lg font-medium hover:text-gold-400"
+            className="block text-lg font-medium text-zinc-800 hover:text-gold-500 dark:text-zinc-100 dark:hover:text-gold-400"
           >
             Contact & FAQ
           </Link>

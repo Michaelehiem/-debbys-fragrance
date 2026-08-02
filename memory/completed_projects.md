@@ -56,6 +56,37 @@
 
 ---
 
+## Light Theme Redesign & Delivery Threshold Update — Completed 2026-07-28
+- **Brief:** Switch site from dark to light-first theme, fix flicker/glitches, fix Instagram handle, raise free-delivery threshold to ₦350,000, bold store name in checkout
+- **Deliverable:** All source files updated in `src/`
+- **Key steps:**
+  - Default theme now light (dark toggle still works); added pre-hydration script to stop theme flicker
+  - Converted 18 pages/components to light-first with `dark:` variants
+  - Free delivery threshold 100000 → 350000 (cart, cart drawer, checkout, navbar banner)
+  - `@debbysfragrance` → `@debsfragrance` on homepage
+  - Checkout: bold store name in WhatsApp message + gold badge on page
+  - Verified with `npm run build` — clean, 11 routes
+- **Workflows used:** N/A
+- **Tools used:** File editing (26 files)
+- **Notes:** ESLint missing locally (pre-existing) — build skips lint step but compiles and type-checks clean.
+
+---
+
+<!-- Template for future entries:
+
+## First Production Deployment — Completed 2026-07-26
+- **Brief:** Deploy the Debby's Fragrance Next.js site from localhost to live hosting via GitHub + Vercel
+- **Deliverable:** Live site at **https://debbys-fragrance.vercel.app**
+- **Key steps:**
+  - Fixed TypeScript build error in `admin/page.tsx:209` (Partial to Product cast)
+  - Pushed fix to GitHub repo (`Michaelehiem/-debbys-fragrance`)
+  - Ran `npx vercel --prod` to deploy to production
+- **Workflows used:** N/A
+- **Tools used:** `npx tsc --noEmit`, git, Vercel CLI
+- **Notes:** Vercel project linked to GitHub — auto-deploys on push to master. Dashboard: https://vercel.com/ohaeriehiemmichael-5823s-projects/debbys-fragrance
+
+---
+
 <!-- Template for future entries:
 ## [Project Name] — Completed YYYY-MM-DD
 - **Brief:** What the project was about

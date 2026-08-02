@@ -55,22 +55,22 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 py-12 px-4 sm:px-6 lg:px-8 font-sans space-y-16">
+    <div className="min-h-screen bg-white text-zinc-900 py-12 px-4 sm:px-6 lg:px-8 font-sans space-y-16 dark:bg-zinc-950 dark:text-zinc-100">
       <div className="max-w-6xl mx-auto space-y-12">
         {/* Header */}
         <div className="text-center space-y-2">
           <span className="text-xs font-semibold uppercase tracking-widest text-gold-400">
             We Would Love To Hear From You
           </span>
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-zinc-100">
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-zinc-100">
             Contact & Boutique Location
           </h1>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Form */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 sm:p-8 space-y-6">
-            <h2 className="font-serif text-xl font-bold text-zinc-100">Send Us a Message</h2>
+          <div className="bg-white border border-zinc-200 rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm dark:bg-zinc-900 dark:border-zinc-800">
+            <h2 className="font-serif text-xl font-bold text-zinc-900 dark:text-zinc-100">Send Us a Message</h2>
 
             {submitted ? (
               <div className="bg-emerald-950/80 border border-emerald-500 text-emerald-300 p-4 rounded-xl text-xs font-semibold flex items-center space-x-2">
@@ -80,49 +80,49 @@ export default function ContactPage() {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 text-xs">
                 <div>
-                  <label className="block text-zinc-400 mb-1">Your Full Name *</label>
+                  <label className="block text-zinc-500 mb-1 dark:text-zinc-400">Your Full Name *</label>
                   <input
                     type="text"
                     required
                     placeholder="Enter your name"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:outline-none focus:border-gold-500"
+                    className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-3 text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-zinc-400 mb-1">Email Address *</label>
+                  <label className="block text-zinc-500 mb-1 dark:text-zinc-400">Email Address *</label>
                   <input
                     type="email"
                     required
                     placeholder="name@example.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:outline-none focus:border-gold-500"
+                    className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-3 text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-zinc-400 mb-1">Subject</label>
+                  <label className="block text-zinc-500 mb-1 dark:text-zinc-400">Subject</label>
                   <input
                     type="text"
                     placeholder="e.g. Scent Recommendation Request"
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:outline-none focus:border-gold-500"
+                    className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-3 text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-zinc-400 mb-1">Your Message *</label>
+                  <label className="block text-zinc-500 mb-1 dark:text-zinc-400">Your Message *</label>
                   <textarea
                     rows={4}
                     required
                     placeholder="How can we assist you with your fragrance search?"
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:outline-none focus:border-gold-500"
+                    className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-3 text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                   />
                 </div>
 
@@ -139,14 +139,14 @@ export default function ContactPage() {
 
           {/* Details & Location */}
           <div className="space-y-6">
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4 text-xs">
-              <h2 className="font-serif text-xl font-bold text-zinc-100">Boutique Information</h2>
+            <div className="bg-white border border-zinc-200 rounded-2xl p-6 space-y-4 text-xs shadow-sm dark:bg-zinc-900 dark:border-zinc-800">
+              <h2 className="font-serif text-xl font-bold text-zinc-900 dark:text-zinc-100">Boutique Information</h2>
 
-              <div className="space-y-3 text-zinc-300">
+              <div className="space-y-3 text-zinc-600 dark:text-zinc-300">
                 <div className="flex items-start space-x-3">
                   <MapPin className="w-4 h-4 text-gold-400 flex-shrink-0 mt-1" />
                   <div>
-                    <span className="font-bold text-zinc-100 block">Store Address</span>
+                    <span className="font-bold text-zinc-900 block dark:text-zinc-100">Store Address</span>
                     <span>{siteConfig.location.shopAddress}</span>
                   </div>
                 </div>
@@ -154,7 +154,7 @@ export default function ContactPage() {
                 <div className="flex items-center space-x-3">
                   <Phone className="w-4 h-4 text-gold-400 flex-shrink-0" />
                   <div>
-                    <span className="font-bold text-zinc-100 block">Phone / WhatsApp</span>
+                    <span className="font-bold text-zinc-900 block dark:text-zinc-100">Phone / WhatsApp</span>
                     <span>{siteConfig.contact.whatsapp}</span>
                   </div>
                 </div>
@@ -162,7 +162,7 @@ export default function ContactPage() {
                 <div className="flex items-center space-x-3">
                   <Mail className="w-4 h-4 text-gold-400 flex-shrink-0" />
                   <div>
-                    <span className="font-bold text-zinc-100 block">Email Concierge</span>
+                    <span className="font-bold text-zinc-900 block dark:text-zinc-100">Email Concierge</span>
                     <span>{siteConfig.contact.email}</span>
                   </div>
                 </div>
@@ -170,7 +170,7 @@ export default function ContactPage() {
                 <div className="flex items-center space-x-3">
                   <Clock className="w-4 h-4 text-gold-400 flex-shrink-0" />
                   <div>
-                    <span className="font-bold text-zinc-100 block">Operating Hours</span>
+                    <span className="font-bold text-zinc-900 block dark:text-zinc-100">Operating Hours</span>
                     <span>Monday - Saturday: 9:00 AM - 7:00 PM (WAT)</span>
                   </div>
                 </div>
@@ -178,26 +178,26 @@ export default function ContactPage() {
             </div>
 
             {/* Embedded Map Representation */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 text-center space-y-3">
-              <span className="text-xs font-semibold uppercase tracking-wider text-gold-400">
+            <div className="bg-white border border-zinc-200 rounded-2xl p-6 text-center space-y-3 shadow-sm dark:bg-zinc-900 dark:border-zinc-800">
+              <span className="text-xs font-semibold uppercase tracking-wider text-gold-600 dark:text-gold-400">
                 Interactive Store Location
               </span>
-              <div className="aspect-video w-full rounded-xl bg-zinc-950 border border-zinc-800 flex flex-col items-center justify-center space-y-2 p-4 text-xs">
-                <MapPin className="w-8 h-8 text-gold-400 animate-bounce" />
-                <span className="font-bold text-zinc-200">Debby's Fragrance Boutique</span>
-                <span className="text-[10px] text-zinc-400">{siteConfig.location.city}, {siteConfig.location.country}</span>
+              <div className="aspect-video w-full rounded-xl bg-zinc-100 border border-zinc-200 flex flex-col items-center justify-center space-y-2 p-4 text-xs dark:bg-zinc-950 dark:border-zinc-800">
+                <MapPin className="w-8 h-8 text-gold-600 animate-bounce dark:text-gold-400" />
+                <span className="font-bold text-zinc-900 dark:text-zinc-200">Debby&apos;s Fragrance Boutique</span>
+                <span className="text-[10px] text-zinc-500 dark:text-zinc-400">{siteConfig.location.city}, {siteConfig.location.country}</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* FAQ Accordion Section */}
-        <div className="space-y-6 pt-12 border-t border-zinc-800">
+        <div className="space-y-6 pt-12 border-t border-zinc-200 dark:border-zinc-800">
           <div className="text-center space-y-2">
-            <span className="text-xs text-gold-400 font-bold uppercase tracking-widest">
+            <span className="text-xs text-gold-600 font-bold uppercase tracking-widest dark:text-gold-400">
               Got Questions?
             </span>
-            <h2 className="font-serif text-2xl font-bold text-zinc-100">
+            <h2 className="font-serif text-2xl font-bold text-zinc-900 dark:text-zinc-100">
               Frequently Asked Questions
             </h2>
           </div>
@@ -206,21 +206,21 @@ export default function ContactPage() {
             {faqs.map((faq, index) => (
               <div
                 key={index}
-                className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden"
+                className="bg-white border border-zinc-200 rounded-xl overflow-hidden shadow-sm dark:bg-zinc-900 dark:border-zinc-800"
               >
                 <button
                   onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
-                  className="w-full p-4 text-left font-serif font-bold text-sm text-zinc-100 flex justify-between items-center hover:text-gold-400 transition-colors"
+                  className="w-full p-4 text-left font-serif font-bold text-sm text-zinc-900 flex justify-between items-center hover:text-gold-600 transition-colors dark:text-zinc-100 dark:hover:text-gold-400"
                 >
                   <span>{faq.q}</span>
                   <ChevronDown
                     className={`w-4 h-4 transition-transform ${
-                      openFaqIndex === index ? "rotate-180 text-gold-400" : "text-zinc-500"
+                      openFaqIndex === index ? "rotate-180 text-gold-600 dark:text-gold-400" : "text-zinc-400 dark:text-zinc-500"
                     }`}
                   />
                 </button>
                 {openFaqIndex === index && (
-                  <div className="px-4 pb-4 text-xs text-zinc-400 leading-relaxed border-t border-zinc-800/60 pt-3">
+                  <div className="px-4 pb-4 text-xs text-zinc-600 leading-relaxed border-t border-zinc-200 pt-3 dark:text-zinc-400 dark:border-zinc-800/60">
                     {faq.a}
                   </div>
                 )}

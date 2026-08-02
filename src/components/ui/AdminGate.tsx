@@ -47,7 +47,7 @@ export const AdminGate: React.FC<AdminGateProps> = ({ children }) => {
 
   if (checking) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-zinc-950 flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-gold-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -58,7 +58,7 @@ export const AdminGate: React.FC<AdminGateProps> = ({ children }) => {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex items-center justify-center px-4 font-sans">
+    <div className="min-h-screen bg-white text-zinc-900 flex items-center justify-center px-4 font-sans dark:bg-zinc-950 dark:text-zinc-100">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -67,10 +67,10 @@ export const AdminGate: React.FC<AdminGateProps> = ({ children }) => {
       >
         <div className="text-center space-y-3">
           <div className="w-16 h-16 rounded-full bg-gold-500/10 border border-gold-500/30 flex items-center justify-center mx-auto">
-            <ShieldCheck className="w-8 h-8 text-gold-400" />
+            <ShieldCheck className="w-8 h-8 text-gold-600 dark:text-gold-400" />
           </div>
-          <h1 className="font-serif text-2xl font-bold text-zinc-100">Admin Access</h1>
-          <p className="text-xs text-zinc-400">
+          <h1 className="font-serif text-2xl font-bold text-zinc-900 dark:text-zinc-100">Admin Access</h1>
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
             Enter the admin password to access the product management panel.
           </p>
         </div>
@@ -84,16 +84,16 @@ export const AdminGate: React.FC<AdminGateProps> = ({ children }) => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter admin password"
               autoFocus
-              className={`w-full bg-zinc-900 border rounded-xl pl-11 pr-12 py-3 text-sm text-zinc-100 focus:outline-none transition-colors ${
+              className={`w-full bg-white border rounded-xl pl-11 pr-12 py-3 text-sm text-zinc-900 focus:outline-none transition-colors dark:bg-zinc-900 dark:text-zinc-100 ${
                 error
                   ? "border-rose-500 focus:border-rose-400"
-                  : "border-zinc-800 focus:border-gold-500"
+                  : "border-zinc-300 focus:border-gold-500 dark:border-zinc-800"
               }`}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-3.5 text-zinc-500 hover:text-zinc-300 transition-colors"
+              className="absolute right-4 top-3.5 text-zinc-500 hover:text-zinc-900 transition-colors dark:hover:text-zinc-300"
             >
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
@@ -125,7 +125,7 @@ function LogoutButton({ onLogout }: { onLogout: () => void }) {
   return (
     <button
       onClick={onLogout}
-      className="fixed top-24 right-6 z-50 bg-zinc-800 hover:bg-rose-900/60 border border-zinc-700 hover:border-rose-700 text-zinc-300 hover:text-rose-300 text-[10px] font-bold px-3 py-1.5 rounded-lg uppercase tracking-wider transition-all flex items-center space-x-1.5"
+      className="fixed top-24 right-6 z-50 bg-white hover:bg-rose-50 border border-zinc-300 hover:border-rose-300 text-zinc-600 hover:text-rose-600 text-[10px] font-bold px-3 py-1.5 rounded-lg uppercase tracking-wider transition-all flex items-center space-x-1.5 shadow-sm dark:bg-zinc-800 dark:hover:bg-rose-900/60 dark:border-zinc-700 dark:hover:border-rose-700 dark:text-zinc-300 dark:hover:text-rose-300"
     >
       <Lock className="w-3 h-3" />
       <span>Lock Admin</span>

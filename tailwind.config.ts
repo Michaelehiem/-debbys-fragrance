@@ -40,6 +40,7 @@ const config: Config = {
       backgroundImage: {
         "gold-gradient": "linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa7c11 100%)",
         "dark-radial": "radial-gradient(circle at center, #1a1a1e 0%, #09090b 100%)",
+        "light-radial": "radial-gradient(circle at center, #fafafa 0%, #ffffff 100%)",
       },
       animation: {
         "fade-in": "fadeIn 0.5s ease-out forwards",

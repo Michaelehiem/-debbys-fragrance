@@ -11,8 +11,14 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+function getInitialTheme(): ThemeMode {
+  if (typeof window === "undefined") return "light";
+  const saved = localStorage.getItem("debby_theme") as ThemeMode | null;
+  return saved || "light";
+}
+
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<ThemeMode>("dark");
+  const [theme, setTheme] = useState<ThemeMode>("light");
 
   useEffect(() => {
     const saved = localStorage.getItem("debby_theme") as ThemeMode | null;
@@ -20,7 +26,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       setTheme(saved);
       document.documentElement.classList.toggle("dark", saved === "dark");
     } else {
-      document.documentElement.classList.add("dark");
+      document.documentElement.classList.remove("dark");
     }
   }, []);
 

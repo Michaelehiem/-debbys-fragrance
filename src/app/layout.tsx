@@ -51,8 +51,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable} dark`}>
-      <body className="bg-zinc-950 text-zinc-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-gold-500 selection:text-zinc-950">
+    <html lang="en" className={`${playfair.variable} ${inter.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              try {
+                var theme = localStorage.getItem('debby_theme');
+                if (theme === 'dark') {
+                  document.documentElement.classList.add('dark');
+                }
+              } catch(e) {}
+            })();
+          `,
+        }} />
+      </head>
+      <body className="bg-white text-zinc-900 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-gold-500 selection:text-zinc-950 dark:bg-zinc-950 dark:text-zinc-100">
         <AdminProvider>
           <ThemeProvider>
             <CartProvider>
