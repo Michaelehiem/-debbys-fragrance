@@ -264,9 +264,9 @@ function ProductForm({
   const [description, setDescription] = useState(existing?.description || "");
   const [category, setCategory] = useState<GenderCategory>(existing?.category || "women");
   const [fragranceFamily, setFragranceFamily] = useState<FragranceFamily>(existing?.fragranceFamily || "floral");
-  const [price30, setPrice30] = useState(existing?.sizes.find((s) => s.size === "30ml")?.price.toString() || "");
-  const [price50, setPrice50] = useState(existing?.sizes.find((s) => s.size === "50ml")?.price.toString() || "");
-  const [price100, setPrice100] = useState(existing?.sizes.find((s) => s.size === "100ml")?.price.toString() || "");
+  const [price5, setPrice5] = useState(existing?.sizes.find((s) => s.size === "5ml")?.price.toString() || "");
+  const [price10, setPrice10] = useState(existing?.sizes.find((s) => s.size === "10ml")?.price.toString() || "");
+  const [price25, setPrice25] = useState(existing?.sizes.find((s) => s.size === "25ml")?.price.toString() || "");
   const [stock, setStock] = useState(existing?.stock?.toString() || "20");
   const [topNotes, setTopNotes] = useState(existing?.topNotes.join(", ") || "");
   const [heartNotes, setHeartNotes] = useState(existing?.heartNotes.join(", ") || "");
@@ -300,10 +300,10 @@ function ProductForm({
     if (!name.trim()) { alert("Product name is required"); return; }
     if (!description.trim()) { alert("Description is required"); return; }
 
-    const sizes: { size: "30ml" | "50ml" | "100ml"; price: number }[] = [];
-    if (price30 && Number(price30) > 0) sizes.push({ size: "30ml", price: Number(price30) });
-    if (price50 && Number(price50) > 0) sizes.push({ size: "50ml", price: Number(price50) });
-    if (price100 && Number(price100) > 0) sizes.push({ size: "100ml", price: Number(price100) });
+    const sizes: { size: "5ml" | "10ml" | "25ml"; price: number }[] = [];
+    if (price5 && Number(price5) > 0) sizes.push({ size: "5ml", price: Number(price5) });
+    if (price10 && Number(price10) > 0) sizes.push({ size: "10ml", price: Number(price10) });
+    if (price25 && Number(price25) > 0) sizes.push({ size: "25ml", price: Number(price25) });
     if (sizes.length === 0) { alert("Enter at least one size/price"); return; }
 
     const finalImage = uploadedPreview || imageUrl || "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800";
@@ -531,34 +531,34 @@ function ProductForm({
             <p className="text-[11px] text-zinc-500">Enter price for each size you want to offer. Leave blank to skip that size.</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">30ml Price</label>
+                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">5ml Price</label>
                 <input
                   type="number"
-                  value={price30}
-                  onChange={(e) => setPrice30(e.target.value)}
-                  placeholder="e.g. 45000"
+                  value={price5}
+                  onChange={(e) => setPrice5(e.target.value)}
+                  placeholder="e.g. 6000"
                   min="0"
                   className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                 />
               </div>
               <div>
-                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">50ml Price</label>
+                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">10ml Price</label>
                 <input
                   type="number"
-                  value={price50}
-                  onChange={(e) => setPrice50(e.target.value)}
-                  placeholder="e.g. 75000"
+                  value={price10}
+                  onChange={(e) => setPrice10(e.target.value)}
+                  placeholder="e.g. 12000"
                   min="0"
                   className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                 />
               </div>
               <div>
-                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">100ml Price</label>
+                <label className="text-xs text-zinc-500 block mb-1 dark:text-zinc-400">25ml Price</label>
                 <input
                   type="number"
-                  value={price100}
-                  onChange={(e) => setPrice100(e.target.value)}
-                  placeholder="e.g. 120000"
+                  value={price25}
+                  onChange={(e) => setPrice25(e.target.value)}
+                  placeholder="e.g. 30000"
                   min="0"
                   className="w-full bg-white border border-zinc-300 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-100"
                 />

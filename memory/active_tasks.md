@@ -4,7 +4,7 @@
 
 ---
 
-_No active tasks yet. Log will be updated as work begins._
+_No active tasks. Most recent work (rebrand, hidden admin, promo removal, 5/10/25ml sizes, light redesign) completed 2026-08-02 — see `completed_projects.md`._
 
 <!-- Template:
 ## [Task Name]

@@ -31,56 +31,49 @@ export default function HomePage() {
 
   return (
     <div className="space-y-16 sm:space-y-24 pb-20 font-sans">
-      {/* 1. Hero Section */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-zinc-950 text-zinc-100 dark:bg-zinc-950 dark:text-zinc-100">
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=1920"
-            alt="Debby's Fragrance Luxury Banner"
-            className="w-full h-full object-cover object-center opacity-30 scale-105"
-            style={{ animation: "pulse 12s ease-in-out infinite" }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-zinc-950/40 dark:from-zinc-950 dark:via-zinc-950/70 dark:to-zinc-950/40" />
-        </div>
-
-        <div className="relative z-10 max-w-5xl mx-auto px-4 text-center space-y-6 pt-12">
+      {/* 1. Hero Section — clean, light, airy */}
+      <section className="relative overflow-hidden bg-champagne dark:bg-zinc-100">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.12),transparent_60%)]" />
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-24 pb-20 sm:pt-32 sm:pb-28 space-y-8">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center space-x-2 bg-gold-500/10 border border-gold-500/30 px-4 py-1.5 rounded-full text-gold-300 text-xs font-semibold uppercase tracking-widest backdrop-blur-md"
+            className="inline-flex items-center space-x-2 text-gold-700 text-xs font-semibold uppercase tracking-[0.2em]"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Artisanal Luxury Perfumery · {siteConfig.location.city}, Nigeria</span>
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-zinc-100 via-gold-200 to-gold-400 leading-tight"
+            className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-zinc-900 leading-[1.05]"
           >
-            Discover Your Signature Scent
+            Discover Your
+            <br />
+            <span className="italic text-gold-600">Signature Scent</span>
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="text-sm sm:text-base text-zinc-300 dark:text-zinc-300 max-w-2xl mx-auto leading-relaxed"
+            className="text-sm sm:text-base text-zinc-500 max-w-xl mx-auto leading-relaxed"
           >
-            Immerse yourself in our curated collection of rare olfactory masterpieces. From intoxicating midnight ambers to delicate rose nectar, find a scent that defines your presence.
+            A curated collection of rare olfactory masterpieces. From intoxicating midnight ambers to delicate rose nectar — find a scent that defines your presence.
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.45 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2"
           >
             <Link
               href="/shop"
-              className="w-full sm:w-auto bg-gradient-to-r from-gold-600 via-gold-500 to-gold-400 hover:brightness-110 text-zinc-950 font-bold text-xs px-8 py-4 rounded-xl uppercase tracking-widest flex items-center justify-center space-x-2 transition-all shadow-xl shadow-gold-950/50"
+              className="w-full sm:w-auto bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs px-9 py-4 rounded-full uppercase tracking-widest flex items-center justify-center space-x-2 transition-all"
             >
               <span>Explore The Collection</span>
               <ArrowRight className="w-4 h-4" />
@@ -88,41 +81,45 @@ export default function HomePage() {
 
             <Link
               href="/about"
-              className="w-full sm:w-auto bg-white/90 hover:bg-zinc-100 border border-zinc-200 text-zinc-800 font-semibold text-xs px-8 py-4 rounded-xl uppercase tracking-widest transition-all backdrop-blur-md dark:bg-zinc-900/80 dark:hover:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-200"
+              className="w-full sm:w-auto bg-transparent border border-zinc-300 hover:border-zinc-900 text-zinc-800 font-semibold text-xs px-9 py-4 rounded-full uppercase tracking-widest transition-all"
             >
-              Our Story & Heritage
+              Our Story
             </Link>
           </motion.div>
         </div>
+        <div className="h-px bg-zinc-200 dark:bg-zinc-200" />
       </section>
 
-      {/* 2. Shop by Category */}
-      <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="text-center space-y-2">
-          <span className="text-xs font-semibold uppercase tracking-widest text-gold-400">
+      {/* 2. Shop by Category — editorial, light */}
+      <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="text-center space-y-3">
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-600">
             Curated Collections
           </span>
-          <h2 className="font-serif text-3xl font-bold text-zinc-900 dark:text-zinc-100">
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-zinc-100">
             Shop By Gender & Style
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Link
             href="/shop?category=women"
-            className="group relative h-64 sm:h-80 rounded-2xl overflow-hidden border border-zinc-800 hover:border-gold-500/50 transition-all shadow-xl"
+            className="group block"
           >
-            <img
-              src="https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=800"
-              alt="Women Fragrances"
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6 space-y-1">
-              <span className="text-xs text-gold-400 uppercase tracking-wider font-semibold">For Her</span>
-              <h3 className="font-serif text-2xl font-bold text-zinc-100">Women&apos;s Collection</h3>
-              <p className="text-xs text-zinc-400 group-hover:text-gold-300 flex items-center space-x-1 transition-colors">
-                <span>Explore Floral & Gourmand</span>
+            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-zinc-100">
+              <img
+                src="https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=800"
+                alt="Women Fragrances"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+            </div>
+            <div className="pt-4 text-center space-y-1">
+              <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-semibold">For Her</span>
+              <h3 className="font-serif text-xl font-bold text-zinc-900 dark:text-zinc-100">
+                Women&apos;s Collection
+              </h3>
+              <p className="text-xs text-zinc-500 flex items-center justify-center space-x-1 transition-colors group-hover:text-gold-600">
+                <span>Floral & Gourmand</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </p>
             </div>
@@ -130,19 +127,22 @@ export default function HomePage() {
 
           <Link
             href="/shop?category=men"
-            className="group relative h-64 sm:h-80 rounded-2xl overflow-hidden border border-zinc-800 hover:border-gold-500/50 transition-all shadow-xl"
+            className="group block"
           >
-            <img
-              src="https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=800"
-              alt="Men Fragrances"
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6 space-y-1">
-              <span className="text-xs text-gold-400 uppercase tracking-wider font-semibold">For Him</span>
-              <h3 className="font-serif text-2xl font-bold text-zinc-100">Men&apos;s Collection</h3>
-              <p className="text-xs text-zinc-400 group-hover:text-gold-300 flex items-center space-x-1 transition-colors">
-                <span>Explore Woody & Aquatic</span>
+            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-zinc-100">
+              <img
+                src="https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=800"
+                alt="Men Fragrances"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+            </div>
+            <div className="pt-4 text-center space-y-1">
+              <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-semibold">For Him</span>
+              <h3 className="font-serif text-xl font-bold text-zinc-900 dark:text-zinc-100">
+                Men&apos;s Collection
+              </h3>
+              <p className="text-xs text-zinc-500 flex items-center justify-center space-x-1 transition-colors group-hover:text-gold-600">
+                <span>Woody & Aquatic</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </p>
             </div>
@@ -150,19 +150,22 @@ export default function HomePage() {
 
           <Link
             href="/shop?category=unisex"
-            className="group relative h-64 sm:h-80 rounded-2xl overflow-hidden border border-zinc-800 hover:border-gold-500/50 transition-all shadow-xl"
+            className="group block"
           >
-            <img
-              src="https://images.unsplash.com/photo-1563178406-4cdc2923acbc?auto=format&fit=crop&q=80&w=800"
-              alt="Unisex Fragrances"
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6 space-y-1">
-              <span className="text-xs text-gold-400 uppercase tracking-wider font-semibold">Universal</span>
-              <h3 className="font-serif text-2xl font-bold text-zinc-100">Unisex & Oud Collection</h3>
-              <p className="text-xs text-zinc-400 group-hover:text-gold-300 flex items-center space-x-1 transition-colors">
-                <span>Explore Amber & Spice</span>
+            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-zinc-100">
+              <img
+                src="https://images.unsplash.com/photo-1563178406-4cdc2923acbc?auto=format&fit=crop&q=80&w=800"
+                alt="Unisex Fragrances"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+            </div>
+            <div className="pt-4 text-center space-y-1">
+              <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-semibold">Universal</span>
+              <h3 className="font-serif text-xl font-bold text-zinc-900 dark:text-zinc-100">
+                Unisex & Oud Collection
+              </h3>
+              <p className="text-xs text-zinc-500 flex items-center justify-center space-x-1 transition-colors group-hover:text-gold-600">
+                <span>Amber & Spice</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </p>
             </div>
@@ -171,19 +174,19 @@ export default function HomePage() {
       </ScrollReveal>
 
       {/* 3. Best Sellers */}
-      <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-zinc-800 pb-4">
+      <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-zinc-200 pb-4">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-widest text-gold-400">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-600">
               Most Coveted
             </span>
-            <h2 className="font-serif text-3xl font-bold text-zinc-900 dark:text-zinc-100 mt-1">
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-zinc-100 mt-2">
               Best Sellers
             </h2>
           </div>
           <Link
             href="/shop"
-            className="text-xs text-gold-400 hover:text-gold-300 flex items-center space-x-1 mt-2 sm:mt-0 font-medium"
+            className="text-xs text-zinc-500 hover:text-zinc-900 flex items-center space-x-1 mt-2 sm:mt-0 font-medium transition-colors dark:hover:text-zinc-100"
           >
             <span>View All Products ({allProducts.length})</span>
             <ArrowRight className="w-4 h-4" />
@@ -202,58 +205,58 @@ export default function HomePage() {
         </div>
       </ScrollReveal>
 
-      {/* 4. Brand Value Highlight */}
-      <ScrollReveal className="bg-zinc-50 border-y border-gold-500/20 py-16 dark:bg-zinc-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+      {/* 4. Brand Value Highlight — light, minimal */}
+      <ScrollReveal className="bg-zinc-50 dark:bg-zinc-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
           <motion.div
             whileHover={{ y: -4 }}
-            className="space-y-3 p-6 rounded-2xl bg-white border border-zinc-200 hover:border-gold-500/30 transition-colors shadow-sm dark:bg-zinc-950/50 dark:border-zinc-800"
+            className="text-center space-y-4"
           >
-            <div className="w-12 h-12 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-400 mx-auto">
+            <div className="w-14 h-14 mx-auto rounded-full border border-gold-500/40 text-gold-600 flex items-center justify-center">
               <Award className="w-6 h-6" />
             </div>
             <h3 className="font-serif text-lg font-bold text-zinc-900 dark:text-zinc-100">Handcrafted Formulations</h3>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              Every bottle is formulated using high-concentration perfume oils sourced from Grasse, France and Arabia for unmatched 24-hour sillage.
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-xs mx-auto">
+              High-concentration perfume oils sourced from Grasse, France and Arabia for unmatched long-lasting sillage.
             </p>
           </motion.div>
 
           <motion.div
             whileHover={{ y: -4 }}
-            className="space-y-3 p-6 rounded-2xl bg-zinc-950/50 border border-zinc-800 hover:border-gold-500/30 transition-colors"
+            className="text-center space-y-4"
           >
-            <div className="w-12 h-12 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-400 mx-auto">
+            <div className="w-14 h-14 mx-auto rounded-full border border-gold-500/40 text-gold-600 flex items-center justify-center">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <h3 className="font-serif text-lg font-bold text-zinc-900 dark:text-zinc-100">100% Genuine & Authentic</h3>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              We stand against counterfeit scents. Every bottle comes with our hologram seal of authenticity and origin guarantee.
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-xs mx-auto">
+              Every bottle carries our hologram seal of authenticity and origin guarantee.
             </p>
           </motion.div>
 
           <motion.div
             whileHover={{ y: -4 }}
-            className="space-y-3 p-6 rounded-2xl bg-zinc-950/50 border border-zinc-800 hover:border-gold-500/30 transition-colors"
+            className="text-center space-y-4"
           >
-            <div className="w-12 h-12 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-400 mx-auto">
+            <div className="w-14 h-14 mx-auto rounded-full border border-gold-500/40 text-gold-600 flex items-center justify-center">
               <HeartHandshake className="w-6 h-6" />
             </div>
             <h3 className="font-serif text-lg font-bold text-zinc-900 dark:text-zinc-100">Concierge Service</h3>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              Unsure which scent fits your aura? Chat with our fragrance consultants in {siteConfig.location.city} for personalized recommendations.
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-xs mx-auto">
+              Not sure which scent fits your aura? Chat with our fragrance consultants for personalized recommendations.
             </p>
           </motion.div>
         </div>
       </ScrollReveal>
 
       {/* 5. New Arrivals Grid */}
-      <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="flex justify-between items-end border-b border-zinc-800 pb-4">
+      <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="flex justify-between items-end border-b border-zinc-200 pb-4">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-widest text-gold-400">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-600">
               Fresh Off The Press
             </span>
-            <h2 className="font-serif text-3xl font-bold text-zinc-900 dark:text-zinc-100 mt-1">
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-zinc-100 mt-2">
               New Arrivals
             </h2>
           </div>
@@ -272,12 +275,12 @@ export default function HomePage() {
       </ScrollReveal>
 
       {/* 6. Instagram / Social Feed Section */}
-      <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="text-center space-y-2">
-          <span className="text-xs font-semibold uppercase tracking-widest text-gold-400">
+      <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="text-center space-y-3">
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-600">
             Follow Our Journey
           </span>
-          <h2 className="font-serif text-3xl font-bold text-zinc-900 dark:text-zinc-100">
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-zinc-100">
             @debsfragrance
           </h2>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-md mx-auto">
@@ -285,7 +288,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=400",
             "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=400",
@@ -294,16 +297,16 @@ export default function HomePage() {
           ].map((img, i) => (
             <motion.div
               key={i}
-              whileHover={{ scale: 1.03 }}
-              className="aspect-square rounded-xl overflow-hidden border border-zinc-800 hover:border-gold-500/50 transition-colors relative group cursor-pointer"
+              whileHover={{ scale: 1.02 }}
+              className="aspect-square rounded-2xl overflow-hidden bg-zinc-100 relative group cursor-pointer"
             >
               <img
                 src={img}
                 alt={`Instagram post ${i + 1}`}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <Instagram className="w-6 h-6 text-gold-400" />
+              <div className="absolute inset-0 bg-zinc-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <Instagram className="w-6 h-6 text-white" />
               </div>
             </motion.div>
           ))}
@@ -311,25 +314,25 @@ export default function HomePage() {
       </ScrollReveal>
 
       {/* 7. Newsletter Section */}
-      <ScrollReveal className="bg-zinc-50 border-y border-gold-500/20 py-16 dark:bg-zinc-900">
-        <div className="max-w-2xl mx-auto px-4 text-center space-y-6">
-          <span className="text-xs font-semibold uppercase tracking-widest text-gold-400">
+      <ScrollReveal className="bg-champagne dark:bg-zinc-100">
+        <div className="max-w-2xl mx-auto px-4 py-16 text-center space-y-6">
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-700">
             Stay In The Know
           </span>
-          <h2 className="font-serif text-3xl font-bold text-zinc-900 dark:text-zinc-100">
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-zinc-900">
             Join The Fragrance Club
           </h2>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
-            Be the first to discover new arrivals, exclusive offers, and private invitation events. VIP members receive early access to limited editions.
+          <p className="text-sm text-zinc-500 leading-relaxed">
+            Be the first to discover new arrivals and private invitation events. Members receive early access to limited editions.
           </p>
 
           {newsletterSubmitted ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="bg-emerald-950/80 border border-emerald-500 text-emerald-300 p-4 rounded-xl text-xs font-semibold flex items-center justify-center space-x-2 max-w-md mx-auto"
+              className="bg-emerald-50 border border-emerald-300 text-emerald-700 p-4 rounded-xl text-xs font-semibold flex items-center justify-center space-x-2 max-w-md mx-auto"
             >
-              <Check className="w-4 h-4 text-emerald-400" />
+              <Check className="w-4 h-4 text-emerald-500" />
               <span>Welcome to the club! Check your inbox for a confirmation.</span>
             </motion.div>
           ) : (
@@ -340,11 +343,11 @@ export default function HomePage() {
                 placeholder="Enter your email address"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
-                className="flex-1 bg-white border border-zinc-300 rounded-xl px-4 py-3 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-700 dark:text-zinc-100"
+                className="flex-1 bg-white border border-zinc-300 rounded-full px-5 py-3 text-sm text-zinc-900 focus:outline-none focus:border-gold-500"
               />
               <button
                 type="submit"
-                className="bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-zinc-950 font-bold text-xs px-6 py-3 rounded-xl uppercase tracking-wider flex items-center justify-center space-x-2 transition-all shadow-lg"
+                className="bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs px-7 py-3 rounded-full uppercase tracking-wider flex items-center justify-center space-x-2 transition-all"
               >
                 <Send className="w-4 h-4" />
                 <span>Subscribe</span>
@@ -352,7 +355,7 @@ export default function HomePage() {
             </form>
           )}
 
-          <p className="text-[10px] text-zinc-400 dark:text-zinc-500">
+          <p className="text-[10px] text-zinc-400">
             No spam, ever. Unsubscribe anytime. Read our Privacy Policy.
           </p>
         </div>

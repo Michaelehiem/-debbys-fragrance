@@ -4,9 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Product, ProductSize } from "@/types";
 import { useCart } from "@/context/CartContext";
-import { useWishlist } from "@/context/WishlistContext";
 import { useAdmin } from "@/context/AdminContext";
-import { Heart, Eye, Star, ShoppingBag, Check } from "lucide-react";
+import { Eye, Star, ShoppingBag, Check } from "lucide-react";
 import { formatNaira } from "@/lib/utils";
 
 interface ProductCardProps {
@@ -16,7 +15,6 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }) => {
   const { addToCart } = useCart();
-  const { toggleWishlist, isInWishlist } = useWishlist();
   const { overrides } = useAdmin();
 
   // Check if Admin uploaded a custom image or details for this product!
@@ -39,8 +37,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 2000);
   };
-
-  const isLiked = isInWishlist(product.id);
 
   return (
     <div className="group relative bg-white border border-zinc-200 hover:border-gold-500/50 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between hover:shadow-xl dark:bg-zinc-900/80 dark:border-zinc-800/80 dark:hover:shadow-gold-950/20">
@@ -73,22 +69,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
 
         {/* Action Overlay */}
         <div className="absolute top-3 right-3 flex flex-col space-y-2 z-10">
-          {/* Wishlist Button */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              toggleWishlist(product.id);
-            }}
-            className={`p-2 rounded-full backdrop-blur-md transition-all shadow ${
-              isLiked
-                ? "bg-rose-600 text-white"
-                : "bg-white/70 text-zinc-500 hover:text-rose-500 hover:bg-zinc-100 dark:bg-zinc-900/70 dark:text-zinc-300 dark:hover:text-rose-400 dark:hover:bg-zinc-900"
-            }`}
-            aria-label="Wishlist"
-          >
-            <Heart className="w-4 h-4 fill-current" />
-          </button>
-
           {/* Quick View Button */}
           {onQuickView && (
             <button

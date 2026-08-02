@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/CartContext";
-import { useWishlist } from "@/context/WishlistContext";
 import { useAdmin } from "@/context/AdminContext";
 import { useReviews } from "@/context/ReviewContext";
 import { Product } from "@/types";
@@ -13,14 +12,13 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { ImageZoom } from "@/components/ui/ImageZoom";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { formatNaira } from "@/lib/utils";
-import { Star, ShoppingBag, Heart, ShieldCheck, Truck, RotateCcw, Check, Share2, ChevronRight, Facebook, Twitter, Link as LinkIcon, MessageCircle } from "lucide-react";
+import { Star, ShoppingBag, ShieldCheck, Truck, RotateCcw, Check, Share2, ChevronRight, Facebook, Twitter, Link as LinkIcon, MessageCircle } from "lucide-react";
 
 export default function ProductDetailPage() {
   const params = useParams();
   const productId = params.id as string;
 
   const { addToCart } = useCart();
-  const { toggleWishlist, isInWishlist } = useWishlist();
   const { overrides, allProducts } = useAdmin();
   const { getProductReviews, addReview, getAverageRating } = useReviews();
 
@@ -228,41 +226,27 @@ export default function ProductDetailPage() {
 
               {/* CTAs + Share */}
               <div className="space-y-3 pt-2">
-                <div className="flex space-x-4">
-                  <motion.button
-                    whileTap={{ scale: 0.97 }}
-                    onClick={handleAddToCart}
-                    className={`flex-1 py-4 rounded-xl font-bold uppercase tracking-widest text-xs flex items-center justify-center space-x-2 transition-all ${
-                      isAdded
-                        ? "bg-emerald-600 text-white"
-                        : "bg-gradient-to-r from-gold-600 via-gold-500 to-gold-400 hover:brightness-110 text-zinc-950 shadow-xl shadow-gold-950/40"
-                    }`}
-                  >
-                    {isAdded ? (
-                      <>
-                        <Check className="w-4 h-4" />
-                        <span>Added To Bag</span>
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingBag className="w-4 h-4" />
-                        <span>Add To Bag · {formatNaira(selectedSize.price)}</span>
-                      </>
-                    )}
-                  </motion.button>
-
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() => toggleWishlist(product.id)}
-                    className={`p-4 rounded-xl border transition-all ${
-                      isInWishlist(product.id)
-                        ? "bg-rose-600 text-white border-rose-600"
-                        : "bg-white border-zinc-200 text-zinc-500 hover:text-rose-500 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:hover:text-rose-400"
-                    }`}
-                  >
-                    <Heart className="w-5 h-5 fill-current" />
-                  </motion.button>
-                </div>
+                <motion.button
+                  whileTap={{ scale: 0.97 }}
+                  onClick={handleAddToCart}
+                  className={`w-full py-4 rounded-xl font-bold uppercase tracking-widest text-xs flex items-center justify-center space-x-2 transition-all ${
+                    isAdded
+                      ? "bg-emerald-600 text-white"
+                      : "bg-gradient-to-r from-gold-600 via-gold-500 to-gold-400 hover:brightness-110 text-zinc-950 shadow-xl shadow-gold-950/40"
+                  }`}
+                >
+                  {isAdded ? (
+                    <>
+                      <Check className="w-4 h-4" />
+                      <span>Added To Bag</span>
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingBag className="w-4 h-4" />
+                      <span>Add To Bag · {formatNaira(selectedSize.price)}</span>
+                    </>
+                  )}
+                </motion.button>
 
                 {/* Share Buttons */}
                 <div className="relative">

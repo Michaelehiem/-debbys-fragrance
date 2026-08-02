@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Product, ProductSize } from "@/types";
 import { useCart } from "@/context/CartContext";
 import { useAdmin } from "@/context/AdminContext";
-import { X, Star, ShoppingBag, Check, ShieldCheck, Heart } from "lucide-react";
+import { X, Star, ShoppingBag, Check } from "lucide-react";
 import { formatNaira } from "@/lib/utils";
 
 interface QuickViewModalProps {

@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { CartProvider } from "@/context/CartContext";
-import { WishlistProvider } from "@/context/WishlistContext";
 import { AdminProvider } from "@/context/AdminContext";
 import { ReviewProvider } from "@/context/ReviewContext";
 import { Navbar } from "@/components/layout/Navbar";
@@ -70,16 +69,14 @@ export default function RootLayout({
         <AdminProvider>
           <ThemeProvider>
             <CartProvider>
-              <WishlistProvider>
-                <ReviewProvider>
-                  <Navbar />
-                  <main className="flex-1">{children}</main>
-                  <Footer />
-                  <CartDrawer />
-                  <CartToast />
-                  <BackToTop />
-                </ReviewProvider>
-              </WishlistProvider>
+              <ReviewProvider>
+                <Navbar />
+                <main className="flex-1">{children}</main>
+                <Footer />
+                <CartDrawer />
+                <CartToast />
+                <BackToTop />
+              </ReviewProvider>
             </CartProvider>
           </ThemeProvider>
         </AdminProvider>

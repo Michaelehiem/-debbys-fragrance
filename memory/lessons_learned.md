@@ -51,6 +51,17 @@
 
 ---
 
+## [2026-08-02] — Stale `.next/types` break `tsc` after deleting a route
+- **Context:** Deleted `src/app/account/page.tsx` as part of removing customer auth, then ran `npx tsc --noEmit`.
+- **Error:** `error TS2307: Cannot find module '../../../../src/app/account/page.js'` — errors point inside `.next/types/app/account/page.ts`, a generated file.
+- **Root cause:** Next.js generates route type stubs into `.next/types`. After deleting a route, the stale stub still exists and tsc resolves it before my source tree.
+- **Fix:** Delete the `.next` build cache (`Remove-Item -LiteralPath ".next" -Recurse -Force`) and re-run `tsc`. Exit 0 after clean.
+- **Workflow updated?** No
+- **Tool updated?** No
+- **Watch out for:** Whenever you delete or rename an app route, clear `.next` before type-checking or building. Also `npx tsc --noEmit` on this machine takes ~4 minutes (needs a 420s+ timeout); on the first run it may exceed 180s just resolving npx.
+
+---
+
 <!-- Template:
 ## [YYYY-MM-DD] — [Brief Error Title]
 - **Context:** What task was being run when this happened

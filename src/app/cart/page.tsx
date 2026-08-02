@@ -1,39 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useAdmin } from "@/context/AdminContext";
 import { formatNaira } from "@/lib/utils";
-import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, Tag, Check, X } from "lucide-react";
-import { siteConfig } from "@/config/site";
+import { Trash2, Plus, Minus, ArrowRight, ShoppingBag } from "lucide-react";
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, subtotal, clearCart } = useCart();
   const { overrides } = useAdmin();
 
-  const [promoCode, setPromoCode] = useState("");
-  const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
-  const [promoError, setPromoError] = useState(false);
-
-  const PROMO_CODES: Record<string, number> = siteConfig.promoCodes;
-
-  const handleApplyPromo = () => {
-    const code = promoCode.trim().toUpperCase();
-    if (PROMO_CODES[code]) {
-      setAppliedPromo(code);
-      setPromoError(false);
-    } else {
-      setPromoError(true);
-      setAppliedPromo(null);
-      setTimeout(() => setPromoError(false), 3000);
-    }
-  };
-
-  const discountPercent = appliedPromo ? PROMO_CODES[appliedPromo] : 0;
-  const discountAmount = Math.round(subtotal * (discountPercent / 100));
   const shippingFee = subtotal >= 350000 || subtotal === 0 ? 0 : 5000;
-  const grandTotal = subtotal - discountAmount + shippingFee;
+  const grandTotal = subtotal + shippingFee;
 
   return (
     <div className="min-h-screen bg-white text-zinc-900 py-12 px-4 sm:px-6 lg:px-8 font-sans dark:bg-zinc-950 dark:text-zinc-100">
@@ -139,60 +118,11 @@ export default function CartPage() {
                 Order Summary
               </h2>
 
-              {/* Promo Code */}
-              <div className="space-y-2">
-                <label className="text-xs text-zinc-400 font-medium flex items-center space-x-1.5">
-                  <Tag className="w-3 h-3" />
-                  <span>Promo Code</span>
-                </label>
-                {appliedPromo ? (
-                  <div className="flex items-center justify-between bg-emerald-950/60 border border-emerald-700 rounded-lg px-3 py-2">
-                    <div className="flex items-center space-x-2">
-                      <Check className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="text-xs font-bold text-emerald-300">{appliedPromo} (-{discountPercent}%)</span>
-                    </div>
-                    <button
-                      onClick={() => { setAppliedPromo(null); setPromoCode(""); }}
-                      className="text-emerald-400 hover:text-rose-400 transition-colors"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex space-x-2">
-                    <input
-                      type="text"
-                      placeholder="e.g. DEBBY10"
-                      value={promoCode}
-                      onChange={(e) => setPromoCode(e.target.value)}
-                      className={`flex-1 bg-white border rounded-lg px-3 py-2 text-xs text-zinc-900 focus:outline-none transition-colors dark:bg-zinc-950 dark:text-zinc-100 ${
-                        promoError ? "border-rose-500" : "border-zinc-300 focus:border-gold-500 dark:border-zinc-800"
-                      }`}
-                    />
-                    <button
-                      onClick={handleApplyPromo}
-                      className="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition-all dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:border-zinc-600 dark:text-zinc-200"
-                    >
-                      Apply
-                    </button>
-                  </div>
-                )}
-                {promoError && (
-                  <p className="text-[10px] text-rose-400">Invalid promo code. Try DEBBY10, WELCOME15, or VIP20.</p>
-                )}
-              </div>
-
               <div className="space-y-3 text-xs text-zinc-600 dark:text-zinc-300">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
                   <span className="font-semibold text-zinc-900 dark:text-zinc-100">{formatNaira(subtotal)}</span>
                 </div>
-                {discountAmount > 0 && (
-                  <div className="flex justify-between text-emerald-400">
-                    <span>Discount ({discountPercent}%)</span>
-                    <span className="font-semibold">-{formatNaira(discountAmount)}</span>
-                  </div>
-                )}
                 <div className="flex justify-between">
                   <span>Estimated Shipping (Nigeria)</span>
                   <span>{shippingFee === 0 ? "FREE" : formatNaira(shippingFee)}</span>

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, Lock, Eye, EyeOff } from "lucide-react";
 import { siteConfig } from "@/config/site";
+import { useRouter } from "next/navigation";
 
 const ADMIN_PASSWORD = siteConfig.adminPassword;
 
@@ -17,14 +18,26 @@ export const AdminGate: React.FC<AdminGateProps> = ({ children }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(false);
   const [checking, setChecking] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
-    const saved = localStorage.getItem("debby_admin_auth");
-    if (saved === "true") {
+    // The admin panel is hidden. It can only be reached after the exact
+    // keyword has been typed into the search bar (which grants access),
+    // or if the admin is already authenticated on this browser.
+    const hasUnlocked =
+      localStorage.getItem("debby_admin_access") === "true";
+    const alreadyAuthed = localStorage.getItem("debby_admin_auth") === "true";
+
+    if (!hasUnlocked && !alreadyAuthed) {
+      router.replace("/");
+      return;
+    }
+
+    if (alreadyAuthed) {
       setIsAuthenticated(true);
     }
     setChecking(false);
-  }, []);
+  }, [router]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

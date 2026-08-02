@@ -3,7 +3,7 @@ export type GenderCategory = "men" | "women" | "unisex";
 export type FragranceFamily = "floral" | "woody" | "oriental" | "fresh" | "citrus" | "gourmand";
 
 export interface ProductSize {
-  size: "30ml" | "50ml" | "100ml" | "200ml";
+  size: "5ml" | "10ml" | "25ml";
   price: number; // in Naira (₦)
   originalPrice?: number;
 }

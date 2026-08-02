@@ -13,9 +13,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     heartNotes: ["Midnight Jasmine", "Smoked Plum", "Orris Root"],
     baseNotes: ["Dark Amber", "Oud Wood", "Madagascar Vanilla"],
     sizes: [
-      { size: "30ml", price: 45000, originalPrice: 50000 },
-      { size: "50ml", price: 75000 },
-      { size: "100ml", price: 120000, originalPrice: 135000 }
+      { size: "5ml", price: 6000 },
+      { size: "10ml", price: 12000 },
+      { size: "25ml", price: 30000 }
     ],
     images: [
       "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800",
@@ -39,8 +39,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     heartNotes: ["Black Orchid", "Night-Blooming Jasmine", "Peony"],
     baseNotes: ["Indonesian Patchouli", "Warm Amber", "Sensual Musk"],
     sizes: [
-      { size: "50ml", price: 85000 },
-      { size: "100ml", price: 135000, originalPrice: 150000 }
+      { size: "5ml", price: 7000 },
+      { size: "10ml", price: 13500 },
+      { size: "25ml", price: 34000 }
     ],
     images: [
       "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=800",
@@ -65,9 +66,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     heartNotes: ["Neroli", "Sea Salt Accord", "Green Tea"],
     baseNotes: ["White Vetiver", "Clean Cedarwood", "Ambergris"],
     sizes: [
-      { size: "30ml", price: 38000 },
-      { size: "50ml", price: 65000 },
-      { size: "100ml", price: 95000 }
+      { size: "5ml", price: 5000 },
+      { size: "10ml", price: 9500 },
+      { size: "25ml", price: 24000 }
     ],
     images: [
       "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=800",
@@ -91,8 +92,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     heartNotes: ["Golden Amber", "Labdanum", "Myrrh"],
     baseNotes: ["Blonde Tobacco", "Sandalwood", "Tonka Bean"],
     sizes: [
-      { size: "50ml", price: 98000 },
-      { size: "100ml", price: 160000 }
+      { size: "5ml", price: 8000 },
+      { size: "10ml", price: 16000 },
+      { size: "25ml", price: 40000 }
     ],
     images: [
       "https://images.unsplash.com/photo-1563178406-4cdc2923acbc?auto=format&fit=crop&q=80&w=800",
@@ -116,9 +118,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     heartNotes: ["Royal Jasmine Sambac", "Orange Blossom", "Gardenia"],
     baseNotes: ["Australian Sandalwood", "Cashmere Musk", "Vanilla Orchid"],
     sizes: [
-      { size: "30ml", price: 42000 },
-      { size: "50ml", price: 70000 },
-      { size: "100ml", price: 110000 }
+      { size: "5ml", price: 5500 },
+      { size: "10ml", price: 11000 },
+      { size: "25ml", price: 27500 }
     ],
     images: [
       "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=800",
@@ -142,8 +144,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     heartNotes: ["Florentine Iris", "Cedarwood", "Cypress"],
     baseNotes: ["Mysore Sandalwood", "White Amber", "Leather Accord"],
     sizes: [
-      { size: "50ml", price: 80000 },
-      { size: "100ml", price: 130000 }
+      { size: "5ml", price: 6500 },
+      { size: "10ml", price: 13000 },
+      { size: "25ml", price: 32500 }
     ],
     images: [
       "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=800",
@@ -168,8 +171,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     heartNotes: ["Turkish Rose Absolute", "Centifolia Rose", "Geranium"],
     baseNotes: ["Patchouli Heart", "Vanilla Absolute", "Tonka Bean"],
     sizes: [
-      { size: "50ml", price: 90000 },
-      { size: "100ml", price: 145000 }
+      { size: "5ml", price: 7500 },
+      { size: "10ml", price: 14500 },
+      { size: "25ml", price: 36000 }
     ],
     images: [
       "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=800",
@@ -193,8 +197,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     heartNotes: ["Lavender", "Sage", "Juniper Berry"],
     baseNotes: ["Sun-Bleached Driftwood", "Oakmoss", "Ambroxan"],
     sizes: [
-      { size: "50ml", price: 60000 },
-      { size: "100ml", price: 90000 }
+      { size: "5ml", price: 4500 },
+      { size: "10ml", price: 9000 },
+      { size: "25ml", price: 22500 }
     ],
     images: [
       "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=800",
@@ -219,9 +224,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     heartNotes: ["Bourbon Vanilla", "Heliotrope", "Cocoa Butter"],
     baseNotes: ["Sandalwood", "Benzoin", "White Musk"],
     sizes: [
-      { size: "30ml", price: 40000 },
-      { size: "50ml", price: 68000 },
-      { size: "100ml", price: 105000 }
+      { size: "5ml", price: 5500 },
+      { size: "10ml", price: 10500 },
+      { size: "25ml", price: 26000 }
     ],
     images: [
       "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=800",
@@ -245,8 +250,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     heartNotes: ["Italian Leather", "Birch Tar", "Clove Blossom"],
     baseNotes: ["Haitian Vetiver", "Cade Oil", "Amberwood"],
     sizes: [
-      { size: "50ml", price: 88000 },
-      { size: "100ml", price: 140000 }
+      { size: "5ml", price: 7000 },
+      { size: "10ml", price: 14000 },
+      { size: "25ml", price: 35000 }
     ],
     images: [
       "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800",
@@ -270,8 +276,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     heartNotes: ["Florentine Iris", "Mimosa", "Rose"],
     baseNotes: ["White Suede", "Cedarwood", "Musk"],
     sizes: [
-      { size: "50ml", price: 82000 },
-      { size: "100ml", price: 128000 }
+      { size: "5ml", price: 6500 },
+      { size: "10ml", price: 12800 },
+      { size: "25ml", price: 32000 }
     ],
     images: [
       "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=800"
@@ -292,8 +299,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     heartNotes: ["Cambodian Oud", "Frankincense"],
     baseNotes: ["Civet Accord", "Golden Amber", "Sandalwood"],
     sizes: [
-      { size: "50ml", price: 120000 },
-      { size: "100ml", price: 195000 }
+      { size: "5ml", price: 10000 },
+      { size: "10ml", price: 19500 },
+      { size: "25ml", price: 49000 }
     ],
     images: [
       "https://images.unsplash.com/photo-1563178406-4cdc2923acbc?auto=format&fit=crop&q=80&w=800"

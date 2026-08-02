@@ -5,33 +5,13 @@ import { useCart } from "@/context/CartContext";
 import { useAdmin } from "@/context/AdminContext";
 import { formatNaira } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
-import { Lock, Truck, Tag, Check, X, MessageCircle, ArrowRight, CheckCircle2, AlertTriangle } from "lucide-react";
+import { Lock, Truck, MessageCircle, ArrowRight, CheckCircle2, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 
 export default function CheckoutPage() {
   const { cart, subtotal, clearCart } = useCart();
   const { overrides } = useAdmin();
   const [step, setStep] = useState<"details" | "success">("details");
-  const [promoCode, setPromoCode] = useState("");
-  const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
-  const [promoError, setPromoError] = useState(false);
-
-  const PROMO_CODES: Record<string, number> = siteConfig.promoCodes;
-
-  const handleApplyPromo = () => {
-    const code = promoCode.trim().toUpperCase();
-    if (PROMO_CODES[code]) {
-      setAppliedPromo(code);
-      setPromoError(false);
-    } else {
-      setPromoError(true);
-      setAppliedPromo(null);
-      setTimeout(() => setPromoError(false), 3000);
-    }
-  };
-
-  const discountPercent = appliedPromo ? PROMO_CODES[appliedPromo] : 0;
-  const discountAmount = Math.round(subtotal * (discountPercent / 100));
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -43,7 +23,7 @@ export default function CheckoutPage() {
   });
 
   const shippingFee = subtotal >= 350000 || subtotal === 0 ? 0 : 5000;
-  const grandTotal = subtotal - discountAmount + shippingFee;
+  const grandTotal = subtotal + shippingFee;
 
   const buildWhatsAppMessage = () => {
     const lines: string[] = [];
@@ -59,9 +39,6 @@ export default function CheckoutPage() {
 
     lines.push("");
     lines.push(`Subtotal: ${formatNaira(subtotal)}`);
-    if (discountAmount > 0) {
-      lines.push(`Promo (${appliedPromo} -${discountPercent}%): -${formatNaira(discountAmount)}`);
-    }
     lines.push(`Delivery Fee: ${shippingFee === 0 ? "FREE (orders over " + formatNaira(350000) + ")" : formatNaira(shippingFee) + " (varies by location)"}`);
     lines.push(`Total: ${formatNaira(grandTotal)}`);
     lines.push("");
@@ -325,57 +302,6 @@ export default function CheckoutPage() {
                   <span className="font-semibold text-zinc-900 dark:text-zinc-100">{formatNaira(subtotal)}</span>
                 </div>
               </div>
-
-              {/* Promo Code */}
-              <div className="space-y-2 pt-2 border-t border-zinc-200 dark:border-zinc-800">
-                <label className="text-xs text-zinc-500 font-medium flex items-center space-x-1.5 dark:text-zinc-400">
-                  <Tag className="w-3 h-3" />
-                  <span>Promo Code</span>
-                </label>
-                {appliedPromo ? (
-                  <div className="flex items-center justify-between bg-emerald-950/60 border border-emerald-700 rounded-lg px-3 py-2">
-                    <div className="flex items-center space-x-2">
-                      <Check className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="text-xs font-bold text-emerald-300">{appliedPromo} (-{discountPercent}%)</span>
-                    </div>
-                    <button
-                      onClick={() => { setAppliedPromo(null); setPromoCode(""); }}
-                      className="text-emerald-400 hover:text-rose-400 transition-colors"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex space-x-2">
-                    <input
-                      type="text"
-                      placeholder="e.g. DEBBY10"
-                      value={promoCode}
-                      onChange={(e) => setPromoCode(e.target.value)}
-                      className={`flex-1 bg-white border rounded-lg px-3 py-2 text-xs text-zinc-900 focus:outline-none transition-colors dark:bg-zinc-950 dark:text-zinc-100 ${
-                        promoError ? "border-rose-500" : "border-zinc-300 focus:border-gold-500 dark:border-zinc-800"
-                      }`}
-                    />
-                    <button
-                      type="button"
-                      onClick={handleApplyPromo}
-                      className="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition-all dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:border-zinc-600 dark:text-zinc-200"
-                    >
-                      Apply
-                    </button>
-                  </div>
-                )}
-                {promoError && (
-                  <p className="text-[10px] text-rose-400">Invalid code. Try DEBBY10, WELCOME15, or VIP20.</p>
-                )}
-              </div>
-
-              {discountAmount > 0 && (
-                <div className="flex justify-between text-emerald-400">
-                  <span>Discount ({discountPercent}%)</span>
-                  <span className="font-semibold">-{formatNaira(discountAmount)}</span>
-                </div>
-              )}
 
               <div className="flex justify-between">
                 <span className="text-zinc-500 dark:text-zinc-400">Delivery Fee</span>

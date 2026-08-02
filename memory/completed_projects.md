@@ -72,6 +72,37 @@
 
 ---
 
+## Mobile Polish, Lint Cleanup & Deployment — Completed 2026-07-28
+- **Brief:** Finish remaining work — mobile congestion fixes, remaining lint warnings, and deploy the light-theme + threshold changes to production
+- **Deliverable:** Commit `32a9583` pushed to `master`, live at **https://debbys-fragrance.vercel.app**
+- **Key steps:**
+  - Shop filter sidebar → collapsible on mobile; fixed broken `dark:${...}` class and `dark:dark:` typo
+  - Homepage category cards `h-64 sm:h-80`; product page gap `gap-8 lg:gap-12`; account tabs scrollable on mobile
+  - Fixed shop useMemo dep; documented product-detail useEffect with eslint-disable directive
+  - `npm audit`: all vulns need Next 16 major upgrade — deferred for Michael's decision
+  - Git push needed `http.postBuffer 524288000` (curl 55 failure otherwise)
+- **Workflows used:** N/A
+- **Tools used:** next lint, next build, npm audit, git
+- **Notes:** Build verified clean (only intentional no-img-element warnings remain).
+
+---
+
+## Rebrand, Hidden Admin, Promo Removal, Sizes & Light Redesign — Completed 2026-08-02
+- **Brief:** Multi-part website overhaul for Debby's Fragrance: rebrand socials, hidden admin access via search keyword, full removal of customer auth and promo codes, new 5ml/10ml/25ml sizing, and a clean light minimalist premium redesign inspired by betclassyhairs.bumpa.shop
+- **Deliverable:** All source files updated in `src/`
+- **Key steps:**
+  - `site.ts`: removed `promoCodes`, Instagram → `debsfragrance`, added `adminAccessKeyword: "babydebby"` (password `"michaelbaby"` unchanged)
+  - `types` + `data/products.ts`: sizes now strictly 5ml/10ml/25ml with new pricing
+  - `AdminGate`: gated on `localStorage.debby_admin_access`; keyword typed in navbar search unlocks and routes to `/admin` — zero visible admin entry points
+  - Removed customer auth: deleted `account/page.tsx` + `WishlistContext.tsx`, stripped wishlist from all product components
+  - Removed promo codes from cart + checkout (state, logic, UI, WhatsApp message)
+  - Homepage redesigned light/minimal: cream hero, editorial category cards, hairline dividers, airy spacing
+- **Workflows used:** N/A
+- **Tools used:** File editing, `npx tsc --noEmit`, `npx next lint`
+- **Notes:** tsc + lint clean (warnings only). Full `next build` not re-run (slow machine). Wishlist feature gone — guest checkout only; admin auth retained.
+
+---
+
 <!-- Template for future entries:
 
 ## First Production Deployment — Completed 2026-07-26

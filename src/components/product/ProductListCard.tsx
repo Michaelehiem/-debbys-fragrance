@@ -4,9 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Product, ProductSize } from "@/types";
 import { useCart } from "@/context/CartContext";
-import { useWishlist } from "@/context/WishlistContext";
 import { useAdmin } from "@/context/AdminContext";
-import { Heart, Star, ShoppingBag, Check, Eye } from "lucide-react";
+import { Star, ShoppingBag, Check, Eye } from "lucide-react";
 import { formatNaira } from "@/lib/utils";
 
 interface ProductListCardProps {
@@ -16,7 +15,6 @@ interface ProductListCardProps {
 
 export const ProductListCard: React.FC<ProductListCardProps> = ({ product, onQuickView }) => {
   const { addToCart } = useCart();
-  const { toggleWishlist, isInWishlist } = useWishlist();
   const { overrides } = useAdmin();
 
   const override = overrides[product.id];
@@ -37,8 +35,6 @@ export const ProductListCard: React.FC<ProductListCardProps> = ({ product, onQui
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 2000);
   };
-
-  const isLiked = isInWishlist(product.id);
 
   return (
     <div className="group bg-white border border-zinc-200 hover:border-gold-500/50 rounded-xl overflow-hidden transition-all duration-300 flex flex-col sm:flex-row hover:shadow-xl dark:bg-zinc-900/60 dark:border-zinc-800/80 dark:hover:shadow-gold-950/20">
@@ -63,22 +59,6 @@ export const ProductListCard: React.FC<ProductListCardProps> = ({ product, onQui
             </span>
           )}
         </div>
-
-        {/* Wishlist */}
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            toggleWishlist(product.id);
-          }}
-          className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md transition-all shadow z-10 ${
-            isLiked
-              ? "bg-rose-600 text-white"
-              : "bg-white/70 text-zinc-500 hover:text-rose-500 hover:bg-zinc-100 dark:bg-zinc-900/70 dark:text-zinc-300 dark:hover:text-rose-400 dark:hover:bg-zinc-900"
-          }`}
-          aria-label="Wishlist"
-        >
-          <Heart className="w-4 h-4 fill-current" />
-        </button>
       </div>
 
       {/* Content */}

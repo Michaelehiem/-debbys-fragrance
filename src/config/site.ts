@@ -29,21 +29,18 @@ export const siteConfig = {
   // ── Social Media Links ─────────────────────────────────────
   // Paste the FULL URL for each platform. Leave empty to hide the icon.
   socials: {
-    instagram: "https://instagram.com/debby.ib",
+    instagram: "https://instagram.com/debsfragrance",
     facebook: "https://www.facebook.com/share/MNEbRd49X/?mibextid=wwXlfr",       // ← Replace with real Facebook page URL
     tiktok: "https://tiktok.com/@debsfragrance_?_r=1&_t=ZS-98lOgeulfev",      // ← Replace with real TikTok URL
     whatsapp: "https://wa.me/2348145743257",          // ← Replace with your WhatsApp number (no spaces, with country code)
     twitter: "",  // Optional — leave empty to hide
   },
 
-  // ── Promo Codes ────────────────────────────────────────────
-  promoCodes: {
-    DEBBY10: 10,
-    WELCOME15: 15,
-    VIP20: 20,
-  },
-
-  // ── Admin ──────────────────────────────────────────────────
+  // ── Hidden Admin ───────────────────────────────────────────
+  // The admin panel is NOT linked anywhere on the site. It is only
+  // reachable by typing the exact keyword below into the search bar,
+  // which unlocks and redirects to the /admin login page.
+  adminAccessKeyword: "babydebby",
   adminPassword: "michaelbaby",
 
   // ── SEO Defaults ───────────────────────────────────────────
