@@ -62,6 +62,24 @@
 
 ---
 
+## [2026-08-04] — Vercel "changes not live" was a Production Branch config issue, not a code issue
+- **Context:** Michael reported the rebrand changes weren't reflected on https://debbys-fragrance.vercel.app even though commit `4b7fd59` was pushed to GitHub.
+- **Root cause:** The Vercel GitHub integration WAS connected, but the project's **Production Branch was not `master`**. Every push after 07-26 created a **Preview** deployment (confirmed via GitHub deployments API — environment `Preview`), never Production. The live alias kept serving the last Production build from 07-26 (commit `2d441bb`).
+- **Diagnosis:** `git log origin/master..master` empty (commit was pushed); GitHub status API showed commit `4b7fd59` → Vercel deployment "completed"; `/repos/.../deployments` showed all recent deployments as `"environment": "Preview"` with `"production_environment": false`.
+- **Fix:** In Vercel dashboard → Project → Settings → Git → **Production Branch** set to `master`, then Promote the latest Preview deployment to Production. Verified new build live after.
+- **Watch out for:** When code is pushed but the site looks stale, always check Vercel deployment ENVIRONMENT first (via GitHub deployments API — no auth needed for public repos). The `npx vercel` CLI on this machine has no saved login and its install hangs (slow machine) — use the dashboard instead.
+- **Lesson:** The 07-28 "Vercel auto-deploys on push" note in memory was wrong — only the 07-26 manual `npx vercel --prod` ever hit Production.
+
+---
+
+## [2026-08-04] — Removed dark mode entirely (light-only site)
+- **Context:** Michael wanted the whole site light-only, no dark mode toggle.
+- **Approach:** Removed the `ThemeProvider` + `ThemeContext`, removed the Navbar theme toggle (and `Sun`/`Moon` imports), removed the pre-hydration `<script>` and `dark:bg-zinc-950` body classes from `layout.tsx`, deleted `src/context/ThemeContext.tsx`.
+- **Why it's safe:** Tailwind uses `darkMode: "class"` — dark variants only apply when `.dark` is on `<html>`. With the provider/script gone, `.dark` is never added, so ALL `dark:` classes across the codebase are inert. Stale `localStorage.debby_theme` values can no longer force dark mode. Do NOT remove `darkMode: "class"` from `tailwind.config.ts` — Tailwind would fall back to `media` (auto-dark on OS dark mode).
+- **Watch out for:** The leftover `dark:` classes are dead CSS but harmless; stripping them all is a large risky diff and was skipped.
+
+---
+
 <!-- Template:
 ## [YYYY-MM-DD] — [Brief Error Title]
 - **Context:** What task was being run when this happened

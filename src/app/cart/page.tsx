@@ -15,7 +15,7 @@ export default function CartPage() {
   const grandTotal = subtotal + shippingFee;
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900 py-12 px-4 sm:px-6 lg:px-8 font-sans dark:bg-zinc-950 dark:text-zinc-100">
+    <div className="min-h-screen bg-white text-zinc-900 py-12 px-5 sm:px-6 lg:px-8 font-sans dark:bg-zinc-950 dark:text-zinc-100">
       <div className="max-w-5xl mx-auto space-y-8">
         <h1 className="font-serif text-3xl sm:text-4xl font-bold text-zinc-900 border-b border-zinc-200 pb-4 dark:text-zinc-100 dark:border-zinc-800">
           Shopping Cart ({cart.length} items)

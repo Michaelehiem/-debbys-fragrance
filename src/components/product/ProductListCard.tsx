@@ -62,7 +62,7 @@ export const ProductListCard: React.FC<ProductListCardProps> = ({ product, onQui
       </div>
 
       {/* Content */}
-      <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between space-y-3 font-sans">
+      <div className="flex-1 p-5 sm:p-6 flex flex-col justify-between space-y-4 font-sans">
         <div className="space-y-1">
           <div className="flex justify-between items-center text-xs text-gold-500 font-medium tracking-wide uppercase">
             <span>{product.brand}</span>
@@ -93,7 +93,7 @@ export const ProductListCard: React.FC<ProductListCardProps> = ({ product, onQui
               <button
                 key={s.size}
                 onClick={() => setSelectedSize(s)}
-                className={`text-[10px] px-2 py-0.5 rounded border transition-all ${
+                className={`text-[10px] px-2.5 py-1 rounded border transition-all ${
                   selectedSize.size === s.size
                     ? "bg-gold-500/20 border-gold-500 text-gold-700 font-bold dark:text-gold-300"
                     : "border-zinc-200 text-zinc-500 hover:border-zinc-300 dark:border-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-700"
@@ -125,10 +125,10 @@ export const ProductListCard: React.FC<ProductListCardProps> = ({ product, onQui
                   e.preventDefault();
                   onQuickView(product);
                 }}
-                className="p-2 bg-white border border-zinc-200 rounded-lg text-zinc-500 hover:text-gold-600 hover:border-gold-500/50 transition-all dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-gold-400"
+                className="p-1.5 bg-white border border-zinc-200 rounded-lg text-zinc-500 hover:text-gold-600 hover:border-gold-500/50 transition-all dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-gold-400"
                 aria-label="Quick View"
               >
-                <Eye className="w-4 h-4" />
+                <Eye className="w-3.5 h-3.5" />
               </button>
             )}
 
@@ -142,12 +142,12 @@ export const ProductListCard: React.FC<ProductListCardProps> = ({ product, onQui
             >
               {isAdded ? (
                 <>
-                  <Check className="w-3.5 h-3.5" />
+                  <Check className="w-3 h-3" />
                   <span>Added</span>
                 </>
               ) : (
                 <>
-                  <ShoppingBag className="w-3.5 h-3.5" />
+                  <ShoppingBag className="w-3 h-3" />
                   <span>Add to Bag</span>
                 </>
               )}

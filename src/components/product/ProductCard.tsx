@@ -76,17 +76,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
                 e.preventDefault();
                 onQuickView(product);
               }}
-              className="p-2 rounded-full bg-white/70 text-zinc-500 hover:text-gold-600 hover:bg-zinc-100 backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 shadow dark:bg-zinc-900/70 dark:text-zinc-300 dark:hover:text-gold-400 dark:hover:bg-zinc-900"
+              className="p-1.5 rounded-full bg-white/70 text-zinc-500 hover:text-gold-600 hover:bg-zinc-100 backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 shadow dark:bg-zinc-900/70 dark:text-zinc-300 dark:hover:text-gold-400 dark:hover:bg-zinc-900"
               aria-label="Quick View"
             >
-              <Eye className="w-4 h-4" />
+              <Eye className="w-3.5 h-3.5" />
             </button>
           )}
         </div>
       </div>
 
       {/* Content Container */}
-      <div className="p-4 flex-1 flex flex-col justify-between space-y-3 font-sans">
+      <div className="p-5 flex-1 flex flex-col justify-between space-y-4 font-sans">
         <div>
           <div className="flex justify-between items-center text-xs text-gold-500 font-medium tracking-wide uppercase">
             <span>{product.brand}</span>
@@ -116,7 +116,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
                 <button
                   key={s.size}
                   onClick={() => setSelectedSize(s)}
-                  className={`text-[10px] px-2 py-0.5 rounded border transition-all ${
+                  className={`text-[10px] px-2.5 py-1 rounded border transition-all ${
                     selectedSize.size === s.size
                       ? "bg-gold-500/20 border-gold-500 text-gold-700 font-bold dark:text-gold-300"
                       : "border-zinc-200 text-zinc-500 hover:border-zinc-300 dark:border-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-700"
@@ -153,12 +153,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
             >
               {isAdded ? (
                 <>
-                  <Check className="w-3.5 h-3.5" />
+                  <Check className="w-3 h-3" />
                   <span>Added</span>
                 </>
               ) : (
                 <>
-                  <ShoppingBag className="w-3.5 h-3.5" />
+                  <ShoppingBag className="w-3 h-3" />
                   <span>Add</span>
                 </>
               )}

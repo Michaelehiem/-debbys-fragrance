@@ -24,7 +24,7 @@ export default function AboutPage() {
       </section>
 
       {/* Story Sections */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <section className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <div className="space-y-4">
           <span className="text-xs text-gold-600 font-bold uppercase tracking-widest dark:text-gold-400">
             The Beginnings
@@ -68,7 +68,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <section className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 space-y-12">
         <div className="text-center space-y-2">
           <span className="text-xs text-gold-600 font-bold uppercase tracking-widest dark:text-gold-400">Our Guiding Pillars</span>
           <h2 className="font-serif text-3xl font-bold text-zinc-900 dark:text-zinc-100">What Sets {siteConfig.businessName} Apart</h2>

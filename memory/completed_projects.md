@@ -103,9 +103,17 @@
 
 ---
 
-<!-- Template for future entries:
+## Full Build Verification Post-Overhaul — Completed 2026-08-03
+- **Brief:** Run the full `npm run build` that was deferred after the rebrand/redesign overhaul (only tsc + lint verified on 08-02)
+- **Deliverable:** Clean production build confirmed — 10 routes generated, lint/type checks pass
+- **Key steps:** Cleared `.next` cache → `npm run build` ✅ passed (warnings only: intentional no-img-element)
+- **Workflows used:** N/A
+- **Tools used:** bash (`Remove-Item`, `npm run build`)
+- **Notes:** Site confirmed production-ready. Only open item remains the Next 14 → 16 major upgrade decision (5 audit vulns) — awaiting Michael.
 
-## First Production Deployment — Completed 2026-07-26
+---
+
+<!-- Template for future entries:
 - **Brief:** Deploy the Debby's Fragrance Next.js site from localhost to live hosting via GitHub + Vercel
 - **Deliverable:** Live site at **https://debbys-fragrance.vercel.app**
 - **Key steps:**

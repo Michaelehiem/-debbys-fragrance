@@ -121,7 +121,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900 py-12 px-4 sm:px-6 lg:px-8 font-sans dark:bg-zinc-950 dark:text-zinc-100">
+    <div className="min-h-screen bg-white text-zinc-900 py-12 px-5 sm:px-6 lg:px-8 font-sans dark:bg-zinc-950 dark:text-zinc-100">
       <div className="max-w-5xl mx-auto space-y-8">
         <div className="flex items-center justify-between border-b border-zinc-200 pb-4 dark:border-zinc-800">
           <div className="flex items-baseline space-x-3">

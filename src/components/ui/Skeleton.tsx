@@ -31,7 +31,7 @@ export const ProductCardSkeleton: React.FC = () => {
 
 export const ProductDetailSkeleton: React.FC = () => {
   return (
-    <div className="min-h-screen bg-zinc-950 py-12 px-4 sm:px-6 lg:px-8 animate-pulse">
+    <div className="min-h-screen bg-zinc-950 py-12 px-5 sm:px-6 lg:px-8 animate-pulse">
       <div className="max-w-7xl mx-auto space-y-12">
         {/* Breadcrumb skeleton */}
         <div className="flex space-x-2">
@@ -81,7 +81,7 @@ export const ProductDetailSkeleton: React.FC = () => {
 
 export const ShopPageSkeleton: React.FC = () => {
   return (
-    <div className="min-h-screen bg-zinc-950 py-12 px-4 sm:px-6 lg:px-8 animate-pulse">
+    <div className="min-h-screen bg-zinc-950 py-12 px-5 sm:px-6 lg:px-8 animate-pulse">
       <div className="max-w-7xl mx-auto space-y-8">
         <div className="flex justify-between items-end border-b border-zinc-800 pb-6">
           <div className="space-y-2">

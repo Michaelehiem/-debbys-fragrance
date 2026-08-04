@@ -4,11 +4,8 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
-import { useTheme } from "@/context/ThemeContext";
 import {
   ShoppingBag,
-  Sun,
-  Moon,
   Search,
   Menu,
   X,
@@ -32,7 +29,6 @@ const NAV_LINKS = [
 export const Navbar: React.FC = () => {
   const { totalItems, setIsCartOpen } = useCart();
   const { allProducts } = useAdmin();
-  const { theme, toggleTheme } = useTheme();
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -80,7 +76,7 @@ export const Navbar: React.FC = () => {
         Free Delivery on orders over ₦350,000 · 100% Authentic Guaranteed
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Mobile Menu Button */}
           <div className="flex items-center lg:hidden">
@@ -192,19 +188,6 @@ export const Navbar: React.FC = () => {
                 </div>
               )}
             </div>
-
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="p-2 text-zinc-500 hover:text-zinc-900 transition-colors dark:text-zinc-300 dark:hover:text-zinc-100"
-              aria-label="Toggle Theme"
-            >
-              {theme === "dark" ? (
-                <Sun className="w-5 h-5" />
-              ) : (
-                <Moon className="w-5 h-5" />
-              )}
-            </button>
 
             {/* Cart Icon */}
             <motion.button

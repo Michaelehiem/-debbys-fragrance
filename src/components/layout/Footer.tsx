@@ -28,7 +28,7 @@ export const Footer: React.FC = () => {
   return (
     <footer className="bg-zinc-50 text-zinc-500 border-t border-zinc-100 font-sans pt-16 pb-8 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-400">
       {/* Trust Badges */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 border-b border-zinc-200 pb-12 dark:border-zinc-800/80">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 mb-16 border-b border-zinc-200 pb-12 dark:border-zinc-800/80">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           {trustItems.map(({ icon: Icon, title, text }) => (
             <div key={title} className="flex flex-col items-center">
@@ -40,7 +40,7 @@ export const Footer: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
         {/* Brand Column */}
         <div className="space-y-4">
           <div className="flex flex-col">
@@ -141,7 +141,7 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-zinc-200 pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] space-y-2 sm:space-y-0 dark:border-zinc-800/80">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 border-t border-zinc-200 pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] space-y-2 sm:space-y-0 dark:border-zinc-800/80">
         <p>© 2026 {siteConfig.businessName}. All rights reserved.</p>
         <div className="flex space-x-4">
           <Link href="#" className="hover:text-zinc-800 transition-colors dark:hover:text-zinc-200">Privacy Policy</Link>

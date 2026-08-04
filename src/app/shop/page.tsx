@@ -76,7 +76,7 @@ function ShopPageContent() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900 py-12 px-4 sm:px-6 lg:px-8 font-sans dark:bg-zinc-950 dark:text-zinc-100">
+    <div className="min-h-screen bg-white text-zinc-900 py-12 px-5 sm:px-6 lg:px-8 font-sans dark:bg-zinc-950 dark:text-zinc-100">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="border-b border-zinc-200 pb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 dark:border-zinc-800">

@@ -44,7 +44,7 @@ function AdminPageContent() {
   const selectedProduct = selectedId ? allProducts.find((p) => p.id === selectedId) : null;
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900 py-12 px-4 sm:px-6 lg:px-8 font-sans dark:bg-zinc-950 dark:text-zinc-100">
+    <div className="min-h-screen bg-white text-zinc-900 py-12 px-5 sm:px-6 lg:px-8 font-sans dark:bg-zinc-950 dark:text-zinc-100">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Header */}
         <div className="bg-gradient-to-r from-zinc-50 via-zinc-100 to-white border border-gold-500/40 p-6 sm:p-8 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between shadow-sm dark:from-zinc-900 dark:via-zinc-900 dark:to-zinc-950 dark:shadow-2xl">

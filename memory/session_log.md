@@ -187,6 +187,38 @@
 
 ---
 
+## 2026-08-04 — Deploy Fix, Light-Only Mode, Mobile Spacing & Icon Reduction
+
+- **Goal:** (1) Diagnose why the rebrand wasn't live, (2) remove dark mode entirely, (3) give the site more breathing room on mobile, (4) shrink icons on product cards
+- **Steps taken:**
+  - **Deploy diagnosis:** Commit `4b7fd59` was pushed but all recent Vercel deployments were **Preview**, not Production (GitHub deployments API). Vercel's Production Branch wasn't set to `master`. Michael fixed it in the dashboard (set Production Branch → `master`, promoted latest preview) — new build confirmed live.
+  - **Dark mode removed:** Deleted `ThemeContext.tsx`; removed `ThemeProvider` + pre-hydration theme script + `dark:` body classes from `layout.tsx`; removed the Navbar theme toggle (and `Sun`/`Moon` imports). Since Tailwind `darkMode: "class"` only activates with `.dark`, and `.dark` can never be added now, the site is permanently light.
+  - **Mobile spacing:** Bumped mobile container padding `px-4` → `px-5` across all pages (home, shop, product detail, cart, checkout, contact, about, admin, navbar, footer); product card padding `p-4`→`p-5` (list card `p-5 sm:p-6`), card `space-y-3`→`space-y-4`; size chips `px-2 py-0.5`→`px-2.5 py-1`; homepage section gaps `space-y-16`→`space-y-20`; category card grid `gap-10 md:gap-8`; product grids `gap-6 sm:gap-8`.
+  - **Icon reduction:** Product cards: Quick-View Eye `w-4`→`w-3.5` with `p-2`→`p-1.5` button; ShoppingBag/Check `w-3.5`→`w-3`.
+  - Verified: `npx tsc --noEmit` ✅, `npx next lint` ✅ (warnings only), `npm run build` ✅ — all 10 routes generate.
+- **Tools used:** File editing, git/GitHub API (curl), tsc, next lint, next build
+- **Outputs:** All source files updated in `src/`; memory files updated
+- **Status:** Changes verified locally — **commit/push pending Michael's go-ahead** to deploy
+- **Notes:** Next 14 → 16 upgrade decision still pending. `npx vercel` CLI has no saved login on this machine and hangs installing — use the Vercel dashboard for deploy management.
+
+---
+
+## 2026-08-03 — Full Build Verification After Rebrand Overhaul
+
+- **Goal:** Run the full `npm run build` that was deferred on 2026-08-02 (only tsc + lint were run then)
+- **Steps taken:**
+  - Cleared `.next` cache (`Remove-Item -LiteralPath ".next" -Recurse -Force`)
+  - Ran `npm run build` — ✅ **passed**
+    - Compiled successfully, lint + type checks passed (warnings only: intentional `no-img-element` for admin base64 images)
+    - All 10 routes generated: `/`, `/_not-found`, `/about`, `/admin`, `/cart`, `/checkout`, `/contact`, `/product/[id]` (dynamic), `/shop`
+  - First Load JS 87.1 kB shared; largest page `/product/[id]` at 146 kB
+- **Tools used:** bash (Remove-Item, npm run build)
+- **Outputs:** `.next` regenerated; build verified clean
+- **Status:** ✅ Completed
+- **Notes:** The 08-02 redesign is confirmed production-ready. Remaining pending item is the Next 14 → 16 major upgrade (5 audit vulns) — still awaiting Michael's decision.
+
+---
+
 ## 2026-07-28 — Mobile Polish, Lint Cleanup, & Deployment
 
 - **Goal:** Finish the remaining work: mobile congestion pass, remaining lint warnings, and deploy to production

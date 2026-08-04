@@ -30,11 +30,11 @@ export default function HomePage() {
   };
 
   return (
-    <div className="space-y-16 sm:space-y-24 pb-20 font-sans">
+    <div className="space-y-20 sm:space-y-28 pb-20 font-sans">
       {/* 1. Hero Section — clean, light, airy */}
       <section className="relative overflow-hidden bg-champagne dark:bg-zinc-100">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.12),transparent_60%)]" />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-24 pb-20 sm:pt-32 sm:pb-28 space-y-8">
+        <div className="relative max-w-4xl mx-auto px-5 sm:px-6 lg:px-8 text-center pt-24 pb-20 sm:pt-32 sm:pb-28 space-y-8">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -91,7 +91,7 @@ export default function HomePage() {
       </section>
 
       {/* 2. Shop by Category — editorial, light */}
-      <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <ScrollReveal className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 space-y-10">
         <div className="text-center space-y-3">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-600">
             Curated Collections
@@ -101,7 +101,7 @@ export default function HomePage() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
           <Link
             href="/shop?category=women"
             className="group block"
@@ -113,7 +113,7 @@ export default function HomePage() {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
             </div>
-            <div className="pt-4 text-center space-y-1">
+            <div className="pt-5 text-center space-y-1">
               <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-semibold">For Her</span>
               <h3 className="font-serif text-xl font-bold text-zinc-900 dark:text-zinc-100">
                 Women&apos;s Collection
@@ -136,7 +136,7 @@ export default function HomePage() {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
             </div>
-            <div className="pt-4 text-center space-y-1">
+            <div className="pt-5 text-center space-y-1">
               <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-semibold">For Him</span>
               <h3 className="font-serif text-xl font-bold text-zinc-900 dark:text-zinc-100">
                 Men&apos;s Collection
@@ -159,7 +159,7 @@ export default function HomePage() {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
             </div>
-            <div className="pt-4 text-center space-y-1">
+            <div className="pt-5 text-center space-y-1">
               <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-semibold">Universal</span>
               <h3 className="font-serif text-xl font-bold text-zinc-900 dark:text-zinc-100">
                 Unisex & Oud Collection
@@ -174,7 +174,7 @@ export default function HomePage() {
       </ScrollReveal>
 
       {/* 3. Best Sellers */}
-      <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <ScrollReveal className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 space-y-10">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-zinc-200 pb-4">
           <div>
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-600">
@@ -193,7 +193,7 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {bestSellers.slice(0, 4).map((product, i) => (
             <ScrollReveal key={product.id} delay={i * 0.1}>
               <ProductCard
@@ -207,7 +207,7 @@ export default function HomePage() {
 
       {/* 4. Brand Value Highlight — light, minimal */}
       <ScrollReveal className="bg-zinc-50 dark:bg-zinc-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
           <motion.div
             whileHover={{ y: -4 }}
             className="text-center space-y-4"
@@ -250,7 +250,7 @@ export default function HomePage() {
       </ScrollReveal>
 
       {/* 5. New Arrivals Grid */}
-      <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <ScrollReveal className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 space-y-10">
         <div className="flex justify-between items-end border-b border-zinc-200 pb-4">
           <div>
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-600">
@@ -262,7 +262,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {newArrivals.slice(0, 4).map((product, i) => (
             <ScrollReveal key={product.id} delay={i * 0.1}>
               <ProductCard
@@ -275,7 +275,7 @@ export default function HomePage() {
       </ScrollReveal>
 
       {/* 6. Instagram / Social Feed Section */}
-      <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <ScrollReveal className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 space-y-10">
         <div className="text-center space-y-3">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-600">
             Follow Our Journey

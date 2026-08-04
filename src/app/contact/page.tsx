@@ -55,7 +55,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900 py-12 px-4 sm:px-6 lg:px-8 font-sans space-y-16 dark:bg-zinc-950 dark:text-zinc-100">
+    <div className="min-h-screen bg-white text-zinc-900 py-12 px-5 sm:px-6 lg:px-8 font-sans space-y-16 dark:bg-zinc-950 dark:text-zinc-100">
       <div className="max-w-6xl mx-auto space-y-12">
         {/* Header */}
         <div className="text-center space-y-2">
