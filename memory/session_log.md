@@ -203,6 +203,21 @@
 
 ---
 
+## 2026-08-04 — Mobile Layout Fix #2: Smaller Icons + Two-Column Product Grid
+
+- **Goal:** Michael's follow-up on the mobile polish — icons still too big, and product grids should show 2 columns on mobile instead of 1
+- **Steps taken:**
+  - **Icons smaller:** ProductCard + ProductListCard Quick-View Eye `w-3.5`→`w-3` with button `p-1.5`→`p-1`; ShoppingBag/Check `w-3`→`w-2.5`
+  - **Two columns on mobile:** Shop product grid `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3` → `grid-cols-2 lg:grid-cols-3`; homepage Best Sellers + New Arrivals `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4` → `grid-cols-2 lg:grid-cols-4`
+  - Hid the "Select Size:" label on small screens (`hidden sm:inline`) so size chips fit in the narrower 2-column cards
+  - Verified: `npx tsc --noEmit` ✅ (exit 0, ~2min), `npx next lint` ✅ (warnings only — intentional no-img-element). Full `npm run build` skipped — tsc + lint equivalent for className-only changes.
+- **Tools used:** File editing, tsc, next lint, git
+- **Outputs:** Commit `d799f1d` pushed to `master` — deployed as **Preview** (Production Branch fix never saved; still pending Michael's promotion)
+- **Status:** ⚠️ Code pushed, NOT live — needs Vercel dashboard Promote
+- **Notes:** `npx tsc --noEmit` via npx timed out twice (>10 min) on this machine — use `.\node_modules\.bin\tsc.cmd --noEmit` directly (~2 min) instead. `tsconfig.tsbuildinfo` left uncommitted (gitignored locally, stale).
+
+---
+
 ## 2026-08-03 — Full Build Verification After Rebrand Overhaul
 
 - **Goal:** Run the full `npm run build` that was deferred on 2026-08-02 (only tsc + lint were run then)

@@ -73,6 +73,16 @@
 
 ---
 
+## [2026-08-04] — `npx tsc --noEmit` hangs on this machine; call `node_modules\.bin\tsc.cmd` directly
+- **Context:** Verifying className-only changes; `npx tsc --noEmit` was killed at 420s and again at 600s with zero output.
+- **Root cause:** npx startup + node process spawn is extremely slow on this machine (`tsc --version` alone took ~37s). A full incremental typecheck via npx can exceed 10 minutes.
+- **Fix:** Invoke directly: `& ".\node_modules\.bin\tsc.cmd" --noEmit` — completed in ~128s (exit 0). Same for lint: `& ".\node_modules\.bin\next.cmd" lint` (~4.5 min).
+- **Workflow updated?** No
+- **Tool updated?** No
+- **Watch out for:** Always call the local binaries directly on this machine, not via npx. `tsconfig.tsbuildinfo` (incremental) drifts and is uncommitted — fine to ignore.
+
+---
+
 ## [2026-08-04] — Removed dark mode entirely (light-only site)
 - **Context:** Michael wanted the whole site light-only, no dark mode toggle.
 - **Approach:** Removed the `ThemeProvider` + `ThemeContext`, removed the Navbar theme toggle (and `Sun`/`Moon` imports), removed the pre-hydration `<script>` and `dark:bg-zinc-950` body classes from `layout.tsx`, deleted `src/context/ThemeContext.tsx`.
