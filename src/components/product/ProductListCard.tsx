@@ -125,10 +125,10 @@ export const ProductListCard: React.FC<ProductListCardProps> = ({ product, onQui
                   e.preventDefault();
                   onQuickView(product);
                 }}
-                className="p-1.5 bg-white border border-zinc-200 rounded-lg text-zinc-500 hover:text-gold-600 hover:border-gold-500/50 transition-all dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-gold-400"
+                className="p-1 bg-white border border-zinc-200 rounded-lg text-zinc-500 hover:text-gold-600 hover:border-gold-500/50 transition-all dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-gold-400"
                 aria-label="Quick View"
               >
-                <Eye className="w-3.5 h-3.5" />
+                <Eye className="w-3 h-3" />
               </button>
             )}
 
@@ -142,12 +142,12 @@ export const ProductListCard: React.FC<ProductListCardProps> = ({ product, onQui
             >
               {isAdded ? (
                 <>
-                  <Check className="w-3 h-3" />
+                  <Check className="w-2.5 h-2.5" />
                   <span>Added</span>
                 </>
               ) : (
                 <>
-                  <ShoppingBag className="w-3 h-3" />
+                  <ShoppingBag className="w-2.5 h-2.5" />
                   <span>Add to Bag</span>
                 </>
               )}

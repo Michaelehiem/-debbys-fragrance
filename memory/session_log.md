@@ -198,8 +198,8 @@
   - Verified: `npx tsc --noEmit` ✅, `npx next lint` ✅ (warnings only), `npm run build` ✅ — all 10 routes generate.
 - **Tools used:** File editing, git/GitHub API (curl), tsc, next lint, next build
 - **Outputs:** All source files updated in `src/`; memory files updated
-- **Status:** Changes verified locally — **commit/push pending Michael's go-ahead** to deploy
-- **Notes:** Next 14 → 16 upgrade decision still pending. `npx vercel` CLI has no saved login on this machine and hangs installing — use the Vercel dashboard for deploy management.
+- **Status:** ⚠️ **Committed + pushed (`669683d`), but deployment landed in PREVIEW — not live.** Michael needs to promote it to Production (instructions given).
+- **Notes:** Next 14 → 16 upgrade decision still pending. `npx vercel` CLI has no saved login on this machine and hangs installing — use the Vercel dashboard for deploy management. The Production Branch setting fix from earlier did NOT persist — next push still deployed to Preview (second occurrence).
 
 ---
 

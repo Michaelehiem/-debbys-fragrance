@@ -76,10 +76,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
                 e.preventDefault();
                 onQuickView(product);
               }}
-              className="p-1.5 rounded-full bg-white/70 text-zinc-500 hover:text-gold-600 hover:bg-zinc-100 backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 shadow dark:bg-zinc-900/70 dark:text-zinc-300 dark:hover:text-gold-400 dark:hover:bg-zinc-900"
+              className="p-1 rounded-full bg-white/70 text-zinc-500 hover:text-gold-600 hover:bg-zinc-100 backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 shadow dark:bg-zinc-900/70 dark:text-zinc-300 dark:hover:text-gold-400 dark:hover:bg-zinc-900"
               aria-label="Quick View"
             >
-              <Eye className="w-3.5 h-3.5" />
+              <Eye className="w-3 h-3" />
             </button>
           )}
         </div>
@@ -110,7 +110,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
         {/* Size Selection */}
         <div className="space-y-2 pt-2 border-t border-zinc-200 dark:border-zinc-800/60">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">Select Size:</span>
+            <span className="hidden sm:inline text-xs text-zinc-500 dark:text-zinc-400">Select Size:</span>
             <div className="flex space-x-1">
               {product.sizes.map((s) => (
                 <button
@@ -153,12 +153,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
             >
               {isAdded ? (
                 <>
-                  <Check className="w-3 h-3" />
+                  <Check className="w-2.5 h-2.5" />
                   <span>Added</span>
                 </>
               ) : (
                 <>
-                  <ShoppingBag className="w-3 h-3" />
+                  <ShoppingBag className="w-2.5 h-2.5" />
                   <span>Add</span>
                 </>
               )}

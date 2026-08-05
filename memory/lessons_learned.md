@@ -69,6 +69,7 @@
 - **Fix:** In Vercel dashboard → Project → Settings → Git → **Production Branch** set to `master`, then Promote the latest Preview deployment to Production. Verified new build live after.
 - **Watch out for:** When code is pushed but the site looks stale, always check Vercel deployment ENVIRONMENT first (via GitHub deployments API — no auth needed for public repos). The `npx vercel` CLI on this machine has no saved login and its install hangs (slow machine) — use the dashboard instead.
 - **Lesson:** The 07-28 "Vercel auto-deploys on push" note in memory was wrong — only the 07-26 manual `npx vercel --prod` ever hit Production.
+- **⚠️ Follow-up (08-04, same day):** Despite Michael confirming the dashboard fix, the VERY NEXT push (commit `669683d`) again created a **Preview** deployment (`"environment": "Preview"`, `"production_environment": false`). Either the Production Branch edit never saved, or he only promoted manually without saving the setting. Live site HTML confirmed still old (`p-4`, `w-4`, `px-4`, dark classes). **Promoting a Preview deployment only fixes that one build — the Production Branch setting must be verified saved (`Settings → Git → Production Branch = master`), otherwise EVERY future push lands in Preview again.**
 
 ---
 
