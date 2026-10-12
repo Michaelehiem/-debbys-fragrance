@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useCustomer } from "@/context/CustomerAuthContext";
-import { ShoppingBag, Search, Menu, X, ArrowRight, User } from "lucide-react";
+import { ShoppingBag, Search, Menu, X, ArrowRight, User, Phone, Instagram } from "lucide-react";
 import { DigitalClock } from "@/components/ui/DigitalClock";
 import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import { useAdmin } from "@/context/AdminContext";
@@ -34,6 +34,8 @@ const ALL_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
 export const Navbar: React.FC = () => {
   const { totalItems, setIsCartOpen } = useCart();
   const { customer } = useCustomer();
@@ -45,6 +47,7 @@ export const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const cartControls = useAnimation();
   const prevTotalItems = useRef(totalItems);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (totalItems > prevTotalItems.current) {
@@ -62,6 +65,40 @@ export const Navbar: React.FC = () => {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Escape closes any open overlay.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setSearchOpen(false);
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  // Click anywhere outside the search panel dismisses it.
+  useEffect(() => {
+    if (!searchOpen) return;
+    const onDown = (e: PointerEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setSearchOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", onDown);
+    return () => document.removeEventListener("pointerdown", onDown);
+  }, [searchOpen]);
+
+  // Lock page scroll while the mobile drawer is open.
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [mobileMenuOpen]);
 
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
@@ -88,22 +125,33 @@ export const Navbar: React.FC = () => {
   const navLinkClass =
     "text-[11px] uppercase tracking-[0.18em] font-medium text-ink-soft hover:text-ink transition-colors";
 
+  const closeMenu = () => setMobileMenuOpen(false);
+
   return (
     <header
-      className={`sticky top-0 z-40 transition-all duration-300 ${
+      className={`sticky top-0 z-40 transition-all duration-500 ${
         scrolled
-          ? "bg-paper/90 backdrop-blur-md border-b border-ink/10"
+          ? "bg-paper/90 backdrop-blur-md border-b border-ink/10 shadow-editorial-sm"
           : "bg-paper border-b border-transparent"
       }`}
     >
-      {/* Announcement Bar */}
-      <div className="relative bg-ink text-paper/80 text-[10px] uppercase tracking-[0.24em] py-2 px-4 text-center overflow-hidden">
-        <span>
-          Complimentary nationwide delivery over ₦350,000
-          <span className="mx-3 text-gold-400">·</span>
-          Certified authentic, always
-        </span>
-        <DigitalClock className="hidden md:inline-flex absolute right-6 top-1/2 -translate-y-1/2 text-paper/70" />
+      {/* Announcement Bar — sliding ticker */}
+      <div className="relative bg-ink text-paper/80 text-[10px] uppercase tracking-[0.24em] py-2 overflow-hidden">
+        <div className="flex w-max animate-marquee whitespace-nowrap">
+          {[0, 1].map((k) => (
+            <span key={k} className="flex shrink-0 items-center" aria-hidden={k === 1}>
+              {[0, 1, 2].map((j) => (
+                <React.Fragment key={j}>
+                  <span className="mx-6">Complimentary nationwide delivery over ₦350,000</span>
+                  <span className="text-gold-400">·</span>
+                  <span className="mx-6">Certified authentic, always</span>
+                  <span className="text-gold-400">·</span>
+                </React.Fragment>
+              ))}
+            </span>
+          ))}
+        </div>
+        <DigitalClock className="hidden md:inline-flex absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-gradient-to-l from-ink via-ink to-transparent pl-8 text-paper/70" />
       </div>
 
       <div className="max-w-[88rem] mx-auto px-5 sm:px-8 lg:px-12">
@@ -111,11 +159,12 @@ export const Navbar: React.FC = () => {
           {/* Mobile Menu Button */}
           <div className="flex items-center lg:hidden flex-1">
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={() => setMobileMenuOpen(true)}
               className="p-2 -ml-2 text-ink hover:text-gold-600 transition-colors"
-              aria-label="Toggle Navigation"
+              aria-label="Open navigation"
+              aria-expanded={mobileMenuOpen}
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              <Menu className="w-5 h-5" />
             </button>
           </div>
 
@@ -129,13 +178,27 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Wordmark */}
-          <Link href="/" className="flex flex-col items-center group px-2">
-            <span className="font-serif text-xl sm:text-2xl tracking-[0.28em] font-bold text-ink pl-[0.28em]">
+          <Link
+            href="/"
+            className="group relative flex flex-col items-center px-3"
+            aria-label="Debby's Fragrance — home"
+          >
+            <motion.span
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: EASE }}
+              className="font-serif text-xl sm:text-[1.65rem] font-bold tracking-[0.28em] text-ink pl-[0.28em] leading-none transition-colors duration-500 group-hover:text-gold-700"
+            >
               DEBBY&apos;S
+            </motion.span>
+            <span className="mt-1.5 flex items-center gap-2">
+              <span className="h-px w-3 bg-gold-500/0 transition-all duration-500 group-hover:w-6 group-hover:bg-gold-500/60" />
+              <span className="text-[8px] uppercase tracking-[0.5em] text-gold-700 pl-[0.5em]">
+                Fragrance
+              </span>
+              <span className="h-px w-3 bg-gold-500/0 transition-all duration-500 group-hover:w-6 group-hover:bg-gold-500/60" />
             </span>
-            <span className="text-[8px] tracking-[0.5em] text-gold-700 uppercase pl-[0.5em] -mt-0.5">
-              Fragrance
-            </span>
+            <span className="pointer-events-none absolute -bottom-1 left-1/2 h-px w-0 -translate-x-1/2 bg-gold-gradient transition-all duration-500 group-hover:w-[70%]" />
           </Link>
 
           {/* Desktop Right Nav + Actions */}
@@ -150,11 +213,12 @@ export const Navbar: React.FC = () => {
 
             <div className="flex items-center space-x-1 sm:space-x-2">
               {/* Search Toggle */}
-              <div className="relative">
+              <div className="relative" ref={searchRef}>
                 <button
                   onClick={() => setSearchOpen(!searchOpen)}
                   className="p-2 text-ink hover:text-gold-600 transition-colors"
                   aria-label="Search"
+                  aria-expanded={searchOpen}
                 >
                   <Search className="w-[18px] h-[18px]" />
                 </button>
@@ -166,7 +230,7 @@ export const Navbar: React.FC = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute right-0 mt-4 w-[22rem] sm:w-96 bg-paper border border-ink/10 shadow-editorial p-4 z-50"
+                      className="fixed left-4 right-4 top-[6.5rem] w-auto sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-4 sm:w-96 bg-paper border border-ink/10 shadow-editorial p-4 z-50"
                     >
                       <div className="relative">
                         <input
@@ -259,33 +323,106 @@ export const Navbar: React.FC = () => {
       {/* Mobile Drawer Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:hidden overflow-hidden bg-paper border-b border-ink/10"
-          >
-            <div className="px-6 py-8 space-y-1">
-              {ALL_LINKS.map((link, i) => (
+          <div className="fixed inset-0 z-50 lg:hidden">
+            {/* Backdrop — click to dismiss */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="absolute inset-0 bg-ink/50 backdrop-blur-sm"
+              onClick={closeMenu}
+              aria-hidden="true"
+            />
+
+            <motion.aside
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", damping: 34, stiffness: 320 }}
+              className="relative flex h-full w-[86%] max-w-sm flex-col bg-paper border-r border-ink/10 shadow-editorial"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation"
+            >
+              <div className="flex items-center justify-between px-6 h-[4.5rem] border-b border-ink/10 flex-shrink-0">
+                <span className="font-serif text-lg font-bold tracking-[0.26em] text-ink pl-[0.26em]">
+                  DEBBY&apos;S
+                </span>
+                <button
+                  onClick={closeMenu}
+                  className="p-2 -mr-2 text-ink-soft hover:text-ink transition-colors"
+                  aria-label="Close menu"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <nav className="flex-1 overflow-y-auto px-6 py-6">
+                {ALL_LINKS.map((link, i) => (
+                  <motion.div
+                    key={link.label}
+                    initial={{ opacity: 0, x: -16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.06 + i * 0.05, duration: 0.4, ease: EASE }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={closeMenu}
+                      className="group flex items-baseline gap-4 py-4 border-b border-ink/10"
+                    >
+                      <span className="font-serif text-[11px] tabular-nums text-gold-600">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="flex-1 font-serif text-3xl text-ink transition-colors group-hover:text-gold-700">
+                        {link.label}
+                      </span>
+                      <ArrowRight className="w-3.5 h-3.5 -translate-x-1 text-gold-500 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
+                    </Link>
+                  </motion.div>
+                ))}
+
                 <motion.div
-                  key={link.label}
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 + i * 0.05 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
                 >
                   <Link
-                    href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-between py-3.5 border-b border-ink/5 font-serif text-2xl text-ink hover:text-gold-600 transition-colors"
+                    href="/account"
+                    onClick={closeMenu}
+                    className="mt-6 flex items-center justify-center gap-2 border border-ink/20 py-3.5 text-[11px] uppercase tracking-[0.2em] text-ink hover:border-gold-600 hover:text-gold-700 transition-colors"
                   >
-                    <span>{link.label}</span>
-                    <ArrowRight className="w-4 h-4 text-gold-500" />
+                    <User className="w-4 h-4" />
+                    {customer ? "My Account" : "Sign In"}
                   </Link>
                 </motion.div>
-              ))}
-            </div>
-          </motion.div>
+              </nav>
+
+              <div className="flex-shrink-0 border-t border-ink/10 bg-paper-deep/50 px-6 py-6">
+                <p className="mb-3 text-[10px] uppercase tracking-[0.24em] text-ink-soft/60">
+                  Concierge
+                </p>
+                <a
+                  href={siteConfig.socials.whatsapp}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-3 text-sm text-ink hover:text-gold-700 transition-colors"
+                >
+                  <Phone className="w-4 h-4 text-gold-600" />
+                  {siteConfig.contact.phone}
+                </a>
+                <a
+                  href={siteConfig.socials.instagram}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-3 flex items-center gap-3 text-sm text-ink hover:text-gold-700 transition-colors"
+                >
+                  <Instagram className="w-4 h-4 text-gold-600" />
+                  Follow on Instagram
+                </a>
+              </div>
+            </motion.aside>
+          </div>
         )}
       </AnimatePresence>
     </header>
