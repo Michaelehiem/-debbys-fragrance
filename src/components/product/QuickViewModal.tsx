@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Product, ProductSize } from "@/types";
 import { useCart } from "@/context/CartContext";
 import { useAdmin } from "@/context/AdminContext";
 import { X, Star, ShoppingBag, Check } from "lucide-react";
 import { formatNaira } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface QuickViewModalProps {
   product: Product | null;
@@ -13,8 +14,39 @@ interface QuickViewModalProps {
 }
 
 export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose }) => {
-  if (!product) return null;
-  return <QuickViewModalContent key={product.id} product={product} onClose={onClose} />;
+  // Lock body scroll while open
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [product]);
+
+  return (
+    <AnimatePresence>
+      {product && [
+        <motion.div
+          key="backdrop"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-50 bg-ink/50 backdrop-blur-sm"
+          onClick={onClose}
+        />,
+        <motion.div
+          key="card"
+          initial={{ opacity: 0, scale: 0.97, y: 12 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.97, y: 12 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed inset-0 z-[51] overflow-y-auto flex items-center justify-center p-4 pointer-events-none"
+        >
+          <QuickViewModalContent key={product.id} product={product} onClose={onClose} />
+        </motion.div>,
+      ]}
+    </AnimatePresence>
+  );
 };
 
 function QuickViewModalContent({ product, onClose }: QuickViewModalProps & { product: Product }) {
@@ -41,159 +73,145 @@ function QuickViewModalContent({ product, onClose }: QuickViewModalProps & { pro
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto font-sans flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/40 backdrop-blur-md transition-opacity dark:bg-zinc-950/80"
+    <motion.div
+      initial={{ opacity: 0, scale: 0.97, y: 12 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      className="w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white shadow-editorial pointer-events-auto"
+    >
+      <button
         onClick={onClose}
-      />
+        className="absolute top-4 right-4 z-20 w-10 h-10 flex items-center justify-center bg-ink text-paper hover:bg-gold-600 transition-colors"
+        aria-label="Close quick view"
+      >
+        <X className="w-4 h-4" />
+      </button>
 
-      {/* Modal Card */}
-      <div className="relative bg-white border border-gold-500/30 rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl z-10 animate-fade-in text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/10 text-zinc-500 hover:text-zinc-900 hover:bg-black/20 transition-colors dark:bg-zinc-950/60 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-950"
-        >
-          <X className="w-5 h-5" />
-        </button>
+      <div className="grid grid-cols-1 md:grid-cols-2">
+        {/* Gallery */}
+        <div className="p-6 sm:p-8 bg-[#f1eadb] flex flex-col">
+          <div className="aspect-square w-full overflow-hidden bg-white">
+            <img
+              src={selectedImage || displayImage}
+              alt={displayName}
+              className="object-cover w-full h-full"
+            />
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2">
-          {/* Left Gallery */}
-          <div className="p-6 bg-zinc-50 flex flex-col justify-between dark:bg-zinc-950">
-            <div className="aspect-square w-full rounded-xl overflow-hidden bg-zinc-100 relative dark:bg-zinc-900">
-              <img
-                src={selectedImage || displayImage}
-                alt={displayName}
-                className="object-cover w-full h-full"
-              />
-            </div>
-
-            {/* Thumbnail selector */}
-            <div className="flex space-x-2 mt-4 overflow-x-auto">
+          <div className="flex gap-2 mt-5 overflow-x-auto no-scrollbar">
+            <button
+              onClick={() => setSelectedImage(displayImage)}
+              className={`w-16 h-16 overflow-hidden border-2 flex-shrink-0 transition-all ${
+                selectedImage === displayImage ? "border-gold-600" : "border-transparent opacity-70 hover:opacity-100"
+              }`}
+            >
+              <img src={displayImage} alt="Main" className="object-cover w-full h-full" />
+            </button>
+            {product.images.map((img, idx) => (
               <button
-                onClick={() => setSelectedImage(displayImage)}
-                className={`w-14 h-14 rounded-lg overflow-hidden border-2 transition-all ${
-                  selectedImage === displayImage ? "border-gold-500" : "border-zinc-800"
+                key={idx}
+                onClick={() => setSelectedImage(img)}
+                className={`w-16 h-16 overflow-hidden border-2 flex-shrink-0 transition-all ${
+                  selectedImage === img ? "border-gold-600" : "border-transparent opacity-70 hover:opacity-100"
                 }`}
               >
-                <img src={displayImage} alt="Main" className="object-cover w-full h-full" />
+                <img src={img} alt={`Thumb ${idx}`} className="object-cover w-full h-full" />
               </button>
-              {product.images.map((img, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setSelectedImage(img)}
-                  className={`w-14 h-14 rounded-lg overflow-hidden border-2 transition-all ${
-                    selectedImage === img ? "border-gold-500" : "border-zinc-800"
-                  }`}
-                >
-                  <img src={img} alt={`Thumb ${idx}`} className="object-cover w-full h-full" />
-                </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Details */}
+        <div className="p-6 sm:p-8 flex flex-col justify-between">
+          <div>
+            <div className="flex justify-between items-baseline text-[10px] uppercase tracking-[0.2em] text-gold-700">
+              <span>{product.brand}</span>
+              <span className="flex items-center gap-1 font-serif text-ink tracking-normal normal-case text-sm">
+                <Star className="w-4 h-4 text-gold-500 fill-gold-500" />
+                {product.rating} <span className="text-ink-soft/50">({product.reviewCount})</span>
+              </span>
+            </div>
+
+            <h2 className="font-serif text-3xl font-bold text-ink mt-2 leading-tight">
+              {displayName}
+            </h2>
+            <p className="text-sm italic text-gold-700 mt-1">&ldquo;{product.tagline}&rdquo;</p>
+
+            <div className="mt-4">
+              <span className="font-serif text-3xl font-bold text-ink">
+                {formatNaira(override?.customPrice ? override.customPrice : selectedSize.price)}
+              </span>
+            </div>
+
+            <p className="text-sm text-ink-soft/80 leading-relaxed mt-4">
+              {product.description}
+            </p>
+
+            {/* Fragrance Notes */}
+            <div className="mt-6 grid grid-cols-3 gap-px bg-ink/10 border border-ink/10 text-xs">
+              {[
+                ["Top", product.topNotes],
+                ["Heart", product.heartNotes],
+                ["Base", product.baseNotes],
+              ].map(([label, notes]) => (
+                <div key={label as string} className="bg-white p-3.5">
+                  <span className="text-gold-700 font-semibold uppercase text-[9px] tracking-[0.18em] block mb-1">
+                    {label}
+                  </span>
+                  <span className="text-ink-soft/80">{(notes as string[]).join(", ")}</span>
+                </div>
               ))}
             </div>
           </div>
 
-          {/* Right Details */}
-          <div className="p-6 flex flex-col justify-between space-y-4">
+          <div className="mt-8 space-y-5 pt-6 border-t border-ink/10">
             <div>
-              <div className="flex justify-between items-center text-xs text-gold-600 uppercase font-semibold dark:text-gold-400">
-                <span>{product.brand}</span>
-                <div className="flex items-center space-x-1">
-                  <Star className="w-3.5 h-3.5 text-gold-400 fill-gold-400" />
-                  <span>
-                    {product.rating} ({product.reviewCount} reviews)
-                  </span>
-                </div>
-              </div>
-
-              <h2 className="font-serif text-2xl font-bold text-zinc-900 mt-1 dark:text-zinc-100">
-                {displayName}
-              </h2>
-              <p className="text-xs italic text-gold-600 mt-0.5 dark:text-gold-300">&ldquo;{product.tagline}&rdquo;</p>
-
-              <div className="mt-3">
-                <span className="text-2xl font-bold font-serif text-gold-600 dark:text-gold-400">
-                  {formatNaira(
-                    override?.customPrice ? override.customPrice : selectedSize.price
-                  )}
-                </span>
-              </div>
-
-              <p className="text-xs text-zinc-600 leading-relaxed mt-3 dark:text-zinc-300">
-                {product.description}
-              </p>
-
-              {/* Fragrance Notes */}
-              <div className="mt-4 p-3 bg-zinc-50 rounded-xl border border-zinc-200 space-y-2 text-xs dark:bg-zinc-950/80 dark:border-zinc-800">
-                <h4 className="font-semibold text-gold-600 uppercase text-[10px] tracking-wider dark:text-gold-400">
-                  Fragrance Pyramid
-                </h4>
-                <div className="grid grid-cols-3 gap-2 text-[11px]">
-                  <div>
-                    <span className="text-zinc-500 font-medium block">Top Notes</span>
-                    <span className="text-zinc-600 dark:text-zinc-300">{product.topNotes.join(", ")}</span>
-                  </div>
-                  <div>
-                    <span className="text-zinc-500 font-medium block">Heart Notes</span>
-                    <span className="text-zinc-600 dark:text-zinc-300">{product.heartNotes.join(", ")}</span>
-                  </div>
-                  <div>
-                    <span className="text-zinc-500 font-medium block">Base Notes</span>
-                    <span className="text-zinc-600 dark:text-zinc-300">{product.baseNotes.join(", ")}</span>
-                  </div>
-                </div>
+              <label className="text-[10px] uppercase tracking-[0.2em] text-ink-soft/70 block mb-2">
+                Select Bottle Size
+              </label>
+              <div className="grid grid-cols-3 gap-2.5">
+                {product.sizes.map((s) => (
+                  <button
+                    key={s.size}
+                    onClick={() => setSelectedSize(s)}
+                    className={`py-3 text-xs font-semibold border transition-all ${
+                      selectedSize.size === s.size
+                        ? "border-gold-600 bg-gold-600 text-paper"
+                        : "border-ink/15 text-ink-soft hover:border-ink"
+                    }`}
+                  >
+                    <div>{s.size}</div>
+                    <div className={`text-[10px] font-normal mt-0.5 ${selectedSize.size === s.size ? "text-paper/80" : "text-ink-soft/60"}`}>
+                      {formatNaira(s.price)}
+                    </div>
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* Size & CTA */}
-            <div className="space-y-4 pt-4 border-t border-zinc-200 dark:border-zinc-800">
-              <div>
-                <label className="text-xs text-zinc-500 block mb-1.5 font-medium dark:text-zinc-400">
-                  Select Bottle Size
-                </label>
-                <div className="grid grid-cols-3 gap-2">
-                  {product.sizes.map((s) => (
-                    <button
-                      key={s.size}
-                      onClick={() => setSelectedSize(s)}
-                      className={`py-2 text-xs font-bold rounded-lg border transition-all ${
-                        selectedSize.size === s.size
-                          ? "bg-gold-500/20 border-gold-500 text-gold-700 dark:text-gold-300"
-                          : "border-zinc-200 bg-white text-zinc-500 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:border-zinc-700"
-                      }`}
-                    >
-                      <div>{s.size}</div>
-                      <div className="text-[10px] font-normal text-zinc-500 dark:text-zinc-400">
-                        {formatNaira(s.price)}
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <button
-                onClick={handleAddToCart}
-                className={`w-full py-3 rounded-xl font-bold uppercase tracking-wider text-xs flex items-center justify-center space-x-2 transition-all ${
-                  isAdded
-                    ? "bg-emerald-600 text-white"
-                    : "bg-gradient-to-r from-gold-600 via-gold-500 to-gold-400 hover:brightness-110 text-zinc-950 shadow-lg shadow-gold-950/40"
-                }`}
-              >
-                {isAdded ? (
-                  <>
-                    <Check className="w-4 h-4" />
-                    <span>Added to Shopping Bag</span>
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag className="w-4 h-4" />
-                    <span>Add to Bag · {formatNaira(selectedSize.price)}</span>
-                  </>
-                )}
-              </button>
-            </div>
+            <button
+              onClick={handleAddToCart}
+              className={`w-full py-4 text-xs font-semibold uppercase tracking-[0.2em] flex items-center justify-center gap-2 border transition-all duration-300 ${
+                isAdded
+                  ? "bg-[#2d4a3e] border-[#2d4a3e] text-white"
+                  : "bg-ink border-ink text-paper hover:bg-gold-700 hover:border-gold-700"
+              }`}
+            >
+              {isAdded ? (
+                <>
+                  <Check className="w-4 h-4" />
+                  Added to Bag
+                </>
+              ) : (
+                <>
+                  <ShoppingBag className="w-4 h-4" />
+                  Add to Bag · {formatNaira(selectedSize.price)}
+                </>
+              )}
+            </button>
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
-};
+}

@@ -28,7 +28,7 @@ export const BackToTop: React.FC = () => {
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.2 }}
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-gold-600 hover:bg-gold-500 text-white shadow-xl flex items-center justify-center transition-colors dark:text-zinc-950 dark:shadow-gold-950/50"
+          className="fixed bottom-6 right-6 z-50 w-11 h-11 flex items-center justify-center bg-ink text-paper hover:bg-gold-700 shadow-editorial-sm transition-colors"
           aria-label="Back to top"
         >
           <ChevronUp className="w-5 h-5" />

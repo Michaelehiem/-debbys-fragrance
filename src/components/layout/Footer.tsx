@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Truck, ShieldCheck, RotateCcw, Lock, Instagram, Facebook, Phone, Mail, MapPin } from "lucide-react";
+import { Truck, ShieldCheck, RotateCcw, Lock, Instagram, Facebook, Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/config/site";
 
 const TikTokIcon = ({ className }: { className?: string }) => (
@@ -11,10 +11,16 @@ const TikTokIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const WhatsAppIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+);
+
 const trustItems = [
-  { icon: Truck, title: "Nationwide Delivery", text: "Fast, insured delivery across Nigeria" },
+  { icon: Truck, title: "Nationwide Delivery", text: "Insured delivery across Nigeria" },
   { icon: ShieldCheck, title: "100% Authentic", text: "Sourced from certified perfumers" },
-  { icon: RotateCcw, title: "Easy Returns", text: "7-day return policy, unopened items" },
+  { icon: RotateCcw, title: "Easy Returns", text: "7-day return policy, unopened" },
   { icon: Lock, title: "Secure Checkout", text: "Order safely via WhatsApp" },
 ];
 
@@ -23,38 +29,42 @@ export const Footer: React.FC = () => {
     { href: siteConfig.socials.instagram, icon: Instagram, label: "Instagram" },
     { href: siteConfig.socials.facebook, icon: Facebook, label: "Facebook" },
     { href: siteConfig.socials.tiktok, icon: TikTokIcon, label: "TikTok" },
+    { href: siteConfig.socials.whatsapp, icon: WhatsAppIcon, label: "WhatsApp" },
   ].filter((s) => s.href);
 
   return (
-    <footer className="bg-zinc-50 text-zinc-500 border-t border-zinc-100 font-sans pt-16 pb-8 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-400">
-      {/* Trust Badges */}
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 mb-16 border-b border-zinc-200 pb-12 dark:border-zinc-800/80">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+    <footer className="bg-ink text-paper/70 font-sans">
+      {/* Trust Strip */}
+      <div className="border-b border-paper/10">
+        <div className="max-w-[88rem] mx-auto px-5 sm:px-8 lg:px-12 py-14 grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
           {trustItems.map(({ icon: Icon, title, text }) => (
-            <div key={title} className="flex flex-col items-center">
-              <Icon className="w-6 h-6 text-gold-600 mb-3 dark:text-gold-400" />
-              <h4 className="text-sm font-semibold text-zinc-800 dark:text-zinc-100">{title}</h4>
-              <p className="text-xs mt-1">{text}</p>
+            <div key={title} className="flex flex-col items-start gap-3">
+              <Icon className="w-5 h-5 text-gold-400" />
+              <div>
+                <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-paper">{title}</h4>
+                <p className="text-xs mt-1 text-paper/50 leading-relaxed">{text}</p>
+              </div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-        {/* Brand Column */}
-        <div className="space-y-4">
+      {/* Main Columns */}
+      <div className="max-w-[88rem] mx-auto px-5 sm:px-8 lg:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 py-16">
+        {/* Brand */}
+        <div className="lg:col-span-5 space-y-6">
           <div className="flex flex-col">
-            <span className="font-serif text-2xl font-bold tracking-[0.2em] text-zinc-900 dark:text-zinc-100">
+            <span className="font-serif text-3xl font-bold tracking-[0.24em] text-paper pl-[0.24em]">
               DEBBY&apos;S
             </span>
-            <span className="text-[10px] tracking-[0.35em] text-zinc-400 uppercase">
+            <span className="text-[10px] tracking-[0.5em] text-gold-400 uppercase pl-[0.5em]">
               Fragrance
             </span>
           </div>
-          <p className="text-xs leading-relaxed">
+          <p className="text-sm leading-relaxed max-w-sm text-paper/60">
             {siteConfig.businessName} is Nigeria&apos;s destination for authentic luxury perfumes, artisanal perfume oils, and bespoke signature scents.
           </p>
-          <div className="flex space-x-3 pt-2">
+          <div className="flex gap-2.5 pt-1">
             {socials.map(({ href, icon: Icon, label }) => (
               <a
                 key={label}
@@ -62,91 +72,83 @@ export const Footer: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="p-2 bg-white border border-zinc-200 rounded-full hover:text-gold-600 hover:border-gold-500/50 transition-colors dark:bg-zinc-900 dark:border-zinc-800 dark:hover:text-gold-300"
+                className="w-10 h-10 flex items-center justify-center border border-paper/15 text-paper/70 hover:text-ink hover:bg-gold-400 hover:border-gold-400 transition-all duration-300"
               >
                 <Icon className="w-4 h-4" />
               </a>
             ))}
-            {siteConfig.socials.whatsapp && (
-              <a
-                href={siteConfig.socials.whatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp"
-                className="p-2 bg-white border border-zinc-200 rounded-full hover:text-gold-600 hover:border-gold-500/50 transition-colors dark:bg-zinc-900 dark:border-zinc-800 dark:hover:text-gold-300"
-              >
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-              </a>
-            )}
           </div>
         </div>
 
-        {/* Quick Links */}
-        <div>
-          <h4 className="text-xs font-semibold uppercase tracking-widest text-zinc-800 mb-4 dark:text-zinc-100">
-            Explore Collection
+        {/* Explore */}
+        <div className="lg:col-span-2">
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-400 mb-5">
+            Explore
           </h4>
-          <ul className="space-y-2.5 text-xs">
-            <li><Link href="/shop" className="hover:text-gold-600 transition-colors dark:hover:text-gold-300">All Perfumes</Link></li>
-            <li><Link href="/shop?category=women" className="hover:text-gold-600 transition-colors dark:hover:text-gold-300">Women&apos;s Fragrances</Link></li>
-            <li><Link href="/shop?category=men" className="hover:text-gold-600 transition-colors dark:hover:text-gold-300">Men&apos;s Fragrances</Link></li>
-            <li><Link href="/shop?category=unisex" className="hover:text-gold-600 transition-colors dark:hover:text-gold-300">Unisex Scents</Link></li>
-            <li><Link href="/shop?family=oriental" className="hover:text-gold-600 transition-colors dark:hover:text-gold-300">Oud &amp; Oriental</Link></li>
+          <ul className="space-y-3 text-sm">
+            <li><Link href="/shop" className="link-underline hover:text-paper transition-colors">All Perfumes</Link></li>
+            <li><Link href="/shop?category=women" className="link-underline hover:text-paper transition-colors">Women&apos;s</Link></li>
+            <li><Link href="/shop?category=men" className="link-underline hover:text-paper transition-colors">Men&apos;s</Link></li>
+            <li><Link href="/shop?category=unisex" className="link-underline hover:text-paper transition-colors">Unisex</Link></li>
+            <li><Link href="/shop?family=oriental" className="link-underline hover:text-paper transition-colors">Oud &amp; Oriental</Link></li>
           </ul>
         </div>
 
-        {/* Contact Info */}
-        <div>
-          <h4 className="text-xs font-semibold uppercase tracking-widest text-zinc-800 mb-4 dark:text-zinc-100">
-            Get In Touch
+        {/* Contact */}
+        <div className="lg:col-span-2">
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-400 mb-5">
+            Boutique
           </h4>
-          <ul className="space-y-3 text-xs">
-            <li className="flex items-start space-x-2.5">
-              <MapPin className="w-4 h-4 text-gold-600 flex-shrink-0 mt-0.5 dark:text-gold-400" />
+          <ul className="space-y-3.5 text-sm">
+            <li className="flex items-start gap-2.5">
+              <MapPin className="w-4 h-4 text-gold-400 flex-shrink-0 mt-0.5" />
               <span>{siteConfig.location.shopAddress}</span>
             </li>
-            <li className="flex items-center space-x-2.5">
-              <Phone className="w-4 h-4 text-gold-600 flex-shrink-0 dark:text-gold-400" />
+            <li className="flex items-center gap-2.5">
+              <Phone className="w-4 h-4 text-gold-400 flex-shrink-0" />
               <span>{siteConfig.contact.phone}</span>
             </li>
-            <li className="flex items-center space-x-2.5">
-              <Mail className="w-4 h-4 text-gold-600 flex-shrink-0 dark:text-gold-400" />
-              <span>{siteConfig.contact.email}</span>
+            <li className="flex items-center gap-2.5">
+              <Mail className="w-4 h-4 text-gold-400 flex-shrink-0" />
+              <span className="break-all">{siteConfig.contact.email}</span>
             </li>
           </ul>
         </div>
 
         {/* Newsletter */}
-        <div>
-          <h4 className="text-xs font-semibold uppercase tracking-widest text-zinc-800 mb-4 dark:text-zinc-100">
+        <div className="lg:col-span-3">
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-400 mb-5">
             The Fragrance Club
           </h4>
-          <p className="text-xs mb-3">
-            Subscribe for new scent launches and exclusive offers.
+          <p className="text-sm mb-4 text-paper/60 leading-relaxed">
+            New scent launches and private offers, delivered rarely and beautifully.
           </p>
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-2">
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-3">
             <input
               type="email"
-              placeholder="Enter your email address"
-              className="w-full bg-white border border-zinc-200 rounded-lg px-3 py-2 text-xs text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-100"
+              placeholder="Email address"
+              className="w-full bg-transparent border-b border-paper/25 px-0 py-2 text-sm text-paper placeholder:text-paper/40 focus:outline-none focus:border-gold-400 transition-colors"
             />
             <button
               type="submit"
-              className="w-full bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-semibold py-2 rounded-lg uppercase tracking-wider transition-colors dark:bg-gold-600 dark:hover:bg-gold-500 dark:text-zinc-950"
+              className="w-full border border-gold-400 text-gold-400 hover:bg-gold-400 hover:text-ink text-[11px] font-semibold py-3 uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-2"
             >
-              Join VIP List
+              Join The Liste
+              <ArrowUpRight className="w-3.5 h-3.5" />
             </button>
           </form>
         </div>
       </div>
 
       {/* Bottom Bar */}
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 border-t border-zinc-200 pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] space-y-2 sm:space-y-0 dark:border-zinc-800/80">
-        <p>© 2026 {siteConfig.businessName}. All rights reserved.</p>
-        <div className="flex space-x-4">
-          <Link href="#" className="hover:text-zinc-800 transition-colors dark:hover:text-zinc-200">Privacy Policy</Link>
-          <Link href="#" className="hover:text-zinc-800 transition-colors dark:hover:text-zinc-200">Terms of Service</Link>
-          <Link href="#" className="hover:text-zinc-800 transition-colors dark:hover:text-zinc-200">Shipping Info</Link>
+      <div className="border-t border-paper/10">
+        <div className="max-w-[88rem] mx-auto px-5 sm:px-8 lg:px-12 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] tracking-wide text-paper/40">
+          <p>© 2026 {siteConfig.businessName}. Atelier of fine scent.</p>
+          <div className="flex gap-6">
+            <Link href="#" className="hover:text-gold-400 transition-colors">Privacy</Link>
+            <Link href="#" className="hover:text-gold-400 transition-colors">Terms</Link>
+            <Link href="#" className="hover:text-gold-400 transition-colors">Shipping</Link>
+          </div>
         </div>
       </div>
     </footer>

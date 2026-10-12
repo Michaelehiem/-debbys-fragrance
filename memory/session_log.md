@@ -252,3 +252,58 @@
 - **Outputs:** Commit `32a9583` pushed → live deploy at https://debbys-fragrance.vercel.app
 - **Status:** ✅ Completed
 - **Notes:** Remaining audit vulns require a major Next.js upgrade — decision pending Michael's call. Build verified clean (warnings only).
+
+---
+
+## 2026-10-10 — Luxury-Editorial Redesign + Cavan Feature Port (SEO/PWA + Storefront Polish)
+
+- **Goal:** (1) Redesign Debby's Fragrance to a luxury editorial aesthetic; (2) study sibling project `Cavan` (ThE iNdusTry / cavanindustry.com) and port features that make Debby's better. Michael selected ALL six feature groups: SEO+PWA, order tracking, admin dashboard, customer accounts + saved cart, AI support chat, storefront polish.
+- **Steps taken:**
+  - **Redesign (complete):** new design tokens in `tailwind.config.ts` + `globals.css` (paper/ink/brass palette, `.eyebrow`, `.section-num`, `.link-underline`, `.hairline`, grain overlay); restyled Navbar, Footer, home, shop, product, cart, checkout, about, contact, not-found, product cards, QuickViewModal, CartDrawer, CartToast. All cart/admin/WhatsApp functionality preserved.
+  - **SEO + PWA pack (complete):** created `src/lib/site.ts` (SITE_URL, absoluteUrl, SITE), `src/components/ui/JsonLd.tsx`, `public/icon.svg`; rewrote root `layout.tsx` (metadataBase, title template, canonical, OG/Twitter, robots, icons, manifest, viewport themeColor `#1b1712`, Organization + WebSite JSON-LD; fonts use `PlayfairDisplay-*.woff2`). Split product route into server `page.tsx` (adds `generateMetadata`) + client `ProductDetail.tsx` with Product + BreadcrumbList JSON-LD.
+  - **Storefront polish (complete):** created `ui/DigitalClock.tsx`, `ui/Rating.tsx`, `ui/QtyStepper.tsx`, `ui/EmptyState.tsx`; wired DigitalClock into the Navbar announcement bar, Rating into ProductCard, QtyStepper + EmptyState into the cart page.
+  - **Apostrophe-path build fix:** `next build` failed to compile `robots.ts`/`sitemap.ts`/`manifest.ts` — Next's metadata-route loader breaks on the `'` in the project path. Replaced with route handlers `src/app/robots.txt/route.ts`, `sitemap.xml/route.ts`, `manifest.webmanifest/route.ts`, and `src/app/og/route.tsx` (ImageResponse); updated `layout.tsx` OG/twitter images to `/og`.
+  - **Verification:** `npx tsc --noEmit` ✅ exit 0; `npm run lint` ✅ warnings only (`no-img-element`); `npx next build --no-lint` ✅ "Compiled successfully", all 13 routes generate (incl. `/robots.txt`, `/sitemap.xml`, `/manifest.webmanifest`, `/og`, dynamic `/product/[id]`).
+- **Tools used:** File editing/writing, `npx tsc --noEmit`, `npx next lint`, `npx next build --no-lint`.
+- **Outputs:** New files under `src/app`, `src/components/ui`, `src/lib/site.ts`, `public/icon.svg`; redesigned source across `src/`.
+- **Status:** ✅ Completed (redesign + SEO/PWA + polish) / ⏳ Backend-dependent features NOT started
+- **Notes:** Debby's HAS NO backend configured — `.env.local` contains only `VERCEL_OIDC_TOKEN`; `.env.example` is the generic AlphaTNX template (unrelated). Backend-dependent features (server order tracking, customer accounts + saved cart, AI chat, full admin dashboard) need a storage decision + credentials before starting. Cavan is Supabase-backed (`SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`). Full `next build` (with lint) still hangs in the lint phase on this slow machine — use `--no-lint` + separate `next lint`.
+- **Next:** Ask Michael for the backend decision (new Supabase project vs reuse Cavan's vs Vercel Blob), then implement order tracking → accounts → AI chat → admin dashboard. Update `memory/` and `.env.example`.
+
+## 2026-10-11 — Backend Feature Port: Order Tracking, Accounts, AI Chat, Admin Dashboard
+
+- **Goal:** Build all Supabase-backed features from the 10-10 port plan (order tracking, customer accounts + saved cart, AI support chat, full admin dashboard) after Michael chose a **new Supabase project** and agreed to migrate products server-side.
+- **Steps taken:**
+  - Installed `@supabase/supabase-js`. Wrote migration `supabase/migrations/20261011000000_initial_schema.sql` (products, orders, customers, subscribers, store_settings, admin_notifications; RLS on, no policies, service-role access only).
+  - Wrote server layer `src/lib/` (`supabase.ts`, `store.ts`, `auth.ts`, `customer-auth.ts`, `api-guard.ts`, `constants.ts`, `order-meta.ts`) and `src/types/store.ts`.
+  - Wrote API route handlers under `src/app/api/`: products, products/[id], orders, orders/[id], admin/auth, customer/auth, customer/cart, customer/orders, customers, settings, dashboard, newsletter (+admin GET), notifications, chat.
+  - Rewrote `AdminContext` to a server-backed catalogue provider; built the full admin dashboard (`admin/page.tsx` shell + `components/admin/AdminDashboard|AdminOrders|AdminProducts|AdminCustomers|AdminSettings|use-stats` + notifications bell) in the brand paper/ink/gold style; rewrote `AdminGate` to use the server session.
+  - Order tracking: `ui/OrderTimeline.tsx`, `app/order/[id]/page.tsx`; checkout now POSTs the order and shows an order number + "Track this order" link.
+  - Customer accounts: `context/CustomerAuthContext.tsx`, `app/account/page.tsx`; `CartContext` now merges+persists the saved cart for signed-in customers (debounced PUT); checkout prefills saved details; Navbar got an account link.
+  - AI chat: `api/chat/route.ts` (Gemini with graceful fallback when `GEMINI_API_KEY` is absent) + `ui/SupportChat.tsx`, mounted in `layout.tsx`; wrapped the tree in `CustomerAuthProvider`.
+  - **Verification:** `.\node_modules\.bin\tsc.cmd --noEmit` ✅ (clean), `npm run lint` ✅ (pre-existing no-img-element warnings only).
+- **Tools used:** file writing/editing, `@supabase/supabase-js` install, `tsc`, `next lint`.
+- **Outputs:** New server/API/UI code across `src/`; migration in `supabase/migrations/`.
+- **Status:** ✅ Feature code complete & compiling — ⏳ **Blocked on Supabase project credentials + `db push`.**
+- **Notes:** PAT in `%TEMP%\opencode\supabase_token.txt` is **read-only** — CLI `POST /v1/projects` returns 403 Forbidden, so Michael must create the project in the dashboard. DB password for `supabase link`/`db push` at `%TEMP%\opencode\supabase_db_password.txt`. Full `next build` deferred until `.env.local` has the Supabase keys. Temp token file to be deleted after use.
+
+---
+
+## 2026-10-12 — Supabase Deploy: Migration Pushed to New Project, All Blockers Cleared
+
+- **Goal:** Get the 10-11 backend feature port actually running against a real Supabase database: apply the schema, wire up `.env.local` keys, and unblock the previously stuck `db push`.
+- **Steps taken:**
+  - Confirmed the new project via Dashboard readback: region is **eu-central-1** (Frankfurt, not the intended West EU), status Healthy, org "AlphaTNX Technologies", name "Debby,s Fragrance" (ref `qxktqbiqfatkoazijdte`). Old project `sjcvdifozusghpdzhyyd` left paused.
+  - CLI paths failed: `db.qxktqbiqfatkoazijdte.supabase.co` resolves IPv6-only (no IPv6 on this PC → `getaddrinfo ENOTFOUND`); the IPv4 pooler morrow repeatedly with `(ENOTFOUND) tenant/user ... not found` even on the correct `aws-0-eu-central-1.pooler.supabase.com` (new-project provisioning lag).
+  - Bypassed everything via the **Management API** with a fresh owner PAT (`profile → tokens`): applied the full migration through `POST /v1/projects/{ref}/database/query` (body = JSON string of the SQL). Verified all 6 tables exist; wrote `supabase_migrations.schema_migrations` so future CLI pushes see it applied; repointed `supabase/.temp/linked-project.json` to the new ref (it still pointed at the old paused project).
+  - PowerShell 5.1 fight: `ConvertTo-Json` wraps multi-line strings as `{"value":…}`, and `Invoke-RestMethod` double-quotes string bodies — solved by writing payloads to files and using `curl.exe --data-binary @file`.
+  - `.env.local` key check + Node smoke test: ran the real `@supabase/supabase-js` client with the service-role key from `.env.local` → `products` read succeeds (0 rows; `getProducts()` auto-seeds from `INITIAL_PRODUCTS` on first read).
+  - Started `next dev` for a live smoke test; it **wedged the whole PowerShell shell** (first-compile went minutes then the host stopped responding — even `Write-Output "alive"` timed out). Killed the dev task; deferred live UI smoke-test.
+- **Tools used:** Management API via `curl.exe` (token file in `%TEMP%\opencode\`), supabase CLI attempts (record of failures), nslookup/Resolve-DnsName (diagnosis), Node script with `@supabase/supabase-js`.
+- **Outputs:** Schema deployed + verified on `qxktqbiqfatkoazijdte`; `.env.local` complete; CLI link fixed; temp owner PAT + passwords saved under `%TEMP%\opencode\` (delete after use).
+- **Status:** ✅ Backend deployed. Remaining: full `next build` / live smoke-test (dev server too slow here — may prefer Vercel build on push).
+- **Notes:** Michael provided the DB password (`Debomike101` — note the trailing full stop) and confirmed he'd reset it in Settings. Owner PAT (`sbp_…`) lives at `%TEMP%\opencode\supabase_token_owner.txt` and must be deleted once the temp secrets are no longer needed. Also logged: PS 5.1 JSON bugs and the IPv6-only direct-host gotcha (see `lessons_learned.md`).
+
+---
+
+<!-- Newest entries first? No — this file is chronological (oldest→newest). -->

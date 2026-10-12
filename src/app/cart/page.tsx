@@ -5,7 +5,9 @@ import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useAdmin } from "@/context/AdminContext";
 import { formatNaira } from "@/lib/utils";
-import { Trash2, Plus, Minus, ArrowRight, ShoppingBag } from "lucide-react";
+import { Trash2, ArrowRight, ShoppingBag, ArrowUpRight } from "lucide-react";
+import { QtyStepper } from "@/components/ui/QtyStepper";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, subtotal, clearCart } = useCart();
@@ -15,14 +17,17 @@ export default function CartPage() {
   const grandTotal = subtotal + shippingFee;
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900 py-12 px-5 sm:px-6 lg:px-8 font-sans dark:bg-zinc-950 dark:text-zinc-100">
-      <div className="max-w-5xl mx-auto space-y-8">
-        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-zinc-900 border-b border-zinc-200 pb-4 dark:text-zinc-100 dark:border-zinc-800">
-          Shopping Cart ({cart.length} items)
-        </h1>
+    <div className="min-h-screen bg-paper text-ink py-12 sm:py-16 font-sans">
+      <div className="max-w-5xl mx-auto px-5 sm:px-8 space-y-10">
+        <div className="border-b border-ink/10 pb-6">
+          <span className="section-num">Your Selection</span>
+          <h1 className="mt-3 font-serif text-4xl sm:text-5xl font-bold text-ink">
+            Shopping cart <span className="text-gold-700">({cart.length})</span>
+          </h1>
+        </div>
 
         {cart.length > 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
             {/* Items List */}
             <div className="lg:col-span-2 space-y-4">
               {cart.map((item) => {
@@ -33,61 +38,42 @@ export default function CartPage() {
                 return (
                   <div
                     key={`${item.product.id}-${item.selectedSize.size}`}
-                    className="bg-white border border-zinc-200 rounded-2xl p-4 sm:p-6 flex items-center space-x-4 shadow-sm dark:bg-zinc-900 dark:border-zinc-800"
+                    className="bg-white border border-ink/10 p-5 sm:p-6 flex items-center gap-5"
                   >
-                    <div className="w-24 h-24 bg-zinc-100 rounded-xl overflow-hidden flex-shrink-0 border border-zinc-200 dark:bg-zinc-950 dark:border-zinc-800">
-                      <img
-                        src={displayImage}
-                        alt={displayName}
-                        className="object-cover w-full h-full"
-                      />
+                    <div className="w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 overflow-hidden bg-[#efe7d8] border border-ink/10">
+                      <img src={displayImage} alt={displayName} className="object-cover w-full h-full" />
                     </div>
 
                     <div className="flex-1 min-w-0 space-y-2">
-                      <div className="flex justify-between items-start">
+                      <div className="flex justify-between items-start gap-4">
                         <div>
-                          <span className="text-[10px] text-gold-400 font-semibold uppercase tracking-wider block">
+                          <span className="text-[10px] uppercase tracking-[0.2em] text-gold-700 block">
                             {item.product.brand}
                           </span>
-                          <h3 className="font-serif font-bold text-zinc-900 truncate dark:text-zinc-100">
+                          <Link
+                            href={`/product/${item.product.id}`}
+                            className="font-serif text-lg font-bold text-ink hover:text-gold-700 transition-colors line-clamp-1"
+                          >
                             {displayName}
-                          </h3>
+                          </Link>
+                          <span className="text-xs text-ink-soft/60">{item.selectedSize.size}</span>
                         </div>
                         <button
                           onClick={() => removeFromCart(item.product.id, item.selectedSize.size)}
-                          className="text-zinc-500 hover:text-rose-400 p-1"
+                          className="text-ink-soft/50 hover:text-[#a03c3c] transition-colors p-1 flex-shrink-0"
+                          aria-label={`Remove ${displayName}`}
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
 
-                      <div className="text-xs text-zinc-400">
-                        Size: <span className="text-gold-400 font-bold">{item.selectedSize.size}</span>
-                      </div>
+                      <div className="flex justify-between items-center pt-1">
+                        <QtyStepper
+                          value={item.quantity}
+                          onChange={(q) => updateQuantity(item.product.id, item.selectedSize.size, q)}
+                        />
 
-                      <div className="flex justify-between items-center pt-2">
-                        {/* Quantity controls */}
-                        <div className="flex items-center space-x-3 border border-zinc-300 rounded-lg bg-white px-3 py-1 dark:border-zinc-800 dark:bg-zinc-950">
-                          <button
-                            onClick={() =>
-                              updateQuantity(item.product.id, item.selectedSize.size, item.quantity - 1)
-                            }
-                            className="text-zinc-400 hover:text-zinc-100"
-                          >
-                            <Minus className="w-3.5 h-3.5" />
-                          </button>
-                          <span className="text-xs font-bold w-4 text-center">{item.quantity}</span>
-                          <button
-                            onClick={() =>
-                              updateQuantity(item.product.id, item.selectedSize.size, item.quantity + 1)
-                            }
-                            className="text-zinc-400 hover:text-zinc-100"
-                          >
-                            <Plus className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-
-                        <span className="font-serif font-bold text-gold-400 text-base">
+                        <span className="font-serif font-bold text-xl text-ink">
                           {formatNaira(item.selectedSize.price * item.quantity)}
                         </span>
                       </div>
@@ -96,38 +82,42 @@ export default function CartPage() {
                 );
               })}
 
-              <div className="flex justify-between items-center pt-4">
-                <Link
-                  href="/shop"
-                  className="text-xs text-gold-400 hover:text-gold-300 font-semibold"
-                >
-                  ← Continue Shopping
+              <div className="flex justify-between items-center pt-6">
+                <Link href="/shop" className="group inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-ink-soft hover:text-gold-700 transition-colors">
+                  ← Continue shopping
                 </Link>
                 <button
                   onClick={clearCart}
-                  className="text-xs text-zinc-500 hover:text-rose-400"
+                  className="text-xs uppercase tracking-[0.18em] text-ink-soft/50 hover:text-[#a03c3c] transition-colors"
                 >
-                  Clear Cart
+                  Clear cart
                 </button>
               </div>
             </div>
 
             {/* Summary Sidebar */}
-            <div className="bg-white border border-zinc-200 rounded-2xl p-6 space-y-6 h-fit shadow-sm dark:bg-zinc-900 dark:border-zinc-800">
-              <h2 className="font-serif text-lg font-bold text-zinc-900 border-b border-zinc-200 pb-3 dark:text-zinc-100 dark:border-zinc-800">
-                Order Summary
+            <div className="bg-white border border-ink/10 p-7 h-fit space-y-6">
+              <h2 className="font-serif text-2xl font-bold text-ink border-b border-ink/10 pb-4">
+                Order summary
               </h2>
 
-              <div className="space-y-3 text-xs text-zinc-600 dark:text-zinc-300">
+              <div className="space-y-3 text-sm text-ink-soft">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="font-semibold text-zinc-900 dark:text-zinc-100">{formatNaira(subtotal)}</span>
+                  <span className="font-semibold text-ink">{formatNaira(subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Estimated Shipping (Nigeria)</span>
-                  <span>{shippingFee === 0 ? "FREE" : formatNaira(shippingFee)}</span>
+                  <span>Estimated shipping</span>
+                  <span className={shippingFee === 0 ? "font-semibold text-gold-700" : ""}>
+                    {shippingFee === 0 ? "FREE" : formatNaira(shippingFee)}
+                  </span>
                 </div>
-                <div className="flex justify-between pt-3 border-t border-zinc-200 text-sm font-bold text-gold-600 dark:border-zinc-800 dark:text-gold-400">
+                {subtotal < 350000 && (
+                  <p className="text-[11px] text-gold-700 leading-relaxed pt-1">
+                    Add <span className="font-semibold">{formatNaira(350000 - subtotal)}</span> more to qualify for free delivery.
+                  </p>
+                )}
+                <div className="flex justify-between pt-4 border-t border-ink/10 font-serif font-bold text-2xl text-ink">
                   <span>Total</span>
                   <span>{formatNaira(grandTotal)}</span>
                 </div>
@@ -135,24 +125,31 @@ export default function CartPage() {
 
               <Link
                 href="/checkout"
-                className="w-full bg-gradient-to-r from-gold-600 via-gold-500 to-gold-400 hover:brightness-110 text-zinc-950 font-bold py-3.5 px-4 rounded-xl text-center text-xs uppercase tracking-widest flex items-center justify-center space-x-2 transition-all shadow-lg"
+                className="w-full bg-ink hover:bg-gold-700 text-paper py-4 text-center text-xs font-semibold uppercase tracking-[0.22em] flex items-center justify-center gap-2 transition-colors group"
               >
                 <span>Proceed to Checkout</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
+              <p className="text-[10px] uppercase tracking-[0.16em] text-ink-soft/40 text-center">
+                Secure order via WhatsApp
+              </p>
             </div>
           </div>
         ) : (
-          <div className="py-20 text-center bg-zinc-50/60 rounded-2xl border border-zinc-200 space-y-4 dark:bg-zinc-900/40 dark:border-zinc-800">
-            <ShoppingBag className="w-12 h-12 text-zinc-600 mx-auto" />
-            <p className="text-zinc-500 text-sm dark:text-zinc-400">Your shopping cart is empty.</p>
-            <Link
-              href="/shop"
-              className="inline-block bg-gold-600 hover:bg-gold-500 text-zinc-950 font-bold text-xs px-6 py-3 rounded-xl uppercase tracking-wider"
-            >
-              Explore Collection
-            </Link>
-          </div>
+          <EmptyState
+            icon={ShoppingBag}
+            title="Your cart is empty"
+            message="No fragrances selected yet. Explore the collection and find your signature scent."
+            action={
+              <Link
+                href="/shop"
+                className="inline-flex items-center gap-2 bg-ink hover:bg-gold-700 text-paper text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 transition-colors"
+              >
+                Explore the collection
+                <ArrowUpRight className="w-4 h-4" />
+              </Link>
+            }
+          />
         )}
       </div>
     </div>

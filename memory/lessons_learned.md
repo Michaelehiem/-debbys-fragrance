@@ -91,7 +91,66 @@
 
 ---
 
-<!-- Template:
+## [2026-10-10] — `app/robots.ts` / `sitemap.ts` / `manifest.ts` fail to build because the project path contains an apostrophe
+- **Context:** Added the Next.js metadata-route conventions (robots.ts, sitemap.ts, manifest.ts, opengraph-image.tsx) to app/ while adding SEO/PWA. `next build` failed.
+- **Error:** `Module parse failed: Unexpected token (11:115) ... throw new Error('Default export is missing in "C:\\...\\Debby's Fragrance\\src\\app\\manifest.ts"')` for manifest.ts, robots.ts and sitemap.ts.
+- **Root cause:** Next's `next-metadata-route-loader` injects the **absolute file path** into generated single-quoted JS. The apostrophe in the project directory name (`Debby's Fragrance`) prematurely closes the string literal, producing a syntax error. Not a bug in our files — our `export default function` was correct. (The metadata *image* loader used for `opengraph-image.tsx` has the same path-injection hazard.)
+- **Fix:** Serve these as ordinary route handlers instead of the metadata file conventions:
+  - `src/app/robots.txt/route.ts`, `src/app/sitemap.xml/route.ts`, `src/app/manifest.webmanifest/route.ts` (plain `GET` returning `NextResponse`), and `src/app/og/route.tsx` (`ImageResponse`, `runtime="edge"`).
+  - Pointed `openGraph.images`/`twitter.images` at `/og`; kept `manifest: "/manifest.webmanifest"`.
+  - Removed `robots.ts`, `sitemap.ts`, `manifest.ts`, `opengraph-image.tsx`.
+  - `npx next build --no-lint` then compiled cleanly with all routes.
+- **Workflow updated?** No
+- **Tool updated?** No
+- **Watch out for:** Any Next.js project whose filesystem path contains an apostrophe (or other quote char) cannot use `robots.ts`/`sitemap.ts`/`manifest.ts`/`opengraph-image.tsx`/`icon.tsx`/`apple-icon.tsx` conventions — use route handlers. The cleanest permanent fix is renaming the parent folder to remove the apostrophe (deferred: the folder is the linked Vercel/deploy root and renaming risks breaking the project link).
+
+---
+
+## [2026-10-11] — Supabase Personal Access Token was read-only (403 on project create)
+- **Context:** Tried to provision the new `debbys-fragrance` Supabase project via CLI/Management API using the stored PAT.
+- **Error:** `POST https://api.supabase.com/v1/projects` → HTTP 403 `{"message":"Forbidden"}`.
+- **Root cause:** The token (`sbp_...`, stored in `%TEMP%\opencode\supabase_token.txt`) has read-only scope — it can list orgs/projects but not create them.
+- **Fix:** Michael must create the project in the Supabase dashboard (org `fgfyapcpygwrphmigudc`, region West EU/Ireland, Free). Then use `supabase projects api-keys --project-ref <ref>` (read works) to fetch the anon + service_role keys, write them to `.env.local`, and `supabase link` + `db push` with the generated DB password.
+- **Workflow updated?** No
+- **Tool updated?** No
+- **Watch out for:** Don't retry project creation with the same token — it will keep 403'ing. Delete the temp token file once the keys are extracted.
+
+---
+
+## [2026-10-11] — Verify with the local tsc binary, not `npx tsc`
+- **Context:** Ran TypeScript checks after adding ~20 new files (server lib, API routes, admin dashboard, contexts).
+- **Finding:** `.\node_modules\.bin\tsc.cmd --noEmit` completes in ~2 min and returns clean; `npx tsc --noEmit` re-resolves the binary and frequently times out (>10 min) on this machine.
+- **Fix:** Always invoke the local binary directly; give it a 600s timeout.
+- **Watch out for:** `npm run lint` (next lint) is also fine and fast here — the only warnings are the pre-existing `@next/next/no-img-element` ones.
+
+---
+
+## [2026-10-12] — New Supabase projects: direct DB is IPv6-only, pooler lags, and the Management API is the reliable route
+- **Context:** Pushing the initial schema to the brand-new project `qxktqbiqfatkoazijdte` (eu-central-1).
+- **Errors observed:**
+  - `supabase db push --db-url postgresql://…@db.<ref>.supabase.co:5432/…` → `getaddrinfo ENOTFOUND`. `nslookup <db host> 8.8.8.8` shows only an **AAAA (IPv6)** record on Windows-friendly resolvers; the box has no IPv6 → direct connection impossible from here.
+  - IPv4 pooler `aws-0-eu-central-1.pooler.supabase.com` (user `postgres.<ref>`) returned `FATAL: (ENOTFOUND) tenant/user … not found` for ~10 min straight on the freshly provisioned project (tenant config lag), then briefly "Connection terminated unexpectedly" → flapping.
+- **Root cause:** (1) Supabase now serves direct DB connections over IPv6 only; (2) hosted-pooler tenant routing for brand-new projects lags behind creation; (3) region must match exactly — `aws-0-eu-west-1` vs `aws-0-eu-central-1` (project card showed Frankfurt, not the requested West EU).
+- **Fix that worked (no DB host needed):** created an **owner PAT** in `supabase.com/dashboard/account/tokens`, then applied the migration via `POST https://api.supabase.com/v1/projects/{ref}/database/query` with the body being a JSON **string** (the escaped SQL). Also posted a `create table if not exists supabase_migrations.schema_migrations … insert …` so future `/admin-links` CLI pushes see the migration as applied, and hand-edited `supabase/.temp/linked-project.json` (it still pointed at the old paused project) to `{"ref":"qxktqbiqfatkoazijdte", …}` so no future `supabase db push` accidentally targets the old project.
+- **Workflow updated?** No
+- **Tool updated?** No
+- **Watch out for:** Check the actual region on the project card before guessing a pooler hostname. For one-off migrations on this machine, the Management API `database/query` endpoint is far more reliable than any CLI DB connection. Owner PATs must be deleted after use.
+
+---
+
+## [2026-10-12] — PowerShell 5.1 corrupts JSON payloads two ways; use curl with files
+- **Context:** Sending the migration SQL to the Supabase Management API from Windows PowerShell 5.1.
+- **Errors observed:**
+  - `Invoke-RestMethod` with `$body = 'select 1;' | ConvertTo-Json` → server saw `""select 1;""` (double-nested quotes) and rejected the JSON.
+  - `@{ query = $multilineSql } | ConvertTo-Json` → server error `query: Invalid input: expected string, received object`, because PS 5.1 wraps a **multi-line string** as `{ "value": "…" }` instead of a plain JSON string.
+- **Root cause:** PS 5.1's `ConvertTo-Json` serialises multi-line strings as an object with a `value` property, and `Invoke-RestMethod` re-quotes string bodies. Both silently mangle otherwise-correct JSON.
+- **Fix:** Build the payload file by hand (escape newlines → `\n`, double quotes → `\"`), write it with `Set-Content -Encoding ascii`, and send with `curl.exe -s -X POST … --data-binary @file`. The Management endpoint wants `{"query":"<escaped sql>"}`.
+- **Workflow updated?** No
+- **Tool updated?** No
+- **Watch out for:** Any future API work from this shell: prefer `curl --data-binary @file` over `Invoke-RestMethod` bodies, and never `ConvertTo-Json` a string that contains `\n`. The 5.1+ `/home` fix isn't available (Windows PowerShell 5.1 only).
+
+---
+
 ## [YYYY-MM-DD] — [Brief Error Title]
 - **Context:** What task was being run when this happened
 - **Error:** What went wrong (paste error message or description)

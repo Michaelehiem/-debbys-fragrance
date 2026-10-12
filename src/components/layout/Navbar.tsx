@@ -4,19 +4,27 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
-import {
-  ShoppingBag,
-  Search,
-  Menu,
-  X,
-  ArrowRight,
-} from "lucide-react";
-import { motion, useAnimation } from "framer-motion";
+import { useCustomer } from "@/context/CustomerAuthContext";
+import { ShoppingBag, Search, Menu, X, ArrowRight, User } from "lucide-react";
+import { DigitalClock } from "@/components/ui/DigitalClock";
+import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import { useAdmin } from "@/context/AdminContext";
 import { formatNaira } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
 
-const NAV_LINKS = [
+const LEFT_LINKS = [
+  { href: "/shop?category=women", label: "Women" },
+  { href: "/shop?category=men", label: "Men" },
+  { href: "/shop?category=unisex", label: "Unisex" },
+];
+
+const RIGHT_LINKS = [
+  { href: "/shop", label: "Shop All" },
+  { href: "/about", label: "Our Story" },
+  { href: "/contact", label: "Contact" },
+];
+
+const ALL_LINKS = [
   { href: "/", label: "Home" },
   { href: "/shop", label: "Shop All" },
   { href: "/shop?category=women", label: "Women" },
@@ -28,11 +36,13 @@ const NAV_LINKS = [
 
 export const Navbar: React.FC = () => {
   const { totalItems, setIsCartOpen } = useCart();
+  const { customer } = useCustomer();
   const { allProducts } = useAdmin();
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [scrolled, setScrolled] = useState(false);
   const cartControls = useAnimation();
   const prevTotalItems = useRef(totalItems);
 
@@ -40,12 +50,18 @@ export const Navbar: React.FC = () => {
     if (totalItems > prevTotalItems.current) {
       cartControls.start({
         scale: [1, 1.3, 0.9, 1.1, 1],
-        rotate: [0, -8, 8, -4, 0],
         transition: { duration: 0.5, ease: "easeInOut" },
       });
     }
     prevTotalItems.current = totalItems;
   }, [totalItems, cartControls]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
@@ -69,167 +85,209 @@ export const Navbar: React.FC = () => {
       )
     : [];
 
+  const navLinkClass =
+    "text-[11px] uppercase tracking-[0.18em] font-medium text-ink-soft hover:text-ink transition-colors";
+
   return (
-    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-zinc-100 text-zinc-900 transition-colors duration-300 dark:bg-zinc-950/95 dark:border-zinc-800 dark:text-zinc-100">
+    <header
+      className={`sticky top-0 z-40 transition-all duration-300 ${
+        scrolled
+          ? "bg-paper/90 backdrop-blur-md border-b border-ink/10"
+          : "bg-paper border-b border-transparent"
+      }`}
+    >
       {/* Announcement Bar */}
-      <div className="bg-gold-500/10 text-gold-700 dark:text-gold-300 text-xs py-1.5 px-4 text-center font-medium tracking-wide">
-        Free Delivery on orders over ₦350,000 · 100% Authentic Guaranteed
+      <div className="relative bg-ink text-paper/80 text-[10px] uppercase tracking-[0.24em] py-2 px-4 text-center overflow-hidden">
+        <span>
+          Complimentary nationwide delivery over ₦350,000
+          <span className="mx-3 text-gold-400">·</span>
+          Certified authentic, always
+        </span>
+        <DigitalClock className="hidden md:inline-flex absolute right-6 top-1/2 -translate-y-1/2 text-paper/70" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+      <div className="max-w-[88rem] mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="flex items-center justify-between h-[4.5rem] lg:h-20">
           {/* Mobile Menu Button */}
-          <div className="flex items-center lg:hidden">
+          <div className="flex items-center lg:hidden flex-1">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-zinc-500 hover:text-zinc-900 transition-colors dark:text-zinc-300 dark:hover:text-zinc-100"
+              className="p-2 -ml-2 text-ink hover:text-gold-600 transition-colors"
               aria-label="Toggle Navigation"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
 
-          {/* Logo */}
-          <Link href="/" className="flex flex-col items-center lg:items-start group">
-            <span className="font-serif text-2xl sm:text-3xl tracking-[0.2em] font-bold text-zinc-900 transition-colors dark:text-zinc-100">
-              DEBBY&apos;S
-            </span>
-            <span className="text-[9px] tracking-[0.35em] text-zinc-400 uppercase -mt-1">
-              Fragrance
-            </span>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-7 text-sm font-medium">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="text-zinc-600 hover:text-zinc-900 transition-colors py-1 dark:text-zinc-300 dark:hover:text-zinc-100"
-              >
+          {/* Desktop Left Nav */}
+          <nav className="hidden lg:flex items-center gap-9 flex-1">
+            {LEFT_LINKS.map((link) => (
+              <Link key={link.label} href={link.href} className={`${navLinkClass} link-underline`}>
                 {link.label}
               </Link>
             ))}
           </nav>
 
-          {/* Action Icons */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
-            {/* Search Toggle */}
-            <div className="relative">
-              <button
-                onClick={() => setSearchOpen(!searchOpen)}
-                className="p-2 text-zinc-500 hover:text-zinc-900 transition-colors dark:text-zinc-300 dark:hover:text-zinc-100"
-                aria-label="Search"
-              >
-                <Search className="w-5 h-5" />
-              </button>
+          {/* Wordmark */}
+          <Link href="/" className="flex flex-col items-center group px-2">
+            <span className="font-serif text-xl sm:text-2xl tracking-[0.28em] font-bold text-ink pl-[0.28em]">
+              DEBBY&apos;S
+            </span>
+            <span className="text-[8px] tracking-[0.5em] text-gold-700 uppercase pl-[0.5em] -mt-0.5">
+              Fragrance
+            </span>
+          </Link>
 
-              {/* Search Dropdown Modal */}
-              {searchOpen && (
-                <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-white border border-zinc-100 rounded-2xl shadow-xl p-4 z-50 animate-fade-in dark:bg-zinc-900 dark:border-zinc-800">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder="Search perfumes, notes, brands..."
-                      value={searchQuery}
-                      onChange={(e) => handleSearchChange(e.target.value)}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-gold-500 dark:bg-zinc-950 dark:border-zinc-700 dark:text-zinc-100"
-                      autoFocus
-                    />
-                    {searchQuery && (
-                      <button
-                        onClick={() => setSearchQuery("")}
-                        className="absolute right-3 top-3 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
-                        aria-label="Clear search"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
+          {/* Desktop Right Nav + Actions */}
+          <div className="flex items-center gap-9 flex-1 justify-end">
+            <nav className="hidden lg:flex items-center gap-9">
+              {RIGHT_LINKS.map((link) => (
+                <Link key={link.label} href={link.href} className={`${navLinkClass} link-underline`}>
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
 
-                  {/* Results */}
-                  {searchQuery && (
-                    <div className="mt-3 max-h-64 overflow-y-auto space-y-2 divide-y divide-zinc-100 dark:divide-zinc-800">
-                      {filteredSearch.length > 0 ? (
-                        filteredSearch.map((product) => (
-                          <Link
-                            key={product.id}
-                            href={`/product/${product.id}`}
-                            onClick={() => {
-                              setSearchOpen(false);
-                              setSearchQuery("");
-                            }}
-                            className="flex items-center space-x-3 pt-2 group"
-                          >
-                            <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-zinc-100 flex-shrink-0 dark:bg-zinc-800">
-                              <img
-                                src={product.images[0]}
-                                alt={product.name}
-                                className="object-cover w-full h-full group-hover:scale-110 transition-transform"
-                              />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-zinc-800 group-hover:text-gold-600 truncate dark:text-zinc-100 dark:group-hover:text-gold-300">
-                                {product.name}
-                              </p>
-                              <p className="text-xs text-gold-600 dark:text-gold-400">
-                                {formatNaira(product.sizes[0].price)}
-                              </p>
-                            </div>
-                          </Link>
-                        ))
-                      ) : (
-                        <p className="text-xs text-zinc-400 text-center py-4">
-                          No fragrances found matching &ldquo;{searchQuery}&rdquo;
-                        </p>
+            <div className="flex items-center space-x-1 sm:space-x-2">
+              {/* Search Toggle */}
+              <div className="relative">
+                <button
+                  onClick={() => setSearchOpen(!searchOpen)}
+                  className="p-2 text-ink hover:text-gold-600 transition-colors"
+                  aria-label="Search"
+                >
+                  <Search className="w-[18px] h-[18px]" />
+                </button>
+
+                <AnimatePresence>
+                  {searchOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 8 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute right-0 mt-4 w-[22rem] sm:w-96 bg-paper border border-ink/10 shadow-editorial p-4 z-50"
+                    >
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="Search perfumes, notes, brands..."
+                          value={searchQuery}
+                          onChange={(e) => handleSearchChange(e.target.value)}
+                          className="w-full bg-paper-deep/60 border border-ink/10 px-4 py-3 text-sm text-ink placeholder:text-ink-soft/50 focus:outline-none focus:border-gold-500 transition-colors"
+                          autoFocus
+                        />
+                        <Search className="absolute right-3 top-3.5 w-4 h-4 text-ink-soft/50" />
+                      </div>
+
+                      {searchQuery && (
+                        <div className="mt-3 max-h-72 overflow-y-auto divide-y divide-ink/5">
+                          {filteredSearch.length > 0 ? (
+                            filteredSearch.map((product) => (
+                              <Link
+                                key={product.id}
+                                href={`/product/${product.id}`}
+                                onClick={() => {
+                                  setSearchOpen(false);
+                                  setSearchQuery("");
+                                }}
+                                className="flex items-center space-x-3 py-3 group"
+                              >
+                                <div className="relative w-12 h-12 overflow-hidden bg-paper-deep flex-shrink-0">
+                                  <img
+                                    src={product.images[0]}
+                                    alt={product.name}
+                                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                                  />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-medium text-ink truncate group-hover:text-gold-700 transition-colors">
+                                    {product.name}
+                                  </p>
+                                  <p className="text-xs text-gold-600 font-serif">
+                                    {formatNaira(product.sizes[0].price)}
+                                  </p>
+                                </div>
+                              </Link>
+                            ))
+                          ) : (
+                            <p className="text-xs text-ink-soft/60 text-center py-6">
+                              No fragrances found matching &ldquo;{searchQuery}&rdquo;
+                            </p>
+                          )}
+                        </div>
                       )}
-                    </div>
+                    </motion.div>
                   )}
-                </div>
-              )}
-            </div>
+                </AnimatePresence>
+              </div>
 
-            {/* Cart Icon */}
-            <motion.button
-              animate={cartControls}
-              onClick={() => setIsCartOpen(true)}
-              className="relative p-2 text-zinc-900 hover:text-gold-600 transition-colors dark:text-zinc-100 dark:hover:text-gold-300"
-              aria-label="Shopping Cart"
-            >
-              <ShoppingBag className="w-5 h-5" />
-              {totalItems > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-gold-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                  {totalItems}
-                </span>
-              )}
-            </motion.button>
+              {/* Account */}
+              <Link
+                href="/account"
+                className="relative p-2 text-ink hover:text-gold-600 transition-colors"
+                aria-label={customer ? "Your account" : "Sign in"}
+              >
+                <User className="w-[18px] h-[18px]" />
+                {customer && (
+                  <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-gold-600" />
+                )}
+              </Link>
+
+              {/* Cart Icon */}
+              <motion.button
+                animate={cartControls}
+                onClick={() => setIsCartOpen(true)}
+                className="relative p-2 text-ink hover:text-gold-600 transition-colors"
+                aria-label="Shopping Cart"
+              >
+                <ShoppingBag className="w-[18px] h-[18px]" />
+                {totalItems > 0 && (
+                  <span className="absolute top-0.5 right-0.5 bg-gold-600 text-paper text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                    {totalItems}
+                  </span>
+                )}
+              </motion.button>
+
+              {/* Mobile spacer to balance menu button */}
+              <span className="lg:hidden w-2" />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-zinc-100 px-6 py-6 space-y-4 animate-fade-in dark:bg-zinc-950 dark:border-zinc-800">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              onClick={() => setMobileMenuOpen(false)}
-              className="block text-base font-medium text-zinc-700 hover:text-gold-600 transition-colors dark:text-zinc-200 dark:hover:text-gold-300"
-            >
-              {link.label}
-            </Link>
-          ))}
-          <Link
-            href="/shop"
-            onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center justify-between pt-2 text-sm font-semibold text-gold-600 dark:text-gold-400"
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:hidden overflow-hidden bg-paper border-b border-ink/10"
           >
-            <span>Browse All Fragrances</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      )}
+            <div className="px-6 py-8 space-y-1">
+              {ALL_LINKS.map((link, i) => (
+                <motion.div
+                  key={link.label}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.05 + i * 0.05 }}
+                >
+                  <Link
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between py-3.5 border-b border-ink/5 font-serif text-2xl text-ink hover:text-gold-600 transition-colors"
+                  >
+                    <span>{link.label}</span>
+                    <ArrowRight className="w-4 h-4 text-gold-500" />
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };

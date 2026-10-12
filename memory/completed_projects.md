@@ -113,6 +113,18 @@
 
 ---
 
+## Supabase Backend Port: Orders, Accounts, AI Chat, Admin Dashboard — Completed 2026-10-12
+- **Brief:** Move Debby's Fragrance from localStorage-only to a real Supabase backend: order tracking, customer accounts + saved cart, AI support chat, full admin dashboard, and a server-side product catalogue that syncs admin edits to every customer.
+- **Deliverable:** Full backend deployed to project `qxktqbiqfatkoazijdte` (`Debby,s Fragrance`, eu-central-1, Healthy). Schema live (products, orders, customers, subscribers, store_settings, admin_notifications; RLS on/zero policies; service-role-only access). `.env.local` carries `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (`sb_secret_…`), `ADMIN_SESSION_SECRET`, `ADMIN_PASSWORD`, Gemini placeholders.
+- **Key steps:**
+  - 2026-10-11: wrote migration + server layer (`src/lib/{supabase,store,auth,customer-auth,api-guard,constants,order-meta}.ts`, `src/types/store.ts`), 14 API routes, admin dashboard shell + components, OrderTimeline + `/order/[id]`, `CustomerAuthContext` + `/account` + saved-cart merge in `CartContext`, `SupportChat` + `/api/chat`. `tsc` + `lint` clean.
+  - 2026-10-12: Michael created the project; CLI `db push` blocked (IPv6-only direct host, pooler tenant lag) → applied the migration via the **Management API** (`POST /v1/projects/{ref}/database/query`) using a fresh owner PAT; verified all 6 tables; wrote `schema_migrations`; repointed `supabase/.temp/linked-project.json`; verified the service-role key works from Node (`products` reads 0 rows → auto-seeds `INITIAL_PRODUCTS` on first read).
+- **Workflows used:** none (no workflow file existed for this; deployment lessons captured in `lessons_learned.md`).
+- **Tools used:** supabase CLI (diagnosis only), nslookup/Resolve-DnsName, Management API via `curl.exe --data-binary @file`, Node + `@supabase/supabase-js`, `tsc`, `next lint`, file editing.
+- **Notes:** DB password is `Debomike101` (Michael-reset) — connection only possible via the IPv4 pooler or Management API; dev-server smoke test on this PC wedges the shell (skip; rely on `next build`/Vercel). GEMINI_API_KEY still blank (chat falls back gracefully). Full `npm run build` + live UI smoke-test remain (see `active_tasks.md`).
+
+---
+
 <!-- Template for future entries:
 - **Brief:** Deploy the Debby's Fragrance Next.js site from localhost to live hosting via GitHub + Vercel
 - **Deliverable:** Live site at **https://debbys-fragrance.vercel.app**

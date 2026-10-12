@@ -5,145 +5,101 @@ import { Product, AdminProductOverride } from "@/types";
 import { INITIAL_PRODUCTS } from "@/data/products";
 
 interface AdminContextType {
-  overrides: Record<string, AdminProductOverride>;
-  customProducts: Product[];
-  deletedProductIds: string[];
+  /** Full, server-backed catalogue. Falls back to the seed list until the first fetch resolves. */
   allProducts: Product[];
-  updateProductImage: (productId: string, imageBase64: string) => void;
-  updateProductDetails: (productId: string, name?: string, price?: number, stock?: number) => void;
-  resetProductOverride: (productId: string) => void;
-  resetAllOverrides: () => void;
-  addProduct: (product: Product) => void;
-  updateProduct: (productId: string, updates: Partial<Product>) => void;
-  deleteProduct: (productId: string) => void;
-  restoreProduct: (productId: string) => void;
+  loading: boolean;
+  error: string | null;
+  refresh: () => Promise<void>;
+  addProduct: (product: Product) => Promise<boolean>;
+  updateProduct: (productId: string, updates: Partial<Product>) => Promise<boolean>;
+  deleteProduct: (productId: string) => Promise<boolean>;
+  /**
+   * @deprecated Product edits now live on the server, so there are no separate overrides.
+   * Kept as an always-empty map so existing components that read `overrides[id]` keep working.
+   */
+  overrides: Record<string, AdminProductOverride>;
 }
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
-export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [overrides, setOverrides] = useState<Record<string, AdminProductOverride>>({});
-  const [customProducts, setCustomProducts] = useState<Product[]>([]);
-  const [deletedProductIds, setDeletedProductIds] = useState<string[]>([]);
+const EMPTY_OVERRIDES: Record<string, AdminProductOverride> = {};
 
-  useEffect(() => {
-    const savedOverrides = localStorage.getItem("debby_admin_overrides");
-    const savedCustom = localStorage.getItem("debby_admin_custom_products");
-    const savedDeleted = localStorage.getItem("debby_admin_deleted_products");
-    if (savedOverrides) {
-      try { setOverrides(JSON.parse(savedOverrides)); } catch (e) { console.error("Failed to parse overrides", e); }
-    }
-    if (savedCustom) {
-      try { setCustomProducts(JSON.parse(savedCustom)); } catch (e) { console.error("Failed to parse custom products", e); }
-    }
-    if (savedDeleted) {
-      try { setDeletedProductIds(JSON.parse(savedDeleted)); } catch (e) { console.error("Failed to parse deleted products", e); }
+export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [allProducts, setAllProducts] = useState<Product[]>(INITIAL_PRODUCTS);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const refresh = useCallback(async () => {
+    try {
+      const res = await fetch("/api/products", { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to load products");
+      const data = (await res.json()) as { products?: Product[] };
+      if (Array.isArray(data.products) && data.products.length > 0) {
+        setAllProducts(data.products);
+      }
+      setError(null);
+    } catch {
+      setError("Could not load the live catalogue. Showing the default range.");
+    } finally {
+      setLoading(false);
     }
   }, []);
 
-  const saveOverrides = (o: Record<string, AdminProductOverride>) => {
-    setOverrides(o);
-    localStorage.setItem("debby_admin_overrides", JSON.stringify(o));
-  };
+  useEffect(() => {
+    void refresh();
+  }, [refresh]);
 
-  const saveCustomProducts = (p: Product[]) => {
-    setCustomProducts(p);
-    localStorage.setItem("debby_admin_custom_products", JSON.stringify(p));
-  };
+  const addProduct = useCallback(
+    async (product: Product) => {
+      const res = await fetch("/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product }),
+      });
+      if (!res.ok) return false;
+      await refresh();
+      return true;
+    },
+    [refresh]
+  );
 
-  const saveDeletedIds = (ids: string[]) => {
-    setDeletedProductIds(ids);
-    localStorage.setItem("debby_admin_deleted_products", JSON.stringify(ids));
-  };
+  const updateProduct = useCallback(
+    async (productId: string, updates: Partial<Product>) => {
+      const res = await fetch(`/api/products/${encodeURIComponent(productId)}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ updates }),
+      });
+      if (!res.ok) return false;
+      await refresh();
+      return true;
+    },
+    [refresh]
+  );
 
-  // Combined product list: (INITIAL_PRODUCTS minus deleted + custom)
-  const allProducts: Product[] = [
-    ...INITIAL_PRODUCTS.filter((p) => !deletedProductIds.includes(p.id)),
-    ...customProducts,
-  ];
-
-  // Override-based operations (existing)
-  const updateProductImage = (productId: string, imageBase64: string) => {
-    const current = overrides[productId] || { id: productId };
-    saveOverrides({ ...overrides, [productId]: { ...current, customImage: imageBase64 } });
-  };
-
-  const updateProductDetails = (productId: string, name?: string, price?: number, stock?: number) => {
-    const current = overrides[productId] || { id: productId };
-    saveOverrides({
-      ...overrides,
-      [productId]: {
-        ...current,
-        ...(name !== undefined && { customName: name }),
-        ...(price !== undefined && { customPrice: price }),
-        ...(stock !== undefined && { customStock: stock }),
-      },
-    });
-  };
-
-  const resetProductOverride = (productId: string) => {
-    const copy = { ...overrides };
-    delete copy[productId];
-    saveOverrides(copy);
-  };
-
-  const resetAllOverrides = () => {
-    saveOverrides({});
-    saveCustomProducts([]);
-    saveDeletedIds([]);
-  };
-
-  // Full CRUD operations
-  const addProduct = (product: Product) => {
-    saveCustomProducts([...customProducts, product]);
-  };
-
-  const updateProduct = (productId: string, updates: Partial<Product>) => {
-    // Check if it's a custom product
-    const customIndex = customProducts.findIndex((p) => p.id === productId);
-    if (customIndex > -1) {
-      const updated = [...customProducts];
-      updated[customIndex] = { ...updated[customIndex], ...updates };
-      saveCustomProducts(updated);
-    }
-    // For initial products, we use overrides
-    if (updates.name) updateProductDetails(productId, updates.name);
-    if (updates.sizes) updateProductDetails(productId, undefined, updates.sizes[0].price);
-  };
-
-  const deleteProduct = (productId: string) => {
-    // If it's a custom product, remove from custom list
-    const customIndex = customProducts.findIndex((p) => p.id === productId);
-    if (customIndex > -1) {
-      const updated = customProducts.filter((p) => p.id !== productId);
-      saveCustomProducts(updated);
-    } else {
-      // Mark initial product as deleted
-      saveDeletedIds([...deletedProductIds, productId]);
-    }
-    // Also clean up any overrides
-    resetProductOverride(productId);
-  };
-
-  const restoreProduct = (productId: string) => {
-    saveDeletedIds(deletedProductIds.filter((id) => id !== productId));
-  };
+  const deleteProduct = useCallback(
+    async (productId: string) => {
+      const res = await fetch(`/api/products/${encodeURIComponent(productId)}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) return false;
+      await refresh();
+      return true;
+    },
+    [refresh]
+  );
 
   return (
     <AdminContext.Provider
       value={{
-        overrides,
-        customProducts,
-        deletedProductIds,
         allProducts,
-        updateProductImage,
-        updateProductDetails,
-        resetProductOverride,
-        resetAllOverrides,
+        loading,
+        error,
+        refresh,
         addProduct,
         updateProduct,
         deleteProduct,
-        restoreProduct,
+        overrides: EMPTY_OVERRIDES,
       }}
     >
       {children}

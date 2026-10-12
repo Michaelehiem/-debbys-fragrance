@@ -1,15 +1,19 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { AdminProvider } from "@/context/AdminContext";
 import { ReviewProvider } from "@/context/ReviewContext";
+import { CustomerAuthProvider } from "@/context/CustomerAuthContext";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/layout/CartDrawer";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { CartToast } from "@/components/ui/CartToast";
+import { SupportChat } from "@/components/ui/SupportChat";
+import { JsonLd } from "@/components/ui/JsonLd";
 import { siteConfig } from "@/config/site";
+import { SITE, SITE_URL } from "@/lib/site";
 
 const playfair = localFont({
   src: [
@@ -31,16 +35,50 @@ const inter = localFont({
 });
 
 export const metadata: Metadata = {
-  title: siteConfig.seo.title,
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: siteConfig.seo.title,
+    template: `%s | ${siteConfig.businessName}`,
+  },
   description: siteConfig.seo.description,
   keywords: siteConfig.seo.keywords,
+  applicationName: siteConfig.businessName,
+  authors: [{ name: siteConfig.businessName }],
+  creator: siteConfig.businessName,
+  publisher: siteConfig.businessName,
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "Debby's Fragrance | Discover Your Signature Scent",
-    description: "Authentic luxury perfumes, body oils, and bespoke signature fragrances delivered nationwide across Nigeria.",
-    siteName: "Debby's Fragrance",
+    title: siteConfig.seo.title,
+    description: siteConfig.seo.description,
+    url: "/",
+    siteName: siteConfig.businessName,
     locale: "en_NG",
     type: "website",
+    images: [{ url: "/og", width: 1200, height: 630, alt: siteConfig.businessName }],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.seo.title,
+    description: siteConfig.seo.description,
+    images: ["/og"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: { icon: "/icon.svg", apple: "/icon.svg" },
+  manifest: "/manifest.webmanifest",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#1b1712",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -48,21 +86,48 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const organizationLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: SITE.name,
+    url: SITE.url,
+    slogan: SITE.tagline,
+    email: SITE.email,
+    telephone: SITE.phone,
+    sameAs: SITE.sameAs,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: SITE.city,
+      addressCountry: "NG",
+    },
+  };
+
+  const websiteLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE.name,
+    url: SITE.url,
+  };
+
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="bg-white text-zinc-900 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-gold-500 selection:text-zinc-950">
-        <AdminProvider>
-          <CartProvider>
-            <ReviewProvider>
-              <Navbar />
-              <main className="flex-1">{children}</main>
-              <Footer />
-              <CartDrawer />
-              <CartToast />
-              <BackToTop />
-            </ReviewProvider>
-          </CartProvider>
-        </AdminProvider>
+      <body className="bg-paper text-ink font-sans antialiased min-h-screen flex flex-col justify-between">
+        <JsonLd data={[organizationLd, websiteLd]} />
+        <CustomerAuthProvider>
+          <AdminProvider>
+            <CartProvider>
+              <ReviewProvider>
+                <Navbar />
+                <main className="flex-1">{children}</main>
+                <Footer />
+                <CartDrawer />
+                <CartToast />
+                <BackToTop />
+                <SupportChat />
+              </ReviewProvider>
+            </CartProvider>
+          </AdminProvider>
+        </CustomerAuthProvider>
       </body>
     </html>
   );
