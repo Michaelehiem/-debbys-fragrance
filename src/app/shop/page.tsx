@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, Suspense } from "react";
+import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductListCard } from "@/components/product/ProductListCard";
@@ -37,6 +37,13 @@ function ShopPageContent() {
   // Filter States
   const [selectedCategory, setSelectedCategory] = useState<GenderCategory | "all">(initialCategory);
   const [selectedFamily, setSelectedFamily] = useState<FragranceFamily | "all">(initialFamily);
+
+  // Keep filters in sync with the URL so nav links (Women / Men / Unisex) apply immediately,
+  // including when navigating between categories while already on /shop.
+  useEffect(() => {
+    setSelectedCategory((searchParams.get("category") as GenderCategory | "all") || "all");
+    setSelectedFamily((searchParams.get("family") as FragranceFamily | "all") || "all");
+  }, [searchParams]);
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "rating" | "newest">("featured");
   const [searchQuery, setSearchQuery] = useState("");

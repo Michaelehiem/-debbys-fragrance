@@ -6,7 +6,7 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { QuickViewModal } from "@/components/product/QuickViewModal";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Product } from "@/types";
-import { Sparkles, ArrowRight, ShieldCheck, Award, HeartHandshake, Instagram } from "lucide-react";
+import { Sparkles, ArrowRight, ShieldCheck, Award, HeartHandshake, Instagram, Play } from "lucide-react";
 import { motion } from "framer-motion";
 import { siteConfig } from "@/config/site";
 import { useAdmin } from "@/context/AdminContext";
@@ -16,6 +16,14 @@ const MARQUEE_ITEMS = [
   "Amber Nectar", "Midnight Oud", "Rose Petal", "Santal Noir",
   "Bergamot Sky", "Tonka & Vanille", "Jasmine Élixir", "Bois de Cèdre",
 ];
+
+function TikTokGlyph({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+      <path d="M16.5 3c.3 2.1 1.5 3.6 3.5 4v2.6c-1.3.1-2.5-.3-3.6-1v6.1c0 3.3-2.4 5.3-5.2 5.3-2.7 0-4.8-2-4.8-4.7 0-2.7 2.1-4.7 4.8-4.7.3 0 .6 0 .9.1v2.7c-.3-.1-.6-.2-.9-.2-1.3 0-2.2.9-2.2 2.1 0 1.3.9 2.2 2.2 2.2 1.4 0 2.3-1 2.3-2.6V3h3z" />
+    </svg>
+  );
+}
 
 export default function HomePage() {
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
@@ -128,27 +136,44 @@ export default function HomePage() {
             </motion.div>
           </div>
 
-          {/* Image column */}
+          {/* TikTok mirror column */}
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
             className="lg:col-span-5 relative"
           >
-            <div className="relative aspect-[3/4] lg:aspect-[4/5] overflow-hidden rounded-2xl">
+            <a
+              href={siteConfig.socials.tiktok}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative block aspect-[3/4] lg:aspect-[4/5] overflow-hidden rounded-2xl bg-ink"
+            >
               <img
-                src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=1000"
-                alt="Debby's Fragrance atelier"
-                className="w-full h-full object-cover"
+                src="https://images.pexels.com/photos/19055592/pexels-photo-19055592.jpeg?auto=compress&cs=tinysrgb&w=1000"
+                alt="Debby's Fragrance on TikTok"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 ring-1 ring-inset ring-rose-200" />
-            </div>
-            <div className="absolute -bottom-5 left-0 lg:-left-10 rounded-2xl bg-white border border-ink/10 px-7 py-5 shadow-soft flex items-baseline gap-3">
-              <span className="font-serif text-4xl font-bold text-rose-700">1&ndash;3</span>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-ink-soft leading-relaxed">
-                day nationwide<br />delivery
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/15 to-ink/40" />
+
+              <span className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1.5">
+                <TikTokGlyph className="w-3.5 h-3.5 text-ink" />
+                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-ink">TikTok</span>
               </span>
-            </div>
+
+              <span className="absolute inset-0 grid place-items-center">
+                <span className="grid h-16 w-16 place-items-center rounded-full bg-white/90 shadow-soft transition-transform duration-300 group-hover:scale-110">
+                  <Play className="w-6 h-6 translate-x-0.5 text-ink" fill="currentColor" />
+                </span>
+              </span>
+
+              <div className="absolute inset-x-0 bottom-0 p-5 text-paper">
+                <p className="font-serif text-xl font-bold">@debsfragrance</p>
+                <p className="mt-1 text-xs text-paper/80">Watch the scent stories on TikTok</p>
+              </div>
+
+              <span className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-rose-200" />
+            </a>
           </motion.div>
         </div>
       </section>
@@ -169,8 +194,7 @@ export default function HomePage() {
       <ScrollReveal className="max-w-[88rem] mx-auto px-5 sm:px-8 lg:px-12 pt-24">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-ink/10 pb-6 mb-10">
           <div>
-            <span className="section-num">N°01</span>
-            <h2 className="mt-3 font-serif text-4xl sm:text-5xl font-bold text-ink">
+            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-ink">
               New arrivals
             </h2>
             <p className="mt-3 text-sm text-ink-soft/70 max-w-md leading-relaxed">
@@ -205,8 +229,7 @@ export default function HomePage() {
       <ScrollReveal className="max-w-[88rem] mx-auto px-5 sm:px-8 lg:px-12 pt-28">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-ink/10 pb-6 mb-10">
           <div>
-            <span className="section-num">N°02</span>
-            <h2 className="mt-3 font-serif text-4xl sm:text-5xl font-bold text-ink">
+            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-ink">
               Top deals
             </h2>
             <p className="mt-3 text-sm text-ink-soft/70 max-w-md leading-relaxed">
@@ -422,8 +445,7 @@ export default function HomePage() {
         <div className="max-w-[88rem] mx-auto px-5 sm:px-8 lg:px-12 mb-8">
           <div className="flex items-end justify-between">
             <div>
-              <span className="section-num">N°03</span>
-              <h2 className="mt-3 font-serif text-4xl sm:text-5xl font-bold text-ink">
+              <h2 className="font-serif text-4xl sm:text-5xl font-bold text-ink">
                 @debsfragrance
               </h2>
             </div>

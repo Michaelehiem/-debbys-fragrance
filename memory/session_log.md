@@ -388,3 +388,21 @@
 - **Outputs:** 15 files touched (see git diff) — types, AdminProducts, page, Footer, Navbar, CartToast, shop, contact, ProductDetail, chat route, sitemap, plus `about/page.tsx` deleted.
 - **Status:** ✅ Committed + pushed (`6889d23`, `60f93f3..6889d23 master -> master`) — Vercel auto-deploying to production.
 - **Notes:** Environment quirk this session — PowerShell commands occasionally hang after `Remove-Item`/long builds because an orphaned `node` build worker keeps the console open; `taskkill /F /PID <node>` clears it (the build itself completed fine once the orphan was killed). `tsconfig.tsbuildinfo` left unstaged as before.
+
+---
+
+## 2026-10-13 — Nav Category Links Fix, Hero TikTok Mirror, Numbering Removal
+
+- **Goal:** Three asks: (1) the menu links (Women / Men / Unisex) should actually take you to those categories; (2) replace the hero perfume photo (which carried the "1–3 day delivery" badge) with something else; (3) remove the "N°01 / N°02 / N°03" style numberings in sections. Then deploy.
+- **Clarification:** Michael's "explore the collections" = the hero **"Explore the collection"** button; the "section under it" = the hero image column (perfume photo + the 1–3 day delivery badge). Replacement = a **TikTok mirror**.
+- **Root cause — nav links:** the links already pointed at `/shop?category=women|men|unisex`, but `ShopPageContent` only read the query params into `useState` **initializers** (`src/app/shop/page.tsx:34-39`), so client-side navigations between categories (and re-clicks while already on `/shop`) never updated the active filter.
+- **Steps taken:**
+  - `src/app/shop/page.tsx`: added `useEffect` imported from React + a sync effect that re-applies `category`/`family` from `useSearchParams()` whenever the URL changes — nav links now filter immediately.
+  - `src/app/page.tsx`: replaced the hero **image column** (Unsplash photo + floating "1–3 day nationwide delivery" badge) with a **TikTok mirror** tile — vertical phone-style card, gradient scrim, TikTok logo chip, centred play button, `@debsfragrance` handle + caption, linking to `siteConfig.socials.tiktok`. Added a `Play` lucide import and a small inline `TikTokGlyph` SVG component.
+  - `src/app/page.tsx`: removed the `N°01`, `N°02`, `N°03` `<span className="section-num">` labels (New arrivals, Top deals, Instagram) and dropped the now-unneeded `mt-3` on those `h2`s.
+  - `src/app/contact/page.tsx`: removed the `01` / `02` `section-num` badges on the "Send a message" and "Boutique information" cards.
+- **Verification:** `.\node_modules\.bin\tsc.cmd --noEmit` ✅ clean (**TSC_EXIT=0**); `.\node_modules\.bin\next.cmd build --no-lint` ✅ **BUILD_EXIT=0**, 13 static pages.
+- **Tools used:** file editing, `git`, `tsc`, `next build`.
+- **Outputs:** `page.tsx`, `shop/page.tsx`, `contact/page.tsx` updated.
+- **Status:** ✅ Committed + pushed — Vercel auto-deploying to production.
+- **Notes:** The `section-num` class itself is kept in `globals.css` (still used by shop "The Edit", cart "Your Selection", and an empty decorative rule on contact). Only the numeric labels were removed.

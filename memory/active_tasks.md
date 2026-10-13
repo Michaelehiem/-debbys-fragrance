@@ -64,6 +64,18 @@
 - **Status:** ✅ Committed + pushed (`6889d23`) — Vercel auto-deploying.
 - **Open follow-ups:** Dashboard `orderCount: 0` bug; swap placeholder Pexels photos for real bottle shots; delete `%TEMP%\opencode\` secrets; Vercel `ADMIN_PASSWORD` fallback reconciliation.
 
+## Nav Category Links Fix + Hero TikTok Mirror + Numbering Removal (DONE 2026-10-13)
+
+- **Started:** 2026-10-13 — **Completed (code + verify):** 2026-10-13
+- **Goal:** Make menu Women/Men/Unisex actually navigate to those categories; replace the hero perfume photo + delivery badge with something else; remove the "N°01/N°02/N°03" section numberings; deploy.
+- **Done:**
+  - `shop/page.tsx`: added a `useEffect` syncing `category`/`family` from `useSearchParams()` so nav links filter immediately (previously only read once via `useState` initializers).
+  - `page.tsx`: hero **image column replaced with a TikTok mirror** (vertical phone-style tile → `siteConfig.socials.tiktok`, play button, `@debsfragrance`); added `Play` import + inline `TikTokGlyph` SVG; removed `N°01`/`N°02`/`N°03` labels.
+  - `contact/page.tsx`: removed `01`/`02` numbering badges.
+- **Verified:** `tsc --noEmit` clean (TSC_EXIT=0); `next build --no-lint` BUILD_EXIT=0, 13 static pages.
+- **Status:** ✅ Committed + pushed — Vercel auto-deploying.
+- **Open follow-ups:** Dashboard `orderCount: 0` bug; swap placeholder Pexels photos for real bottle shots; delete `%TEMP%\opencode\` secrets; Vercel `ADMIN_PASSWORD` fallback reconciliation.
+
 <!-- Template:
 ## [TASK NAME]
 - **Started:** YYYY-MM-DD

@@ -77,7 +77,6 @@ export default function ContactPage() {
           <div className="bg-white border border-ink/10 p-7 sm:p-9 space-y-7 h-fit">
             <div className="flex items-baseline justify-between">
               <h2 className="font-serif text-2xl font-bold text-ink">Send a message</h2>
-              <span className="section-num">01</span>
             </div>
 
             {submitted ? (
@@ -150,7 +149,6 @@ export default function ContactPage() {
             <div className="bg-white border border-ink/10 p-7 sm:p-9">
               <div className="flex items-baseline justify-between mb-6">
                 <h2 className="font-serif text-2xl font-bold text-ink">Boutique information</h2>
-                <span className="section-num">02</span>
               </div>
 
               <div className="divide-y divide-ink/10 text-sm">
