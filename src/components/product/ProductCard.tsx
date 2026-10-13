@@ -41,11 +41,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
 
   const activePrice = override?.customPrice ? override.customPrice : selectedSize.price;
   const showOriginal = selectedSize.originalPrice && !override?.customPrice;
+  const hasDeal = product.sizes.some((s) => s.originalPrice && s.originalPrice > s.price);
 
   return (
-    <article className="group relative flex h-full flex-col bg-white border border-ink/10 transition-all duration-500 hover:border-gold-600/40 hover:shadow-editorial-sm">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-ink/10 bg-white transition-all duration-500 hover:border-rose-400/50 hover:shadow-soft">
       {/* Image */}
-      <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#efe7d8]">
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-paper-deep">
         <Link
           href={`/product/${product.id}`}
           aria-label={`View ${displayName}`}
@@ -61,18 +62,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
 
         {/* Badges */}
         <div className="absolute top-3 left-3 z-10 flex flex-col items-start gap-1.5">
+          {hasDeal && (
+            <span className="rounded-full bg-rose-600 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-white">
+              Deal
+            </span>
+          )}
           {product.isBestSeller && (
-            <span className="bg-white/90 backdrop-blur-sm text-gold-800 font-semibold text-[9px] uppercase tracking-[0.18em] px-2.5 py-1 border border-gold-600/50">
+            <span className="rounded-full border border-rose-400/50 bg-white/90 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-rose-800 backdrop-blur-sm">
               Best Seller
             </span>
           )}
           {product.isNewArrival && (
-            <span className="bg-ink text-paper font-semibold text-[9px] uppercase tracking-[0.18em] px-2.5 py-1">
+            <span className="rounded-full bg-rose-700 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-white">
               New Arrival
             </span>
           )}
           {override?.customImage && (
-            <span className="bg-[#2d4a3e] text-white font-semibold text-[9px] uppercase tracking-[0.18em] px-2.5 py-1">
+            <span className="rounded-full bg-[#2d4a3e] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-white">
               Custom
             </span>
           )}
@@ -89,7 +95,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
             className="absolute bottom-0 left-0 right-0 z-10 py-2.5 bg-ink/85 backdrop-blur-sm text-paper text-[10px] uppercase tracking-[0.24em] font-medium flex items-center justify-center gap-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300 focus-visible:translate-y-0"
             aria-label={`Quick view ${displayName}`}
           >
-            <Eye className="w-3.5 h-3.5 text-gold-400" />
+            <Eye className="w-3.5 h-3.5 text-rose-300" />
             Quick View
           </button>
         )}
@@ -103,7 +109,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
         </div>
 
         <Link href={`/product/${product.id}`} className="mt-2">
-          <h3 className="font-serif text-base sm:text-lg font-semibold text-ink leading-snug line-clamp-1 group-hover:text-gold-700 transition-colors">
+          <h3 className="font-serif text-base sm:text-lg font-semibold text-ink leading-snug line-clamp-1 group-hover:text-rose-700 transition-colors">
             {displayName}
           </h3>
         </Link>
@@ -126,9 +132,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
                 type="button"
                 onClick={() => setSelectedSize(s)}
                 aria-pressed={active}
-                className={`text-[10px] font-medium tabular-nums px-2.5 py-1 transition-colors duration-200 ${
+                className={`text-[10px] font-medium tabular-nums px-2.5 py-1 rounded-full transition-colors duration-200 ${
                   active
-                    ? "bg-ink text-paper"
+                    ? "bg-rose-700 text-white"
                     : "bg-paper-deep/70 text-ink-soft hover:bg-paper-deep"
                 }`}
               >
@@ -138,10 +144,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           })}
         </div>
 
-        {/* Price + Add — pinned to the bottom for even cards */}
-        <div className="mt-auto flex items-end justify-between gap-3 pt-4">
+        {/* Price, then Add to Cart underneath — pinned to the bottom for even cards */}
+        <div className="mt-auto pt-4">
           <div className="flex items-baseline gap-2 leading-none">
-            <span className="font-serif text-lg sm:text-xl font-bold text-ink">
+            <span className="font-serif text-lg sm:text-xl font-bold text-rose-700">
               {formatNaira(activePrice)}
             </span>
             {showOriginal && (
@@ -154,21 +160,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           <button
             onClick={handleAddToCart}
             aria-label={isAdded ? `${displayName} added to cart` : `Add ${displayName} to cart`}
-            className={`shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors duration-300 ${
+            className={`mt-3 flex w-full items-center justify-center gap-2 rounded-full px-3.5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors duration-300 ${
               isAdded
                 ? "bg-[#2d4a3e] text-white"
-                : "bg-ink text-paper hover:bg-gold-700"
+                : "bg-ink text-paper hover:bg-rose-700"
             }`}
           >
             {isAdded ? (
               <>
                 <Check className="w-3.5 h-3.5" />
-                Added
+                Added to Cart
               </>
             ) : (
               <>
                 <ShoppingBag className="w-3.5 h-3.5" />
-                Add
+                Add to Cart
               </>
             )}
           </button>

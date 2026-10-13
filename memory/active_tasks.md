@@ -20,6 +20,36 @@
 - **Remaining after this:** full `npm run build` (~30 min on this machine; or let Vercel build on push); live smoke-test `/api/products` seed, admin login (`/admin` after search keyword `babydebby`, password `debbyfragrance2026`), order → `/order/[id]`, account register/login + saved-cart sync, chat fallback. Delete temp token files in `%TEMP%\opencode\`.
 - **Notes:** Direct DB host is IPv6-only on new Supabase projects (this PC has no IPv6); the pooler needs frequent retries on brand-new projects. PowerShell 5.1 `ConvertTo-Json` corrupts multi-line strings — build API JSON payloads manually or use `curl --data-binary @file`.
 
+---
+
+## Storefront Polish Round 3 — Luxury Product Cards + Verified Imagery (COMPLETED 2026-10-13)
+
+- **Started:** 2026-10-13 — **Completed:** 2026-10-13
+- **Goal:** Address feedback — product cards looked out of place, mobile drawer too big, want more luxury/modern + beautiful imagery.
+- **Done:** Rewrote `ProductCard.tsx` (luxury layout, quick-view, quiet size chips, aligned price/Add), slimmed the mobile drawer, installed 12 distinct verified Pexels photos (seed + Supabase `products` table via REST PATCH), refreshed Instagram rail. Commits `0ebd166` (header/credentials) + `5a1541b` (cards/imagery) pushed. Local `next build` + `tsc` both clean.
+- **Open follow-ups:**
+  - [x] **Admin password `mikeybaby` is LIVE (2026-10-13)** — set via Supabase `store_settings.admin_password` (DB value takes precedence over env; verified live `{"ok":true}`). Vercel Production env `ADMIN_PASSWORD` still holds the old value as a harmless fallback — reconcile/clear for hygiene (needs a Vercel token; none on this machine).
+  - [ ] Dashboard bug: `/api/dashboard` reports `orderCount: 0` while `/api/orders` has 1 — cause unknown.
+  - [ ] Replace branded placeholder photos (Chanel/Tom Ford/Burberry/Nautica from Pexels) with Debby's real bottle shots when available.
+  - [ ] Delete temp secrets: `%TEMP%\opencode\` (owner PAT + DB password + token files).
+  - [ ] Optional: `next/image` + `remotePatterns` for `images.pexels.com` if optimizer adoption is wanted (currently all `<img>`).
+
+## Storefront Overhaul + Feminine "Rose & Cream" Redesign (CODE COMPLETE 2026-10-13)
+
+- **Started:** 2026-10-13 — **Completed (code):** 2026-10-13 — **Pending:** commit + push/deploy (awaiting Michael's go-ahead)
+- **Goal:** Admin easy-nav, draggable chat, bold store name, homepage wallpaper, New Arrivals/Top Deals/Discount instead of categories, "Add to Cart" under price — then a feminine "Rose & cream romantic" restyle.
+- **Done:**
+  - Homepage: New Arrivals (N°01) + Top Deals (N°02, real `originalPrice` deals) + Discount band; categories section removed; fixed soft wallpaper layer.
+  - ProductCard: "Add to Cart" under price, rounded card, rose accents. SupportChat: draggable. Navbar: bold + script wordmark, **blush rose header background**, numbering removed. Admin: sidebar nav shell.
+  - Theme: `gold` scale repointed to **rose-gold** (themes the whole app), blush cream paper/plum ink, full `rose` palette, `script` font (Great Vibes) + real Playfair italic, rose `eyebrow`/`section-num`/selection/scrollbar, rounded soft components.
+  - Verified: `tsc --noEmit` ✅ clean; `next build --no-lint` ✅ BUILD_EXIT=0, 14/14 static pages.
+- **Open follow-ups:**
+  - [ ] Commit + push to `master` to deploy (not done — needs explicit approval).
+  - [ ] Dashboard bug: `/api/dashboard` `orderCount: 0` vs `/api/orders` has 1.
+  - [ ] Replace branded placeholder Pexels photos with Debby's real bottle shots.
+  - [ ] `%TEMP%\opencode\` still holds Supabase secrets to delete (owner PAT + DB password + tokens).
+  - [ ] Vercel Production `ADMIN_PASSWORD` fallback trap (reconcile/clear).
+
 <!-- Template:
 ## [TASK NAME]
 - **Started:** YYYY-MM-DD

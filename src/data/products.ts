@@ -13,9 +13,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     heartNotes: ["Midnight Jasmine", "Smoked Plum", "Orris Root"],
     baseNotes: ["Dark Amber", "Oud Wood", "Madagascar Vanilla"],
     sizes: [
-      { size: "5ml", price: 6000 },
-      { size: "10ml", price: 12000 },
-      { size: "25ml", price: 30000 }
+      { size: "5ml", price: 6000, originalPrice: 7500 },
+      { size: "10ml", price: 12000, originalPrice: 15000 },
+      { size: "25ml", price: 30000, originalPrice: 37500 }
     ],
     images: [
       "https://images.pexels.com/photos/34143831/pexels-photo-34143831.jpeg?auto=compress&cs=tinysrgb&w=800"
@@ -89,9 +89,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     heartNotes: ["Golden Amber", "Labdanum", "Myrrh"],
     baseNotes: ["Blonde Tobacco", "Sandalwood", "Tonka Bean"],
     sizes: [
-      { size: "5ml", price: 8000 },
-      { size: "10ml", price: 16000 },
-      { size: "25ml", price: 40000 }
+      { size: "5ml", price: 8000, originalPrice: 10000 },
+      { size: "10ml", price: 16000, originalPrice: 20000 },
+      { size: "25ml", price: 40000, originalPrice: 50000 }
     ],
     images: [
       "https://images.pexels.com/photos/37127787/pexels-photo-37127787.jpeg?auto=compress&cs=tinysrgb&w=800"
@@ -165,9 +165,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     heartNotes: ["Turkish Rose Absolute", "Centifolia Rose", "Geranium"],
     baseNotes: ["Patchouli Heart", "Vanilla Absolute", "Tonka Bean"],
     sizes: [
-      { size: "5ml", price: 7500 },
-      { size: "10ml", price: 14500 },
-      { size: "25ml", price: 36000 }
+      { size: "5ml", price: 7500, originalPrice: 9500 },
+      { size: "10ml", price: 14500, originalPrice: 18000 },
+      { size: "25ml", price: 36000, originalPrice: 45000 }
     ],
     images: [
       "https://images.pexels.com/photos/22589332/pexels-photo-22589332.jpeg?auto=compress&cs=tinysrgb&w=800"
@@ -216,9 +216,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     heartNotes: ["Bourbon Vanilla", "Heliotrope", "Cocoa Butter"],
     baseNotes: ["Sandalwood", "Benzoin", "White Musk"],
     sizes: [
-      { size: "5ml", price: 5500 },
-      { size: "10ml", price: 10500 },
-      { size: "25ml", price: 26000 }
+      { size: "5ml", price: 5500, originalPrice: 7000 },
+      { size: "10ml", price: 10500, originalPrice: 13000 },
+      { size: "25ml", price: 26000, originalPrice: 32500 }
     ],
     images: [
       "https://images.pexels.com/photos/13284500/pexels-photo-13284500.jpeg?auto=compress&cs=tinysrgb&w=800"

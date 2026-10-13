@@ -123,7 +123,7 @@ export const Navbar: React.FC = () => {
     : [];
 
   const navLinkClass =
-    "text-[11px] uppercase tracking-[0.18em] font-medium text-ink-soft hover:text-ink transition-colors";
+    "text-[11px] uppercase tracking-[0.18em] font-medium text-ink-soft hover:text-rose-600 transition-colors";
 
   const closeMenu = () => setMobileMenuOpen(false);
 
@@ -131,8 +131,8 @@ export const Navbar: React.FC = () => {
     <header
       className={`sticky top-0 z-40 transition-all duration-500 ${
         scrolled
-          ? "bg-paper/90 backdrop-blur-md border-b border-ink/10 shadow-editorial-sm"
-          : "bg-paper border-b border-transparent"
+          ? "bg-rose-100/95 backdrop-blur-md border-b border-rose-200 shadow-editorial-sm"
+          : "bg-rose-100 border-b border-rose-200/70"
       }`}
     >
       {/* Announcement Bar — sliding ticker */}
@@ -143,9 +143,9 @@ export const Navbar: React.FC = () => {
               {[0, 1, 2].map((j) => (
                 <React.Fragment key={j}>
                   <span className="mx-6">Complimentary nationwide delivery over ₦350,000</span>
-                  <span className="text-gold-400">·</span>
+                  <span className="text-rose-300">·</span>
                   <span className="mx-6">Certified authentic, always</span>
-                  <span className="text-gold-400">·</span>
+                  <span className="text-rose-300">·</span>
                 </React.Fragment>
               ))}
             </span>
@@ -160,7 +160,7 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center lg:hidden flex-1">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="p-2 -ml-2 text-ink hover:text-gold-600 transition-colors"
+              className="p-2 -ml-2 text-ink hover:text-rose-600 transition-colors"
               aria-label="Open navigation"
               aria-expanded={mobileMenuOpen}
             >
@@ -187,18 +187,20 @@ export const Navbar: React.FC = () => {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: EASE }}
-              className="font-serif text-xl sm:text-[1.65rem] font-bold tracking-[0.28em] text-ink pl-[0.28em] leading-none transition-colors duration-500 group-hover:text-gold-700"
+              className="font-serif text-2xl sm:text-[1.9rem] font-black uppercase leading-[0.9] tracking-[0.16em] pl-[0.16em] transition-all duration-500 group-hover:tracking-[0.22em]"
             >
-              DEBBY&apos;S
+              <span className="bg-gradient-to-r from-ink via-ink to-ink bg-clip-text text-transparent transition-all duration-500 group-hover:from-gold-700 group-hover:via-gold-500 group-hover:to-gold-700">
+                DEBBY&apos;S
+              </span>
             </motion.span>
-            <span className="mt-1.5 flex items-center gap-2">
-              <span className="h-px w-3 bg-gold-500/0 transition-all duration-500 group-hover:w-6 group-hover:bg-gold-500/60" />
-              <span className="text-[8px] uppercase tracking-[0.5em] text-gold-700 pl-[0.5em]">
+            <span className="mt-0.5 flex items-center gap-2.5">
+              <span className="h-px w-5 bg-rose-300 transition-all duration-500 group-hover:w-8 group-hover:bg-rose-400" />
+              <span className="script text-lg leading-none text-rose-700 transition-colors duration-500 group-hover:text-rose-600">
                 Fragrance
               </span>
-              <span className="h-px w-3 bg-gold-500/0 transition-all duration-500 group-hover:w-6 group-hover:bg-gold-500/60" />
+              <span className="h-px w-5 bg-rose-300 transition-all duration-500 group-hover:w-8 group-hover:bg-rose-400" />
             </span>
-            <span className="pointer-events-none absolute -bottom-1 left-1/2 h-px w-0 -translate-x-1/2 bg-gold-gradient transition-all duration-500 group-hover:w-[70%]" />
+            <span className="pointer-events-none absolute -bottom-1 left-1/2 h-px w-0 -translate-x-1/2 bg-rose-gradient transition-all duration-500 group-hover:w-[80%]" />
           </Link>
 
           {/* Desktop Right Nav + Actions */}
@@ -216,7 +218,7 @@ export const Navbar: React.FC = () => {
               <div className="relative" ref={searchRef}>
                 <button
                   onClick={() => setSearchOpen(!searchOpen)}
-                  className="p-2 text-ink hover:text-gold-600 transition-colors"
+                  className="p-2 text-ink hover:text-rose-600 transition-colors"
                   aria-label="Search"
                   aria-expanded={searchOpen}
                 >
@@ -238,7 +240,7 @@ export const Navbar: React.FC = () => {
                           placeholder="Search perfumes, notes, brands..."
                           value={searchQuery}
                           onChange={(e) => handleSearchChange(e.target.value)}
-                          className="w-full bg-paper-deep/60 border border-ink/10 px-4 py-3 text-sm text-ink placeholder:text-ink-soft/50 focus:outline-none focus:border-gold-500 transition-colors"
+                          className="w-full bg-paper-deep/60 border border-ink/10 px-4 py-3 text-sm text-ink placeholder:text-ink-soft/50 focus:outline-none focus:border-rose-400 transition-colors"
                           autoFocus
                         />
                         <Search className="absolute right-3 top-3.5 w-4 h-4 text-ink-soft/50" />
@@ -265,10 +267,10 @@ export const Navbar: React.FC = () => {
                                   />
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-medium text-ink truncate group-hover:text-gold-700 transition-colors">
+                                  <p className="text-sm font-medium text-ink truncate group-hover:text-rose-700 transition-colors">
                                     {product.name}
                                   </p>
-                                  <p className="text-xs text-gold-600 font-serif">
+                                  <p className="text-xs text-rose-600 font-serif">
                                     {formatNaira(product.sizes[0].price)}
                                   </p>
                                 </div>
@@ -289,12 +291,12 @@ export const Navbar: React.FC = () => {
               {/* Account */}
               <Link
                 href="/account"
-                className="relative p-2 text-ink hover:text-gold-600 transition-colors"
+                className="relative p-2 text-ink hover:text-rose-600 transition-colors"
                 aria-label={customer ? "Your account" : "Sign in"}
               >
                 <User className="w-[18px] h-[18px]" />
                 {customer && (
-                  <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-gold-600" />
+                  <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-rose-500" />
                 )}
               </Link>
 
@@ -302,12 +304,12 @@ export const Navbar: React.FC = () => {
               <motion.button
                 animate={cartControls}
                 onClick={() => setIsCartOpen(true)}
-                className="relative p-2 text-ink hover:text-gold-600 transition-colors"
+                className="relative p-2 text-ink hover:text-rose-600 transition-colors"
                 aria-label="Shopping Cart"
               >
                 <ShoppingBag className="w-[18px] h-[18px]" />
                 {totalItems > 0 && (
-                  <span className="absolute top-0.5 right-0.5 bg-gold-600 text-paper text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                  <span className="absolute top-0.5 right-0.5 bg-rose-500 text-paper text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
                     {totalItems}
                   </span>
                 )}
@@ -346,8 +348,13 @@ export const Navbar: React.FC = () => {
               aria-label="Navigation"
             >
               <div className="flex items-center justify-between px-5 h-14 border-b border-ink/10 flex-shrink-0">
-                <span className="font-serif text-base font-bold tracking-[0.24em] text-ink pl-[0.24em]">
-                  DEBBY&apos;S
+                <span className="flex items-baseline gap-1.5">
+                  <span className="font-serif text-lg font-black uppercase tracking-[0.16em] text-ink pl-[0.16em]">
+                    DEBBY&apos;S
+                  </span>
+                  <span className="text-[7px] uppercase tracking-[0.4em] text-gold-700 pl-[0.4em]">
+                    Fragrance
+                  </span>
                 </span>
                 <button
                   onClick={closeMenu}
@@ -369,15 +376,12 @@ export const Navbar: React.FC = () => {
                     <Link
                       href={link.href}
                       onClick={closeMenu}
-                      className="group flex items-baseline gap-3 py-2.5 border-b border-ink/10"
+                      className="group flex items-center gap-3 py-2.5 border-b border-ink/10"
                     >
-                      <span className="font-serif text-[10px] tabular-nums text-gold-600">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span className="flex-1 font-serif text-xl text-ink transition-colors group-hover:text-gold-700">
+                      <span className="flex-1 font-serif text-xl text-ink transition-colors group-hover:text-rose-700">
                         {link.label}
                       </span>
-                      <ArrowRight className="w-3.5 h-3.5 -translate-x-1 text-gold-500 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
+                      <ArrowRight className="w-3.5 h-3.5 -translate-x-1 text-rose-400 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
                     </Link>
                   </motion.div>
                 ))}
@@ -390,7 +394,7 @@ export const Navbar: React.FC = () => {
                   <Link
                     href="/account"
                     onClick={closeMenu}
-                    className="mt-4 flex items-center justify-center gap-2 border border-ink/20 py-3 text-[11px] uppercase tracking-[0.2em] text-ink hover:border-gold-600 hover:text-gold-700 transition-colors"
+                    className="mt-4 flex items-center justify-center gap-2 border border-ink/20 py-3 text-[11px] uppercase tracking-[0.2em] text-ink hover:border-rose-500 hover:text-rose-700 transition-colors"
                   >
                     <User className="w-4 h-4" />
                     {customer ? "My Account" : "Sign In"}
@@ -406,18 +410,18 @@ export const Navbar: React.FC = () => {
                   href={siteConfig.socials.whatsapp}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-3 text-sm text-ink hover:text-gold-700 transition-colors"
+                  className="flex items-center gap-3 text-sm text-ink hover:text-rose-700 transition-colors"
                 >
-                  <Phone className="w-4 h-4 text-gold-600" />
+                  <Phone className="w-4 h-4 text-rose-600" />
                   {siteConfig.contact.phone}
                 </a>
                 <a
                   href={siteConfig.socials.instagram}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-3 flex items-center gap-3 text-sm text-ink hover:text-gold-700 transition-colors"
+                  className="mt-3 flex items-center gap-3 text-sm text-ink hover:text-rose-700 transition-colors"
                 >
-                  <Instagram className="w-4 h-4 text-gold-600" />
+                  <Instagram className="w-4 h-4 text-rose-600" />
                   Follow on Instagram
                 </a>
               </div>

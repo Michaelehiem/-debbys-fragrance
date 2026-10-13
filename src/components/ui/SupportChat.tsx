@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { MessageCircle, X, Send, Sparkles } from "lucide-react";
+import { MessageCircle, X, Send, Sparkles, Move } from "lucide-react";
 import { siteConfig } from "@/config/site";
 
 type Msg = { role: "user" | "assistant"; content: string };
@@ -13,18 +13,91 @@ const GREETING: Msg = {
 
 const WHATSAPP = siteConfig.socials.whatsapp.replace(/[^\d]/g, "");
 
+const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max);
+
+const PANEL_W = 352; // 22rem
+const PANEL_H = 480; // 30rem
+const LAUNCHER = 48; // 3rem
+const GAP = 12;
+const MARGIN = 16;
+
 export function SupportChat() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([GREETING]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
+  const [pos, setPos] = useState({ x: MARGIN, y: MARGIN });
+  const [vw, setVw] = useState(0);
+  const [vh, setVh] = useState(0);
+
   const scrollRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{
+    startX: number;
+    startY: number;
+    originX: number;
+    originY: number;
+    moved: boolean;
+  } | null>(null);
+
+  useEffect(() => {
+    const onResize = () => {
+      setVw(window.innerWidth);
+      setVh(window.innerHeight);
+    };
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, open]);
+
+  // Keep the launcher pinned inside the viewport if it is resized off-screen.
+  useEffect(() => {
+    if (!vw || !vh) return;
+    setPos((p) => ({
+      x: clamp(p.x, MARGIN, Math.max(MARGIN, vw - LAUNCHER - MARGIN)),
+      y: clamp(p.y, MARGIN, Math.max(MARGIN, vh - LAUNCHER - MARGIN)),
+    }));
+  }, [vw, vh]);
+
+  const startDrag = (e: React.PointerEvent) => {
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+    dragRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      originX: pos.x,
+      originY: pos.y,
+      moved: false,
+    };
+  };
+
+  const moveDrag = (e: React.PointerEvent) => {
+    const d = dragRef.current;
+    if (!d) return;
+    const dx = e.clientX - d.startX;
+    const dy = e.clientY - d.startY;
+    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) d.moved = true;
+    const maxX = Math.max(MARGIN, vw - LAUNCHER - MARGIN);
+    const maxY = Math.max(MARGIN, vh - LAUNCHER - MARGIN);
+    setPos({
+      x: clamp(d.originX + dx, MARGIN, maxX),
+      y: clamp(d.originY - dy, MARGIN, maxY),
+    });
+  };
+
+  const endDrag = () => {
+    dragRef.current = null;
+  };
+
+  const endDragToggle = () => {
+    const d = dragRef.current;
+    dragRef.current = null;
+    if (d && !d.moved) setOpen((v) => !v);
+  };
 
   const send = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,26 +128,46 @@ export function SupportChat() {
     }
   };
 
+  const panelWidth = Math.min(PANEL_W, Math.max(240, vw - MARGIN * 2));
+  const panelLeft = clamp(pos.x, MARGIN, Math.max(MARGIN, vw - panelWidth - MARGIN));
+  const panelBottom = clamp(pos.y + LAUNCHER + GAP, MARGIN, Math.max(MARGIN, vh - 120));
+  const panelMaxHeight = Math.max(240, Math.min(PANEL_H, vh - panelBottom - MARGIN));
+
   return (
     <>
       <button
-        onClick={() => setOpen((v) => !v)}
+        onPointerDown={startDrag}
+        onPointerMove={moveDrag}
+        onPointerUp={endDragToggle}
+        onPointerCancel={endDrag}
         aria-label={open ? "Close chat" : "Open support chat"}
-        className="fixed bottom-6 left-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-ink text-paper shadow-editorial transition-colors hover:bg-gold-700"
+        title="Drag to move · click to open"
+        style={{ left: pos.x, bottom: pos.y }}
+        className="fixed z-50 flex h-12 w-12 cursor-grab touch-none select-none items-center justify-center rounded-full bg-ink text-paper shadow-editorial transition-colors hover:bg-gold-700 active:cursor-grabbing"
       >
         {open ? <X className="h-5 w-5" /> : <MessageCircle className="h-5 w-5" />}
       </button>
 
       {open && (
-        <div className="fixed bottom-24 left-6 z-50 flex h-[30rem] w-[min(22rem,calc(100vw-3rem))] flex-col border border-ink/10 bg-paper shadow-editorial">
-          <div className="flex items-center gap-2 border-b border-ink/10 bg-ink px-4 py-3 text-paper">
+        <div
+          style={{ left: panelLeft, bottom: panelBottom, width: panelWidth, maxHeight: panelMaxHeight }}
+          className="fixed z-50 flex flex-col border border-ink/10 bg-paper shadow-editorial"
+        >
+          <div
+            onPointerDown={startDrag}
+            onPointerMove={moveDrag}
+            onPointerUp={endDrag}
+            onPointerCancel={endDrag}
+            className="flex cursor-grab touch-none select-none items-center gap-2 border-b border-ink/10 bg-ink px-4 py-3 text-paper active:cursor-grabbing"
+          >
             <Sparkles className="h-4 w-4 text-gold-400" />
-            <div>
+            <div className="flex-1">
               <p className="text-sm font-semibold">Ask Debby</p>
               <p className="text-[10px] uppercase tracking-[0.16em] text-paper/60">
                 AI fragrance assistant
               </p>
             </div>
+            <Move className="h-3.5 w-3.5 text-paper/40" aria-hidden />
           </div>
 
           <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-4">

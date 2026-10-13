@@ -4,12 +4,13 @@
 
 @layer base {
   :root {
-    --paper: #f6f1e8;
-    --paper-deep: #ede5d8;
-    --ink: #1b1712;
-    --brass: #b28a49;
-    --line: rgba(27, 23, 18, 0.12);
-    --line-strong: rgba(27, 23, 18, 0.22);
+    --paper: #fdf7f4;
+    --paper-deep: #f7e8e6;
+    --ink: #2e2126;
+    --brass: #cd6f7d;
+    --rose: #d3708a;
+    --line: rgba(46, 33, 38, 0.12);
+    --line-strong: rgba(46, 33, 38, 0.22);
   }
 
   html {
@@ -22,11 +23,13 @@
   body {
     @apply font-sans bg-paper text-ink;
     font-feature-settings: "kern", "liga", "calt";
+    background-image: radial-gradient(ellipse at top, #fdf7f4 0%, #fbeef1 45%, #f7e8e6 100%);
+    background-attachment: fixed;
   }
 
   ::selection {
-    background-color: #b28a49;
-    color: #0d0b09;
+    background-color: #d3708a;
+    color: #fff5f6;
   }
 
   h1, h2, h3, h4 {
@@ -55,16 +58,22 @@
 @layer components {
   /* Tracked uppercase micro-label used above headings */
   .eyebrow {
-    @apply inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-eyebrow text-gold-700;
+    @apply inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-eyebrow text-rose-600;
   }
   .eyebrow::before {
     content: "";
-    @apply h-px w-6 bg-gold-500/70;
+    @apply h-px w-6 bg-rose-400/70;
   }
 
   /* Section index numeral, editorial style */
   .section-num {
-    @apply font-serif text-gold-500/60 text-sm tracking-widest;
+    @apply font-serif text-rose-400/70 text-sm tracking-widest;
+  }
+
+  /* Romantic script accent — for a single flourish word */
+  .script {
+    @apply font-script leading-none;
+    letter-spacing: 0.01em;
   }
 
   /* Underline that grows on hover */
@@ -100,14 +109,14 @@
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #ede5d8;
+  background: #f7e8e6;
 }
 .dark ::-webkit-scrollbar-track {
   background: #0d0b09;
 }
 ::-webkit-scrollbar-thumb {
-  background: #c9b48f;
-  border: 3px solid #ede5d8;
+  background: #e0b3bc;
+  border: 3px solid #f7e8e6;
   border-radius: 999px;
 }
 .dark ::-webkit-scrollbar-thumb {
@@ -115,7 +124,7 @@
   border: 3px solid #0d0b09;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #b28a49;
+  background: #d3708a;
 }
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #7a5830;

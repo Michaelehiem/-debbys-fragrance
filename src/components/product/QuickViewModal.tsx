@@ -77,11 +77,11 @@ function QuickViewModalContent({ product, onClose }: QuickViewModalProps & { pro
       initial={{ opacity: 0, scale: 0.97, y: 12 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-      className="w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white shadow-editorial pointer-events-auto"
+      className="pointer-events-auto max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white shadow-editorial"
     >
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 z-20 w-10 h-10 flex items-center justify-center bg-ink text-paper hover:bg-gold-600 transition-colors"
+        className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-ink text-paper transition-colors hover:bg-rose-600"
         aria-label="Close quick view"
       >
         <X className="w-4 h-4" />
@@ -89,8 +89,8 @@ function QuickViewModalContent({ product, onClose }: QuickViewModalProps & { pro
 
       <div className="grid grid-cols-1 md:grid-cols-2">
         {/* Gallery */}
-        <div className="p-6 sm:p-8 bg-[#f1eadb] flex flex-col">
-          <div className="aspect-square w-full overflow-hidden bg-white">
+        <div className="flex flex-col bg-paper-deep p-6 sm:p-8">
+          <div className="aspect-square w-full overflow-hidden rounded-xl bg-white">
             <img
               src={selectedImage || displayImage}
               alt={displayName}
@@ -135,7 +135,7 @@ function QuickViewModalContent({ product, onClose }: QuickViewModalProps & { pro
             <h2 className="font-serif text-3xl font-bold text-ink mt-2 leading-tight">
               {displayName}
             </h2>
-            <p className="text-sm italic text-gold-700 mt-1">&ldquo;{product.tagline}&rdquo;</p>
+            <p className="mt-1 script text-base text-rose-600">&ldquo;{product.tagline}&rdquo;</p>
 
             <div className="mt-4">
               <span className="font-serif text-3xl font-bold text-ink">
@@ -194,7 +194,7 @@ function QuickViewModalContent({ product, onClose }: QuickViewModalProps & { pro
               className={`w-full py-4 text-xs font-semibold uppercase tracking-[0.2em] flex items-center justify-center gap-2 border transition-all duration-300 ${
                 isAdded
                   ? "bg-[#2d4a3e] border-[#2d4a3e] text-white"
-                  : "bg-ink border-ink text-paper hover:bg-gold-700 hover:border-gold-700"
+                  : "bg-ink border-ink text-paper hover:bg-rose-700 hover:border-rose-700"
               }`}
             >
               {isAdded ? (

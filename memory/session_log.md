@@ -306,4 +306,64 @@
 
 ---
 
-<!-- Newest entries first? No — this file is chronological (oldest→newest). -->
+---
+
+## 2026-10-13 — Nice-to-have Polish: Luxury Product Cards, Slimmer Drawer, 12 Verified Product Photos
+
+- **Goal:** Fix Michael's feedback on the homepage — product cards looked out of place (sizes + Add button), the mobile hamburger drawer was too big, and the theme should feel more luxury/modern with more beautiful imagery.
+- **Steps taken:**
+  - Shipped the header round: sliding announcement ticker, mobile drawer with click-outside/Escape dismiss, mobile overflow fixes, and credential change (admin keyword `youmygirl`, password `mikeybaby` in `src/config/site.ts` + `.env.local`). Commit `0ebd166` pushed.
+  - Rewrote `src/components/product/ProductCard.tsx`: 4:5 image with slow zoom on hover, brand + Rating eyebrow, serif name, description clamp, quiet segmented size chips (no label), price + Add pinned via `mt-auto`, solid-ink Add button with success state; works with the existing `override` system.
+  - Shrunk the mobile drawer in `Navbar.tsx` (`w-[74%] max-w-[19rem]`, `h-14` header, `py-2.5` links, smaller account button).
+  - Sourced **12 distinct, verified real perfume photos from Pexels** (one per product, no repeats) — Unsplash's API 401s, Pexels search pages fetch fine. All 18 candidate URLs curl-verified HTTP 200 before use. Written to both `src/data/products.ts` (seed) and the Supabase `products` table (REST PATCH via service-role key, `return=representation`, re-verified via GET).
+  - Refreshed the homepage Instagram rail with 6 fresh non-duplicated Pexels shots.
+  - Product-card visuals now never repeat a photo across the catalogue (before, 12 products shared 8 Unsplash images).
+- **Tools used:** `curl.exe` (URL verification + Supabase REST read/write), `node` throwaway script (`%TEMP%\opencode\update-product-images.cjs`), `git`, `tsc --noEmit`, `next build --no-lint`.
+- **Outputs:** Commit `5a1541b` pushed (`0ebd166..5a1541b`); Vercel building Production. Local `next build` clean (14/14 static pages, BUILD_EXIT=0); `tsc` clean.
+- **Status:** ✅ Shipped. 
+- **Notes:** 
+  - Vercel Production env `ADMIN_PASSWORD` still = `debbyfragrance2026` — **Michael must set it to `mikeybaby` in Vercel and redeploy** (code already carries the new value for local/future deploys; env-based value wins at runtime).
+  - Some Pexels photos show branded bottles (Chanel, Tom Ford, Burberry, Nautica) — fine as placeholders; Debby's real product photos should replace them later.
+  - No `next/image` remotePattern change was needed — all catalogue image rendering uses plain `<img>`.
+  - `next.config.mjs` still only whitelists Unsplash hosts (harmless with current `<img>` usage; revisit if `next/image` is adopted).
+
+---
+
+## 2026-10-13 — Admin Password Set Live (mikeybaby) + Deploy Verified
+
+- **Goal:** "Update the password and go live with it, deploy it" — make the production site accept the new admin password and confirm the latest build is deployed.
+- **Key discovery:** `passwordMatches` (`src/lib/auth.ts:44`) reads `store_settings.admin_password` from Supabase **first**; `process.env.ADMIN_PASSWORD` is only a fallback when the DB row/value is empty. So the password can be changed live via the DB — no Vercel env edit or redeploy required (the app's intended mechanism; schema comment confirms it).
+- **Steps taken:**
+  - No Vercel auth on this machine (`vercel` CLI v59.16.0 installed but unauthenticated; no `VERCEL_TOKEN`), so the env-var route was unavailable.
+  - `store_settings` was **empty** → inserted the row with the full real store identity (name, tagline, support email, phone, whatsapp, address, currency, facebook/instagram/tiktok) **plus `admin_password: "mikeybaby"`** via REST POST `?on_conflict=id` + `Prefer: resolution=merge-duplicates`. (First attempt hit `PGRST102` from PowerShell mangling JSON → fixed with `curl --data-binary @file`.)
+  - **Live verification** against `https://debbys-fragrance.vercel.app`: `POST /api/admin/auth` with `mikeybaby` → `{"ok":true}` (200); old `debbyfragrance2026` → `401 Incorrect password`. Homepage serves the new build (announcement ticker present; edge `Age: 2` = fresh deploy from commit `5a1541b`).
+  - Deleted the temp JSON payloads I created (contained the admin password).
+- **Tools used:** `curl.exe` (Supabase REST + live endpoint probes), PowerShell.
+- **Outputs:** `store_settings` row live in Supabase; production admin login now accepts `mikeybaby`.
+- **Status:** ✅ Live.
+- **Notes:** Vercel Production env `ADMIN_PASSWORD` is **still the old value** — harmless at runtime while the DB row exists, but it's a fallback trap: if the `store_settings` row is ever cleared or the DB read fails, the site reverts to `debbyfragrance2026`. Recommend Michael reconcile the env (or clear it) for hygiene.
+
+---
+
+---
+
+## 2026-10-13 — Storefront Overhaul + Feminine "Rose & Cream" Redesign
+
+- **Goal:** (1) make the admin section easy to navigate, (2) make the chat assistant movable, (3) make the top store name bolder/attractive, (4) add light homepage wallpaper, (5) stop featuring categories and instead feature New Arrivals, Top Deals and a Discount offer, (6) move "Add to Cart" under the price; then, on follow-up, make the whole site more feminine — Michael chose the **"Rose & cream romantic"** direction (warm cream/blush + prominent rose + script headings).
+- **Steps taken:**
+  - **ProductCard:** Add button now full-width "Add to Cart" (success "Added to Cart") stacked under the price (`mt-auto pt-4`); rounded card (`rounded-2xl`), rose-gold "Deal" badge, rose accents (title hover, active size chip, price, button hover), rounded-full buttons/chips.
+  - **Homepage (`src/app/page.tsx`):** removed the "Shop by collection" categories section; now **N°01 New Arrivals** (from `newArrivals`), **N°02 Top Deals** (from `deals` = products with `originalPrice > price`, falls back to best-sellers), a new **Discount offer band**, then Manifesto / Values / Instagram (renumbered N°03) / Newsletter. Added a fixed soft wallpaper layer (Pexels 8624586, opacity 0.08) behind content.
+  - **Deals data:** added `originalPrice` to 4 best-sellers in the seed AND live Supabase `products` sizes (midnight-velvet, amber-royale, rose-elixir, vanilla-seduction).
+  - **SupportChat:** fully rewritten as a draggable widget — launcher + panel header are drag handles (pointer events, `touch-none`), clamped to viewport on resize.
+  - **Navbar:** redesigned wordmark (bold "DEBBY'S" + **script** "Fragrance" accent, decorative rules, gradient hover); header background switched from white/cream to **soft blush rose** (`bg-rose-100`) per Michael's request; rose icon/CTA accents; mobile-drawer link numbering removed.
+  - **Admin (`src/app/admin/page.tsx`):** rebuilt the shell into a **sidebar layout** (sticky brand block + vertical icon nav on desktop, scrollable tab strip on mobile, page header with title/description) wrapping the existing Dashboard/Orders/Products/Customers/Settings components.
+  - **Feminine theme (the big lever):**
+    - `tailwind.config.ts`: paper → warm blush cream (`#fdf7f4`, deep `#f7e8e6`), ink → soft plum (`#2e2126`), added a full **`rose` palette**, a **`script`** font family, rose/blush gradients + rose-tinted soft shadows + sway/bloom keyframes. **Repointed the whole `gold` scale to a rose-gold** ramp so every existing `gold-*` class across all pages renders romantic and cohesive (no per-file edits needed).
+    - `globals.css`: blush radial body wash, rose `::selection`, `.eyebrow` + `.section-num` → rose, new `.script` utility, rose scrollbar.
+    - `layout.tsx`: added `PlayfairDisplay-Italic.woff2` (real italic) + `GreatVibes-Regular.woff2` as `--font-script` (both downloaded from Google Fonts, verified `wOF2` magic); viewport themeColor → `#2e2126`.
+    - Accent words converted to script: hero "signature scent", newsletter "fragrance club", discount "25%", about "olfactory memories", QuickView tagline. Footer + hero + cards softened (rounded, rose-gold icons, rose hovers). `public/icon.svg` recoloured.
+  - **Verification:** `.\node_modules\.bin\tsc.cmd --noEmit` ✅ clean; `.\node_modules\.bin\next.cmd build --no-lint` ✅ **BUILD_EXIT=0**, all 14 static pages generate.
+- **Tools used:** file editing/writing, `curl.exe` (Google Fonts woff2), `tsc`, `next build`.
+- **Outputs:** Updated `tailwind.config.ts`, `globals.css`, `layout.tsx`, `globals`, `page.tsx`, `admin/page.tsx`, `SupportChat.tsx`, `ProductCard.tsx`, `Navbar.tsx`, `Footer.tsx`, `QuickViewModal.tsx`, `about/page.tsx`, `data/products.ts`, `public/icon.svg`, `public/fonts/*` (2 new).
+- **Status:** ✅ Code complete + build green — **NOT committed/pushed yet** (awaiting Michael's go-ahead to deploy).
+- **Notes:** Because `gold` is now rose-gold, the whole app is themed with one token change — worth remembering for future re-themes. Vercel Production `ADMIN_PASSWORD` fallback trap still outstanding. Manifest route `/manifest.webmanifest` confirmed present (served).

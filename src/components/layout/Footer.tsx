@@ -33,13 +33,13 @@ export const Footer: React.FC = () => {
   ].filter((s) => s.href);
 
   return (
-    <footer className="bg-ink text-paper/70 font-sans">
+    <footer className="border-t border-rose-400/30 bg-ink font-sans text-paper/70">
       {/* Trust Strip */}
       <div className="border-b border-paper/10">
         <div className="max-w-[88rem] mx-auto px-5 sm:px-8 lg:px-12 py-14 grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
           {trustItems.map(({ icon: Icon, title, text }) => (
             <div key={title} className="flex flex-col items-start gap-3">
-              <Icon className="w-5 h-5 text-gold-400" />
+              <Icon className="w-5 h-5 text-rose-300" />
               <div>
                 <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-paper">{title}</h4>
                 <p className="text-xs mt-1 text-paper/50 leading-relaxed">{text}</p>
@@ -57,7 +57,7 @@ export const Footer: React.FC = () => {
             <span className="font-serif text-3xl font-bold tracking-[0.24em] text-paper pl-[0.24em]">
               DEBBY&apos;S
             </span>
-            <span className="text-[10px] tracking-[0.5em] text-gold-400 uppercase pl-[0.5em]">
+            <span className="script text-2xl leading-none text-rose-300 pl-[0.1em]">
               Fragrance
             </span>
           </div>
@@ -72,7 +72,7 @@ export const Footer: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="w-10 h-10 flex items-center justify-center border border-paper/15 text-paper/70 hover:text-ink hover:bg-gold-400 hover:border-gold-400 transition-all duration-300"
+                className="w-10 h-10 flex items-center justify-center border border-paper/15 text-paper/70 hover:text-ink hover:bg-rose-300 hover:border-rose-300 transition-all duration-300"
               >
                 <Icon className="w-4 h-4" />
               </a>
@@ -82,7 +82,7 @@ export const Footer: React.FC = () => {
 
         {/* Explore */}
         <div className="lg:col-span-2">
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-400 mb-5">
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose-300 mb-5">
             Explore
           </h4>
           <ul className="space-y-3 text-sm">
@@ -96,20 +96,20 @@ export const Footer: React.FC = () => {
 
         {/* Contact */}
         <div className="lg:col-span-2">
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-400 mb-5">
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose-300 mb-5">
             Boutique
           </h4>
           <ul className="space-y-3.5 text-sm">
             <li className="flex items-start gap-2.5">
-              <MapPin className="w-4 h-4 text-gold-400 flex-shrink-0 mt-0.5" />
+              <MapPin className="w-4 h-4 text-rose-300 flex-shrink-0 mt-0.5" />
               <span>{siteConfig.location.shopAddress}</span>
             </li>
             <li className="flex items-center gap-2.5">
-              <Phone className="w-4 h-4 text-gold-400 flex-shrink-0" />
+              <Phone className="w-4 h-4 text-rose-300 flex-shrink-0" />
               <span>{siteConfig.contact.phone}</span>
             </li>
             <li className="flex items-center gap-2.5">
-              <Mail className="w-4 h-4 text-gold-400 flex-shrink-0" />
+              <Mail className="w-4 h-4 text-rose-300 flex-shrink-0" />
               <span className="break-all">{siteConfig.contact.email}</span>
             </li>
           </ul>
@@ -117,7 +117,7 @@ export const Footer: React.FC = () => {
 
         {/* Newsletter */}
         <div className="lg:col-span-3">
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-400 mb-5">
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose-300 mb-5">
             The Fragrance Club
           </h4>
           <p className="text-sm mb-4 text-paper/60 leading-relaxed">
@@ -127,11 +127,11 @@ export const Footer: React.FC = () => {
             <input
               type="email"
               placeholder="Email address"
-              className="w-full bg-transparent border-b border-paper/25 px-0 py-2 text-sm text-paper placeholder:text-paper/40 focus:outline-none focus:border-gold-400 transition-colors"
+              className="w-full bg-transparent border-b border-paper/25 px-0 py-2 text-sm text-paper placeholder:text-paper/40 focus:outline-none focus:border-rose-300 transition-colors"
             />
             <button
               type="submit"
-              className="w-full border border-gold-400 text-gold-400 hover:bg-gold-400 hover:text-ink text-[11px] font-semibold py-3 uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-2"
+              className="w-full border border-rose-300 text-rose-300 hover:bg-rose-300 hover:text-ink text-[11px] font-semibold py-3 uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-2"
             >
               Join The Liste
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -145,9 +145,9 @@ export const Footer: React.FC = () => {
         <div className="max-w-[88rem] mx-auto px-5 sm:px-8 lg:px-12 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] tracking-wide text-paper/40">
           <p>© 2026 {siteConfig.businessName}. Atelier of fine scent.</p>
           <div className="flex gap-6">
-            <Link href="#" className="hover:text-gold-400 transition-colors">Privacy</Link>
-            <Link href="#" className="hover:text-gold-400 transition-colors">Terms</Link>
-            <Link href="#" className="hover:text-gold-400 transition-colors">Shipping</Link>
+            <Link href="#" className="hover:text-rose-300 transition-colors">Privacy</Link>
+            <Link href="#" className="hover:text-rose-300 transition-colors">Terms</Link>
+            <Link href="#" className="hover:text-rose-300 transition-colors">Shipping</Link>
           </div>
         </div>
       </div>

@@ -36,7 +36,7 @@ export default function AboutPage() {
           <h1 className="mt-6 font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-ink leading-[1.05]">
             Crafting unforgettable
             <br />
-            <span className="italic text-gold-700">olfactory memories</span>
+            <span className="script block text-rose-600 leading-[1.1] text-[2.25rem] sm:text-5xl lg:text-6xl">olfactory memories</span>
           </h1>
           <p className="mt-7 text-sm sm:text-base text-ink-soft max-w-2xl mx-auto leading-[1.9]">
             Founded with a passion for rare botanicals, precious woods, and golden ambers, {siteConfig.businessName} has grown into {siteConfig.location.state}&apos;s premier destination for bespoke perfume luxury.

@@ -18,9 +18,17 @@ import { SITE, SITE_URL } from "@/lib/site";
 const playfair = localFont({
   src: [
     { path: "../../public/fonts/PlayfairDisplay-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../../public/fonts/PlayfairDisplay-Italic.woff2", weight: "400", style: "italic" },
     { path: "../../public/fonts/PlayfairDisplay-Bold.woff2", weight: "700", style: "normal" },
+    { path: "../../public/fonts/PlayfairDisplay-Italic.woff2", weight: "700", style: "italic" },
   ],
   variable: "--font-playfair",
+  display: "swap",
+});
+
+const greatVibes = localFont({
+  src: [{ path: "../../public/fonts/GreatVibes-Regular.woff2", weight: "400", style: "normal" }],
+  variable: "--font-script",
   display: "swap",
 });
 
@@ -77,7 +85,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1b1712",
+  themeColor: "#2e2126",
   colorScheme: "light",
 };
 
@@ -110,7 +118,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
+    <html lang="en" className={`${playfair.variable} ${inter.variable} ${greatVibes.variable}`}>
       <body className="bg-paper text-ink font-sans antialiased min-h-screen flex flex-col justify-between">
         <JsonLd data={[organizationLd, websiteLd]} />
         <CustomerAuthProvider>
