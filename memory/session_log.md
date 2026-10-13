@@ -365,5 +365,26 @@
   - **Verification:** `.\node_modules\.bin\tsc.cmd --noEmit` ✅ clean; `.\node_modules\.bin\next.cmd build --no-lint` ✅ **BUILD_EXIT=0**, all 14 static pages generate.
 - **Tools used:** file editing/writing, `curl.exe` (Google Fonts woff2), `tsc`, `next build`.
 - **Outputs:** Updated `tailwind.config.ts`, `globals.css`, `layout.tsx`, `globals`, `page.tsx`, `admin/page.tsx`, `SupportChat.tsx`, `ProductCard.tsx`, `Navbar.tsx`, `Footer.tsx`, `QuickViewModal.tsx`, `about/page.tsx`, `data/products.ts`, `public/icon.svg`, `public/fonts/*` (2 new).
-- **Status:** ✅ Code complete + build green — **NOT committed/pushed yet** (awaiting Michael's go-ahead to deploy).
+- **Status:** ✅ Committed + pushed (`60f93f3`, `5a1541b..60f93f3 master -> master`) — Vercel auto-deploying to production.
 - **Notes:** Because `gold` is now rose-gold, the whole app is themed with one token change — worth remembering for future re-themes. Vercel Production `ADMIN_PASSWORD` fallback trap still outstanding. Manifest route `/manifest.webmanifest` confirmed present (served).
+
+---
+
+## 2026-10-13 — Gendered Homepage, Flexible Sizes, Layout Cleanup + Hidden-Product Fix
+
+- **Goal:** Batch of storefront/admin fixes: (1) feminine vs masculine homepage sections, (2) compact the admin product area, (3) replace "curated compositions" badge, (4) add "Powered by AlphaTNX Digital" footer credit, (5) delete the About/"Our Story" page, (6) admin-selectable bottle sizes, (7) fix newly uploaded products not showing in any list, (8) delivery wording → 1–3 days, (9) remove the floating "View Bag" overlay, (10) remove the "join the club"/newsletter content.
+- **Key diagnosis — "uploaded product not in any list":** the product *did* persist (visible in admin + search results). Root causes: (a) homepage **New Arrivals** rendered the first 4 of the array, and new products are *appended*, so they never surfaced — fixed with `.slice(-4).reverse()` (newest first); (b) the **/shop** price filter defaulted to `maxPrice = 200000` and used `sizes[0].price`, silently hiding new/expensive products — replaced with an **auto-computed price ceiling** from the live catalogue, a nullable `maxPrice` (no limit until the user moves the slider), and `Math.min(...sizes)` for filtering/sorting.
+- **Steps taken:**
+  - `types/index.ts`: added `BottleSize = "5ml" | "10ml" | "25ml" | "30ml" | "50ml" | "100ml"`; `ProductSize.size` now uses it.
+  - `components/admin/AdminProducts.tsx`: per-size **checkbox + price** grid (with All/Clear shortcuts) replacing the fixed 3 price inputs; product list grid compacted (`grid-cols-2 sm:grid-cols-3 xl:grid-cols-4`, smaller padding, dropped the description line).
+  - `app/page.tsx`: new **"For Her"** (blush gradient, script "Her") and **"For Him"** (dark ink panel, music/Pexels wallpaper, italic "Him") two-panel showcase; hero badge `curated compositions` → **1–3 day nationwide delivery**; removed the "Our story" hero CTA; removed the entire **"Join the fragrance club"** newsletter section; new-arrival ordering fixed.
+  - `layout/Footer.tsx`: removed the Fragrance Club newsletter column (brand/Explore/Boutique rebalanced 6/3/3); added **"Powered by AlphaTNX Digital"** to the bottom bar.
+  - `layout/Navbar.tsx`: dropped the "Our Story" links (desktop right nav + mobile drawer).
+  - Deleted `src/app/about/page.tsx`; removed the `/about` sitemap entry.
+  - `components/ui/CartToast.tsx`: removed the floating **"View Bag"** button (kept the toast bubble).
+  - Delivery copy → "1–3 business days": `contact/page.tsx` FAQ, `product/[id]/ProductDetail.tsx`, `api/chat/route.ts` (also updated the size list there).
+- **Verification:** `tsc --noEmit` ✅ clean (**TSC_EXIT=0**); `next build --no-lint` ✅ **BUILD_EXIT=0**, **13** static pages (one fewer than before — the /about route is gone).
+- **Tools used:** file editing, `git`, `tsc`, `next build`.
+- **Outputs:** 15 files touched (see git diff) — types, AdminProducts, page, Footer, Navbar, CartToast, shop, contact, ProductDetail, chat route, sitemap, plus `about/page.tsx` deleted.
+- **Status:** ✅ Committed + pushed — Vercel auto-deploying.
+- **Notes:** Environment quirk this session — PowerShell commands occasionally hang after `Remove-Item`/long builds because an orphaned `node` build worker keeps the console open; `taskkill /F /PID <node>` clears it (the build itself completed fine once the orphan was killed). `tsconfig.tsbuildinfo` left unstaged as before.

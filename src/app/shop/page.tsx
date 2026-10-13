@@ -37,9 +37,21 @@ function ShopPageContent() {
   // Filter States
   const [selectedCategory, setSelectedCategory] = useState<GenderCategory | "all">(initialCategory);
   const [selectedFamily, setSelectedFamily] = useState<FragranceFamily | "all">(initialFamily);
-  const [maxPrice, setMaxPrice] = useState<number>(200000);
+  const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "rating" | "newest">("featured");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const lowestPrice = (p: Product) =>
+    p.sizes.length ? Math.min(...p.sizes.map((s) => s.price)) : 0;
+
+  // Auto-fit the price slider to the live catalogue so newly added products are never hidden.
+  const priceCeiling = useMemo(() => {
+    const prices = allProducts.flatMap((p) => p.sizes.map((s) => s.price)).filter((n) => n > 0);
+    const max = prices.length ? Math.max(...prices) : 200000;
+    return Math.max(50000, Math.ceil(max / 5000) * 5000);
+  }, [allProducts]);
+
+  const sliderMax = maxPrice ?? priceCeiling;
 
   const filteredProducts = useMemo(() => {
     return allProducts.filter((product) => {
@@ -48,7 +60,7 @@ function ShopPageContent() {
       // Family Filter
       if (selectedFamily !== "all" && product.fragranceFamily !== selectedFamily) return false;
       // Price Filter
-      if (product.sizes[0].price > maxPrice) return false;
+      if (maxPrice !== null && lowestPrice(product) > maxPrice) return false;
       // Search Query
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
@@ -59,18 +71,19 @@ function ShopPageContent() {
       }
       return true;
     }).sort((a, b) => {
-      if (sortBy === "price-asc") return a.sizes[0].price - b.sizes[0].price;
-      if (sortBy === "price-desc") return b.sizes[0].price - a.sizes[0].price;
+      if (sortBy === "price-asc") return lowestPrice(a) - lowestPrice(b);
+      if (sortBy === "price-desc") return lowestPrice(b) - lowestPrice(a);
       if (sortBy === "rating") return b.rating - a.rating;
       if (sortBy === "newest") return (b.isNewArrival ? 1 : 0) - (a.isNewArrival ? 1 : 0);
       return (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allProducts, selectedCategory, selectedFamily, maxPrice, sortBy, searchQuery]);
 
   const resetFilters = () => {
     setSelectedCategory("all");
     setSelectedFamily("all");
-    setMaxPrice(200000);
+    setMaxPrice(null);
     setSortBy("featured");
     setSearchQuery("");
   };
@@ -228,20 +241,22 @@ function ShopPageContent() {
                 <label className="text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-soft/70">
                   Max Price
                 </label>
-                <span className="font-serif font-bold text-gold-700 text-base">{formatNaira(maxPrice)}</span>
+                <span className="font-serif font-bold text-gold-700 text-base">
+                  {maxPrice === null ? "Any" : formatNaira(maxPrice)}
+                </span>
               </div>
               <input
                 type="range"
                 min={30000}
-                max={200000}
+                max={priceCeiling}
                 step={5000}
-                value={maxPrice}
+                value={sliderMax}
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
                 className="w-full accent-gold-600 bg-paper-deep h-1 cursor-pointer"
               />
               <div className="flex justify-between text-[10px] text-ink-soft/50 mt-2">
                 <span>₦30k</span>
-                <span>₦200k</span>
+                <span>{formatNaira(priceCeiling)}</span>
               </div>
             </div>
           </aside>

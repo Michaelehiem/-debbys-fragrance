@@ -12,8 +12,8 @@ Store facts:
 - Location: ${STORE.address}
 - Phone / WhatsApp: ${STORE.phone}
 - Email: ${STORE.supportEmail}
-- Products: authentic designer-inspired perfumes and oud oils, sold in 5ml, 10ml and 25ml sizes.
-- Delivery: nationwide across Nigeria. FREE delivery on orders over ₦350,000. Delivery fees for other orders vary by location and are confirmed on WhatsApp after checkout.
+- Products: authentic designer-inspired perfumes and oud oils, sold in 5ml, 10ml, 25ml, 30ml, 50ml and 100ml sizes.
+- Delivery: nationwide across Nigeria, delivered within 1–3 business days. FREE delivery on orders over ₦350,000. Delivery fees for other orders vary by location and are confirmed on WhatsApp after checkout.
 - Payment: orders are completed via WhatsApp — the team replies with payment details.
 - Fragrance families: floral, woody, oriental, fresh, citrus, gourmand.
 

@@ -22,7 +22,7 @@ export default function ContactPage() {
     },
     {
       q: "How long does shipping take across Nigeria?",
-      a: "Deliveries within Kebbi take 24 hours. Express courier deliveries to Lagos, Port Harcourt, Kano, and other states take 2-4 business days.",
+      a: "Orders are processed the same day and delivered within 1–3 business days nationwide. Remote areas may take slightly longer.",
     },
     {
       q: "Are your perfumes 100% authentic?",

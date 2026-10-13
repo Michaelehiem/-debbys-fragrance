@@ -36,7 +36,7 @@
 
 ## Storefront Overhaul + Feminine "Rose & Cream" Redesign (CODE COMPLETE 2026-10-13)
 
-- **Started:** 2026-10-13 — **Completed (code):** 2026-10-13 — **Pending:** commit + push/deploy (awaiting Michael's go-ahead)
+- **Started:** 2026-10-13 — **Completed (code + deploy):** 2026-10-13 (commit `60f93f3` pushed)
 - **Goal:** Admin easy-nav, draggable chat, bold store name, homepage wallpaper, New Arrivals/Top Deals/Discount instead of categories, "Add to Cart" under price — then a feminine "Rose & cream romantic" restyle.
 - **Done:**
   - Homepage: New Arrivals (N°01) + Top Deals (N°02, real `originalPrice` deals) + Discount band; categories section removed; fixed soft wallpaper layer.
@@ -44,11 +44,25 @@
   - Theme: `gold` scale repointed to **rose-gold** (themes the whole app), blush cream paper/plum ink, full `rose` palette, `script` font (Great Vibes) + real Playfair italic, rose `eyebrow`/`section-num`/selection/scrollbar, rounded soft components.
   - Verified: `tsc --noEmit` ✅ clean; `next build --no-lint` ✅ BUILD_EXIT=0, 14/14 static pages.
 - **Open follow-ups:**
-  - [ ] Commit + push to `master` to deploy (not done — needs explicit approval).
+  - [x] Committed + pushed to `master` (`60f93f3`) — Vercel auto-deploying.
   - [ ] Dashboard bug: `/api/dashboard` `orderCount: 0` vs `/api/orders` has 1.
   - [ ] Replace branded placeholder Pexels photos with Debby's real bottle shots.
   - [ ] `%TEMP%\opencode\` still holds Supabase secrets to delete (owner PAT + DB password + tokens).
   - [ ] Vercel Production `ADMIN_PASSWORD` fallback trap (reconcile/clear).
+
+## Gendered Homepage, Flexible Sizes & Layout Cleanup (DONE 2026-10-13)
+
+- **Started:** 2026-10-13 — **Completed (code + verify):** 2026-10-13
+- **Goal:** Feminine vs masculine homepage sections; compact admin product area; replace "curated compositions" badge; add "Powered by AlphaTNX Digital"; delete About/"Our Story"; admin-selectable sizes; fix uploaded product not appearing; delivery → 1–3 days; remove floating "View Bag"; remove "join the club".
+- **Done:**
+  - Homepage `For Her` (blush/script) + `For Him` (dark/italic) showcase panels; hero badge → "1–3 day nationwide delivery"; "Our story" CTA + newsletter club section removed; New Arrivals now newest-first.
+  - `types/index.ts` gained `BottleSize` (5/10/25/30/50/100ml); `AdminProducts` per-size checkbox+price (All/Clear) and a compact grid.
+  - Footer: dropped Fragrance Club column, added "Powered by AlphaTNX Digital". Navbar: removed Our Story. Deleted `app/about` + sitemap entry. CartToast: removed floating View Bag.
+  - **Product-visibility fix:** shop price ceiling now auto-fits the live catalogue (nullable `maxPrice`, `Math.min(sizes)`) so new/expensive products are never hidden.
+  - Delivery copy → 1–3 business days (contact FAQ, product detail, chat prompt).
+- **Verified:** `tsc --noEmit` clean; `next build --no-lint` BUILD_EXIT=0, 13 static pages.
+- **Status:** ✅ Committed + pushed — Vercel auto-deploying.
+- **Open follow-ups:** Dashboard `orderCount: 0` bug; swap placeholder Pexels photos for real bottle shots; delete `%TEMP%\opencode\` secrets; Vercel `ADMIN_PASSWORD` fallback reconciliation.
 
 <!-- Template:
 ## [TASK NAME]

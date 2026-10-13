@@ -6,7 +6,7 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { QuickViewModal } from "@/components/product/QuickViewModal";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Product } from "@/types";
-import { Sparkles, ArrowRight, ShieldCheck, Award, HeartHandshake, Instagram, Send, Check, ArrowUpRight } from "lucide-react";
+import { Sparkles, ArrowRight, ShieldCheck, Award, HeartHandshake, Instagram } from "lucide-react";
 import { motion } from "framer-motion";
 import { siteConfig } from "@/config/site";
 import { useAdmin } from "@/context/AdminContext";
@@ -19,23 +19,18 @@ const MARQUEE_ITEMS = [
 
 export default function HomePage() {
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
-  const [newsletterEmail, setNewsletterEmail] = useState("");
-  const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
   const { allProducts } = useAdmin();
 
-  const newArrivals = allProducts.filter((p) => p.isNewArrival);
+  // Newest products are appended to the catalogue, so surface the most recent first.
+  const newArrivals = allProducts.filter((p) => p.isNewArrival).slice(-4).reverse();
   const deals = allProducts.filter((p) =>
     p.sizes.some((s) => s.originalPrice && s.originalPrice > s.price)
   );
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newsletterEmail.trim()) {
-      setNewsletterSubmitted(true);
-      setNewsletterEmail("");
-      setTimeout(() => setNewsletterSubmitted(false), 4000);
-    }
-  };
+  const womenPool = allProducts.filter((p) => p.category === "women");
+  const menPool = allProducts.filter((p) => p.category === "men");
+  const womenEdit = (womenPool.length ? womenPool : allProducts).slice(0, 2);
+  const menEdit = (menPool.length ? menPool : allProducts).slice(0, 2);
 
   const values = [
     {
@@ -130,14 +125,6 @@ export default function HomePage() {
                 Explore the collection
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
-
-              <Link
-                href="/about"
-                className="group inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-ink link-underline"
-              >
-                Our story
-                <ArrowUpRight className="w-4 h-4 text-rose-600 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
             </motion.div>
           </div>
 
@@ -157,9 +144,9 @@ export default function HomePage() {
               <div className="absolute inset-0 ring-1 ring-inset ring-rose-200" />
             </div>
             <div className="absolute -bottom-5 left-0 lg:-left-10 rounded-2xl bg-white border border-ink/10 px-7 py-5 shadow-soft flex items-baseline gap-3">
-              <span className="font-serif text-4xl font-bold text-rose-700">N{String(allProducts.length).padStart(2, "0")}</span>
+              <span className="font-serif text-4xl font-bold text-rose-700">1&ndash;3</span>
               <span className="text-[10px] uppercase tracking-[0.2em] text-ink-soft leading-relaxed">
-                curated<br />compositions
+                day nationwide<br />delivery
               </span>
             </div>
           </motion.div>
@@ -323,6 +310,71 @@ export default function HomePage() {
         </section>
       </ScrollReveal>
 
+      {/* ═══ FOR HER / FOR HIM — gendered edits ═══ */}
+      <ScrollReveal className="max-w-[88rem] mx-auto px-5 sm:px-8 lg:px-12 pt-28">
+        <div className="grid gap-6 lg:grid-cols-2">
+          {/* For Her — soft & romantic */}
+          <div className="relative overflow-hidden rounded-3xl border border-rose-200 bg-gradient-to-br from-rose-50 via-white to-rose-100 p-7 sm:p-10">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-rose-500">
+              Women&apos;s edit
+            </span>
+            <h2 className="mt-3 font-serif text-4xl sm:text-5xl font-bold text-ink">
+              For <span className="script text-rose-600 text-[1.15em] leading-none">Her</span>
+            </h2>
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-ink-soft/80">
+              Blush florals, rose nectar and warm amber — feminine signatures that bloom softly on the skin.
+            </p>
+            <div className="mt-7 grid grid-cols-2 gap-4">
+              {womenEdit.map((product) => (
+                <ProductCard key={product.id} product={product} onQuickView={(p) => setQuickViewProduct(p)} />
+              ))}
+            </div>
+            <Link
+              href="/shop?category=women"
+              className="mt-7 inline-flex items-center gap-3 rounded-full bg-rose-600 px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition-colors hover:bg-rose-700"
+            >
+              Shop women&apos;s
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          {/* For Him — bold & masculine */}
+          <div className="relative overflow-hidden rounded-3xl border border-ink/30 bg-ink p-7 text-paper sm:p-10">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-[0.12]"
+              style={{
+                backgroundImage:
+                  "url(https://images.pexels.com/photos/37127787/pexels-photo-37127787.jpeg?auto=compress&cs=tinysrgb&w=1200)",
+              }}
+            />
+            <div className="relative">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-rose-300">
+                Men&apos;s edit
+              </span>
+              <h2 className="mt-3 font-serif text-4xl sm:text-5xl font-bold">
+                For <span className="italic text-rose-300">Him</span>
+              </h2>
+              <p className="mt-3 max-w-sm text-sm leading-relaxed text-paper/60">
+                Oud, cedar, leather and spice — bold, decisive signatures with undeniable presence.
+              </p>
+              <div className="mt-7 grid grid-cols-2 gap-4">
+                {menEdit.map((product) => (
+                  <ProductCard key={product.id} product={product} onQuickView={(p) => setQuickViewProduct(p)} />
+                ))}
+              </div>
+              <Link
+                href="/shop?category=men"
+                className="mt-7 inline-flex items-center gap-3 rounded-full border border-rose-300 px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-rose-300 transition-colors hover:bg-rose-300 hover:text-ink"
+              >
+                Shop men&apos;s
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
+
       {/* ═══ 4. MANIFESTO — pull quote band ═══ */}
       <ScrollReveal className="mt-28">
         <section className="bg-ink text-paper py-24 sm:py-28 relative overflow-hidden">
@@ -401,56 +453,6 @@ export default function HomePage() {
             </a>
           ))}
         </div>
-      </ScrollReveal>
-
-      {/* ═══ 8. NEWSLETTER — editorial band ═══ */}
-      <ScrollReveal className="mt-28">
-        <section className="max-w-4xl mx-auto px-5 sm:px-8 text-center space-y-8">
-          <span className="section-num mx-auto" />
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-ink">
-            Join the <span className="script text-rose-600 text-[1.15em] leading-none">fragrance club</span>
-          </h2>
-          <p className="text-sm text-ink-soft leading-relaxed max-w-lg mx-auto">
-            Be the first to discover new arrivals and private invitation events.
-            Members receive early access to limited editions.
-          </p>
-
-          {newsletterSubmitted ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="mx-auto max-w-md bg-[#e9f0e9] border border-[#7a9a80] p-5 text-xs font-medium text-[#2d4a3e] flex items-center justify-center gap-2"
-            >
-              <Check className="w-4 h-4" />
-              Welcome to the club — check your inbox to confirm.
-            </motion.div>
-          ) : (
-            <form onSubmit={handleNewsletterSubmit} className="max-w-md mx-auto">
-              <div className="flex border-b border-ink/25 focus-within:border-rose-400 transition-colors">
-                <input
-                  type="email"
-                  required
-                  placeholder="Your email address"
-                  value={newsletterEmail}
-                  onChange={(e) => setNewsletterEmail(e.target.value)}
-                  className="flex-1 bg-transparent px-0 py-3 text-sm text-ink placeholder:text-ink-soft/40 focus:outline-none"
-                />
-                <button
-                  type="submit"
-                  className="px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-ink flex items-center gap-2 shrink-0"
-                  aria-label="Subscribe"
-                >
-                  <Send className="w-4 h-4" />
-                  <span className="hidden sm:inline">Subscribe</span>
-                </button>
-              </div>
-            </form>
-          )}
-
-          <p className="text-[10px] uppercase tracking-[0.2em] text-ink-soft/50">
-            No spam, ever. Unsubscribe anytime.
-          </p>
-        </section>
       </ScrollReveal>
 
       {/* Quick View Modal Trigger */}

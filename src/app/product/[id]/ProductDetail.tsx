@@ -354,7 +354,7 @@ export default function ProductDetailPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-ink-soft">
                 <div className="flex items-center gap-3 border border-ink/10 bg-white px-5 py-4">
                   <Truck className="w-5 h-5 text-gold-600 flex-shrink-0" />
-                  Fast nationwide delivery in Nigeria
+                  Nationwide delivery in 1&ndash;3 business days
                 </div>
                 <div className="flex items-center gap-3 border border-ink/10 bg-white px-5 py-4">
                   <ShieldCheck className="w-5 h-5 text-gold-600 flex-shrink-0" />

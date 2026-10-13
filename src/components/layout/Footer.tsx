@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Truck, ShieldCheck, RotateCcw, Lock, Instagram, Facebook, Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
+import { Truck, ShieldCheck, RotateCcw, Lock, Instagram, Facebook, Phone, Mail, MapPin } from "lucide-react";
 import { siteConfig } from "@/config/site";
 
 const TikTokIcon = ({ className }: { className?: string }) => (
@@ -52,7 +52,7 @@ export const Footer: React.FC = () => {
       {/* Main Columns */}
       <div className="max-w-[88rem] mx-auto px-5 sm:px-8 lg:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 py-16">
         {/* Brand */}
-        <div className="lg:col-span-5 space-y-6">
+        <div className="lg:col-span-6 space-y-6">
           <div className="flex flex-col">
             <span className="font-serif text-3xl font-bold tracking-[0.24em] text-paper pl-[0.24em]">
               DEBBY&apos;S
@@ -81,7 +81,7 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Explore */}
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-3">
           <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose-300 mb-5">
             Explore
           </h4>
@@ -95,7 +95,7 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Contact */}
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-3">
           <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose-300 mb-5">
             Boutique
           </h4>
@@ -114,40 +114,19 @@ export const Footer: React.FC = () => {
             </li>
           </ul>
         </div>
-
-        {/* Newsletter */}
-        <div className="lg:col-span-3">
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose-300 mb-5">
-            The Fragrance Club
-          </h4>
-          <p className="text-sm mb-4 text-paper/60 leading-relaxed">
-            New scent launches and private offers, delivered rarely and beautifully.
-          </p>
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-3">
-            <input
-              type="email"
-              placeholder="Email address"
-              className="w-full bg-transparent border-b border-paper/25 px-0 py-2 text-sm text-paper placeholder:text-paper/40 focus:outline-none focus:border-rose-300 transition-colors"
-            />
-            <button
-              type="submit"
-              className="w-full border border-rose-300 text-rose-300 hover:bg-rose-300 hover:text-ink text-[11px] font-semibold py-3 uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-2"
-            >
-              Join The Liste
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </button>
-          </form>
-        </div>
       </div>
 
       {/* Bottom Bar */}
       <div className="border-t border-paper/10">
         <div className="max-w-[88rem] mx-auto px-5 sm:px-8 lg:px-12 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] tracking-wide text-paper/40">
           <p>© 2026 {siteConfig.businessName}. Atelier of fine scent.</p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             <Link href="#" className="hover:text-rose-300 transition-colors">Privacy</Link>
             <Link href="#" className="hover:text-rose-300 transition-colors">Terms</Link>
             <Link href="#" className="hover:text-rose-300 transition-colors">Shipping</Link>
+            <span className="text-paper/50">
+              Powered by <span className="font-semibold text-rose-300">AlphaTNX Digital</span>
+            </span>
           </div>
         </div>
       </div>

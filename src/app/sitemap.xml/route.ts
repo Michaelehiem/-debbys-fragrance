@@ -11,7 +11,6 @@ export function GET() {
   const entries: Entry[] = [
     { loc: absoluteUrl("/"), priority: "1.0", freq: "weekly" },
     { loc: absoluteUrl("/shop"), priority: "0.9", freq: "daily" },
-    { loc: absoluteUrl("/about"), priority: "0.6", freq: "monthly" },
     { loc: absoluteUrl("/contact"), priority: "0.6", freq: "monthly" },
     ...INITIAL_PRODUCTS.map((product) => ({
       loc: absoluteUrl(`/product/${product.id}`),

@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { useAdmin } from "@/context/AdminContext";
-import { Product, GenderCategory, FragranceFamily } from "@/types";
+import { Product, GenderCategory, FragranceFamily, BottleSize } from "@/types";
 import { formatNaira } from "@/lib/utils";
 import { Plus, Trash2, X, Check, Upload, Save, Package, Edit3, Image as ImageIcon } from "lucide-react";
 
 type View = "list" | "add" | "edit";
+
+const STANDARD_SIZES: BottleSize[] = ["5ml", "10ml", "25ml", "30ml", "50ml", "100ml"];
 
 export function AdminProducts() {
   const { allProducts, addProduct, updateProduct, deleteProduct } = useAdmin();
@@ -71,7 +73,7 @@ export function AdminProducts() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
             {filtered.map((prod) => (
               <div key={prod.id} className="group overflow-hidden border border-ink/10 bg-white">
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-paper-deep">
@@ -93,9 +95,9 @@ export function AdminProducts() {
                     {prod.stock} in stock
                   </span>
                 </div>
-                <div className="space-y-3 p-4">
+                <div className="space-y-2.5 p-3">
                   <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-wider text-gold-600">
+                    <p className="text-[9px] font-semibold uppercase tracking-wider text-gold-600">
                       {prod.brand}
                     </p>
                     <h3 className="truncate font-serif text-sm font-bold text-ink">{prod.name}</h3>
@@ -103,9 +105,6 @@ export function AdminProducts() {
                       from {formatNaira(Math.min(...prod.sizes.map((s) => s.price)))}
                     </p>
                   </div>
-                  <p className="line-clamp-2 text-[11px] leading-relaxed text-ink-soft/70">
-                    {prod.description}
-                  </p>
                   <div className="flex items-center gap-2 pt-1">
                     <button
                       onClick={() => {
@@ -199,15 +198,21 @@ export function AdminProducts() {
     const [fragranceFamily, setFragranceFamily] = useState<FragranceFamily>(
       existing?.fragranceFamily || "floral"
     );
-    const [price5, setPrice5] = useState(
-      existing?.sizes.find((s) => s.size === "5ml")?.price.toString() || ""
-    );
-    const [price10, setPrice10] = useState(
-      existing?.sizes.find((s) => s.size === "10ml")?.price.toString() || ""
-    );
-    const [price25, setPrice25] = useState(
-      existing?.sizes.find((s) => s.size === "25ml")?.price.toString() || ""
-    );
+    const [sizeEnabled, setSizeEnabled] = useState<Record<string, boolean>>(() => {
+      const init: Record<string, boolean> = {};
+      STANDARD_SIZES.forEach((s) => {
+        init[s] = Boolean(existing?.sizes.find((x) => x.size === s));
+      });
+      return init;
+    });
+    const [sizePrices, setSizePrices] = useState<Record<string, string>>(() => {
+      const init: Record<string, string> = {};
+      STANDARD_SIZES.forEach((s) => {
+        const found = existing?.sizes.find((x) => x.size === s);
+        init[s] = found ? found.price.toString() : "";
+      });
+      return init;
+    });
     const [stock, setStock] = useState(existing?.stock?.toString() || "20");
     const [topNotes, setTopNotes] = useState(existing?.topNotes.join(", ") || "");
     const [heartNotes, setHeartNotes] = useState(existing?.heartNotes.join(", ") || "");
@@ -233,16 +238,29 @@ export function AdminProducts() {
 
     const parseNotes = (s: string) => s.split(",").map((n) => n.trim()).filter(Boolean);
 
+    const toggleSize = (size: BottleSize, on: boolean) =>
+      setSizeEnabled((prev) => ({ ...prev, [size]: on }));
+
+    const setAllSizes = (on: boolean) =>
+      setSizeEnabled((prev) => {
+        const next = { ...prev };
+        STANDARD_SIZES.forEach((s) => (next[s] = on));
+        return next;
+      });
+
     const submit = async (e: React.FormEvent) => {
       e.preventDefault();
       if (!name.trim()) return alert("Product name is required");
       if (!description.trim()) return alert("Description is required");
 
-      const sizes: { size: "5ml" | "10ml" | "25ml"; price: number }[] = [];
-      if (price5 && Number(price5) > 0) sizes.push({ size: "5ml", price: Number(price5) });
-      if (price10 && Number(price10) > 0) sizes.push({ size: "10ml", price: Number(price10) });
-      if (price25 && Number(price25) > 0) sizes.push({ size: "25ml", price: Number(price25) });
-      if (sizes.length === 0) return alert("Enter at least one size/price");
+      const sizes: { size: BottleSize; price: number }[] = [];
+      STANDARD_SIZES.forEach((s) => {
+        if (sizeEnabled[s] && Number(sizePrices[s]) > 0) {
+          sizes.push({ size: s, price: Number(sizePrices[s]) });
+        }
+      });
+      if (sizes.length === 0)
+        return alert("Select at least one bottle size and enter its price");
 
       const finalImage =
         uploadedPreview ||
@@ -416,19 +434,37 @@ export function AdminProducts() {
             </div>
 
             <div className="space-y-4 border border-ink/10 bg-white p-6">
-              <h3 className="font-serif text-sm font-bold text-gold-700">Pricing (₦)</h3>
-              <p className="text-[11px] text-ink-soft/70">Enter a price for each size you offer. Leave blank to skip.</p>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                {[
-                  ["5ml price", price5, setPrice5, "6000"] as const,
-                  ["10ml price", price10, setPrice10, "12000"] as const,
-                  ["25ml price", price25, setPrice25, "30000"] as const,
-                ].map(([label, value, setter, ph]) => (
-                  <div key={label}>
-                    <label className="mb-1 block text-xs text-ink-soft">{label}</label>
-                    <input type="number" min="0" value={value} onChange={(e) => setter(e.target.value)} placeholder={ph} className={inputClass} />
-                  </div>
-                ))}
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <h3 className="font-serif text-sm font-bold text-gold-700">Bottle sizes &amp; pricing (₦)</h3>
+                  <p className="mt-1 text-[11px] text-ink-soft/70">Tick the sizes this product comes in, then set a price for each.</p>
+                </div>
+                <div className="flex shrink-0 items-center gap-2">
+                  <button type="button" onClick={() => setAllSizes(true)} className="border border-ink/15 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-ink-soft hover:bg-paper">All</button>
+                  <button type="button" onClick={() => setAllSizes(false)} className="border border-ink/15 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-ink-soft hover:bg-paper">Clear</button>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                {STANDARD_SIZES.map((s) => {
+                  const on = sizeEnabled[s];
+                  return (
+                    <div key={s} className={`border p-3 transition-colors ${on ? "border-gold-500 bg-gold-500/5" : "border-ink/10"}`}>
+                      <label className="flex cursor-pointer items-center gap-2">
+                        <input type="checkbox" checked={on} onChange={(e) => toggleSize(s, e.target.checked)} className="h-4 w-4 accent-gold-500" />
+                        <span className="font-serif text-sm font-bold text-ink">{s}</span>
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={sizePrices[s]}
+                        disabled={!on}
+                        onChange={(e) => setSizePrices((prev) => ({ ...prev, [s]: e.target.value }))}
+                        placeholder="Price"
+                        className={`${inputClass} mt-2 disabled:cursor-not-allowed disabled:opacity-50`}
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </div>
 

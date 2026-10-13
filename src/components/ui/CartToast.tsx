@@ -2,11 +2,11 @@
 
 import React from "react";
 import { useCart } from "@/context/CartContext";
-import { Check, X, ShoppingBag } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export const CartToast: React.FC = () => {
-  const { toasts, removeToast, isCartOpen, setIsCartOpen, totalItems } = useCart();
+  const { toasts, removeToast } = useCart();
 
   return (
     <>
@@ -37,19 +37,6 @@ export const CartToast: React.FC = () => {
           ))}
         </AnimatePresence>
       </div>
-
-      {/* Floating "View Bag" button — appears when cart has items and drawer is closed */}
-      {!isCartOpen && totalItems > 0 && (
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          onClick={() => setIsCartOpen(true)}
-          className="fixed bottom-6 left-6 z-50 bg-ink text-paper hover:bg-gold-700 text-[11px] font-semibold px-5 py-3.5 uppercase tracking-[0.18em] shadow-editorial flex items-center gap-2 transition-colors"
-        >
-          <ShoppingBag className="w-4 h-4 text-gold-400" />
-          View Bag ({totalItems})
-        </motion.button>
-      )}
     </>
   );
 };

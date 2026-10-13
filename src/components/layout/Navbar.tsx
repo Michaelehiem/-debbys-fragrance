@@ -20,7 +20,6 @@ const LEFT_LINKS = [
 
 const RIGHT_LINKS = [
   { href: "/shop", label: "Shop All" },
-  { href: "/about", label: "Our Story" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -30,7 +29,6 @@ const ALL_LINKS = [
   { href: "/shop?category=women", label: "Women" },
   { href: "/shop?category=men", label: "Men" },
   { href: "/shop?category=unisex", label: "Unisex" },
-  { href: "/about", label: "Our Story" },
   { href: "/contact", label: "Contact" },
 ];
 
