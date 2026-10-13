@@ -39,43 +39,54 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
     setTimeout(() => setIsAdded(false), 2000);
   };
 
+  const activePrice = override?.customPrice ? override.customPrice : selectedSize.price;
+  const showOriginal = selectedSize.originalPrice && !override?.customPrice;
+
   return (
-    <div className="group relative bg-white border border-ink/10 transition-all duration-500 flex flex-col justify-between hover:border-gold-600/40 hover:shadow-editorial-sm">
-      {/* Top Image Container */}
-      <div className="relative aspect-square w-full overflow-hidden bg-[#efe7d8]">
-        <img
-          src={displayImage}
-          alt={displayName}
-          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-[1200ms] ease-out"
-        />
+    <article className="group relative flex h-full flex-col bg-white border border-ink/10 transition-all duration-500 hover:border-gold-600/40 hover:shadow-editorial-sm">
+      {/* Image */}
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#efe7d8]">
+        <Link
+          href={`/product/${product.id}`}
+          aria-label={`View ${displayName}`}
+          className="absolute inset-0 z-0 block"
+        >
+          <img
+            src={displayImage}
+            alt={displayName}
+            loading="lazy"
+            className="object-cover w-full h-full transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+          />
+        </Link>
 
         {/* Badges */}
-        <div className="absolute top-4 left-4 flex flex-col items-start gap-1.5 z-10">
+        <div className="absolute top-3 left-3 z-10 flex flex-col items-start gap-1.5">
           {product.isBestSeller && (
-            <span className="bg-white/90 backdrop-blur-sm text-gold-800 font-semibold text-[9px] uppercase tracking-[0.18em] px-3 py-1 border border-gold-600/50">
+            <span className="bg-white/90 backdrop-blur-sm text-gold-800 font-semibold text-[9px] uppercase tracking-[0.18em] px-2.5 py-1 border border-gold-600/50">
               Best Seller
             </span>
           )}
           {product.isNewArrival && (
-            <span className="bg-ink text-paper font-semibold text-[9px] uppercase tracking-[0.18em] px-3 py-1">
+            <span className="bg-ink text-paper font-semibold text-[9px] uppercase tracking-[0.18em] px-2.5 py-1">
               New Arrival
             </span>
           )}
           {override?.customImage && (
-            <span className="bg-[#2d4a3e] text-white font-semibold text-[9px] uppercase tracking-[0.18em] px-3 py-1">
+            <span className="bg-[#2d4a3e] text-white font-semibold text-[9px] uppercase tracking-[0.18em] px-2.5 py-1">
               Custom
             </span>
           )}
         </div>
 
-        {/* Quick View — slides up on hover */}
+        {/* Quick View — slides up on hover (desktop) */}
         {onQuickView && (
           <button
             onClick={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               onQuickView(product);
             }}
-            className="absolute bottom-0 left-0 right-0 z-10 py-3 bg-ink/85 backdrop-blur-sm text-paper text-[10px] uppercase tracking-[0.24em] font-medium flex items-center justify-center gap-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+            className="absolute bottom-0 left-0 right-0 z-10 py-2.5 bg-ink/85 backdrop-blur-sm text-paper text-[10px] uppercase tracking-[0.24em] font-medium flex items-center justify-center gap-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300 focus-visible:translate-y-0"
             aria-label={`Quick view ${displayName}`}
           >
             <Eye className="w-3.5 h-3.5 text-gold-400" />
@@ -84,81 +95,85 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
         )}
       </div>
 
-      {/* Content Container */}
-      <div className="p-5 flex-1 flex flex-col justify-between gap-4">
-        <div>
-          <div className="flex justify-between items-baseline text-[10px] uppercase tracking-[0.18em] text-ink-soft/70">
-            <span>{product.brand}</span>
-            <Rating value={product.rating} />
-          </div>
-
-          <Link href={`/product/${product.id}`} className="block mt-2">
-            <h3 className="font-serif text-lg font-bold text-ink leading-snug group-hover:text-gold-700 transition-colors line-clamp-1">
-              {displayName}
-            </h3>
-          </Link>
-
-          <p className="text-xs text-ink-soft/70 mt-1.5 line-clamp-2 leading-relaxed">
-            {product.description}
-          </p>
+      {/* Body */}
+      <div className="flex flex-1 flex-col p-4 sm:p-5">
+        <div className="flex items-center justify-between gap-2 text-[10px] uppercase tracking-[0.16em] text-ink-soft/70">
+          <span className="truncate">{product.brand}</span>
+          <Rating value={product.rating} />
         </div>
 
-        {/* Size + Price + Add */}
-        <div className="space-y-3.5 pt-4 border-t border-ink/10">
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-[0.18em] text-ink-soft/60">Size</span>
-            <div className="flex gap-1.5">
-              {product.sizes.map((s) => (
-                <button
-                  key={s.size}
-                  onClick={() => setSelectedSize(s)}
-                  className={`text-[10px] px-2.5 py-1 border transition-all ${
-                    selectedSize.size === s.size
-                      ? "border-gold-600 bg-gold-600 text-paper font-semibold"
-                      : "border-ink/15 text-ink-soft hover:border-ink"
-                  }`}
-                >
-                  {s.size}
-                </button>
-              ))}
-            </div>
-          </div>
+        <Link href={`/product/${product.id}`} className="mt-2">
+          <h3 className="font-serif text-base sm:text-lg font-semibold text-ink leading-snug line-clamp-1 group-hover:text-gold-700 transition-colors">
+            {displayName}
+          </h3>
+        </Link>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <span className="font-serif text-xl font-bold text-ink">
-                {formatNaira(override?.customPrice ? override.customPrice : selectedSize.price)}
+        <p className="mt-1.5 text-[11px] sm:text-xs text-ink-soft/70 line-clamp-2 leading-relaxed">
+          {product.description}
+        </p>
+
+        {/* Size selector — quiet segmented control */}
+        <div
+          role="group"
+          aria-label="Choose size"
+          className="mt-4 flex flex-wrap gap-1.5"
+        >
+          {product.sizes.map((s) => {
+            const active = selectedSize.size === s.size;
+            return (
+              <button
+                key={s.size}
+                type="button"
+                onClick={() => setSelectedSize(s)}
+                aria-pressed={active}
+                className={`text-[10px] font-medium tabular-nums px-2.5 py-1 transition-colors duration-200 ${
+                  active
+                    ? "bg-ink text-paper"
+                    : "bg-paper-deep/70 text-ink-soft hover:bg-paper-deep"
+                }`}
+              >
+                {s.size}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Price + Add — pinned to the bottom for even cards */}
+        <div className="mt-auto flex items-end justify-between gap-3 pt-4">
+          <div className="flex items-baseline gap-2 leading-none">
+            <span className="font-serif text-lg sm:text-xl font-bold text-ink">
+              {formatNaira(activePrice)}
+            </span>
+            {showOriginal && (
+              <span className="text-[11px] text-ink-soft/50 line-through">
+                {formatNaira(selectedSize.originalPrice as number)}
               </span>
-              {selectedSize.originalPrice && !override?.customPrice && (
-                <span className="text-xs text-ink-soft/50 line-through ml-2">
-                  {formatNaira(selectedSize.originalPrice)}
-                </span>
-              )}
-            </div>
-
-            <button
-              onClick={handleAddToCart}
-              className={`px-4 py-2.5 text-[10px] font-semibold uppercase tracking-[0.18em] flex items-center gap-2 border transition-all duration-300 ${
-                isAdded
-                  ? "bg-[#2d4a3e] border-[#2d4a3e] text-white"
-                  : "border-ink text-ink hover:bg-ink hover:text-paper"
-              }`}
-            >
-              {isAdded ? (
-                <>
-                  <Check className="w-3 h-3" />
-                  Added
-                </>
-              ) : (
-                <>
-                  <ShoppingBag className="w-3 h-3" />
-                  Add
-                </>
-              )}
-            </button>
+            )}
           </div>
+
+          <button
+            onClick={handleAddToCart}
+            aria-label={isAdded ? `${displayName} added to cart` : `Add ${displayName} to cart`}
+            className={`shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors duration-300 ${
+              isAdded
+                ? "bg-[#2d4a3e] text-white"
+                : "bg-ink text-paper hover:bg-gold-700"
+            }`}
+          >
+            {isAdded ? (
+              <>
+                <Check className="w-3.5 h-3.5" />
+                Added
+              </>
+            ) : (
+              <>
+                <ShoppingBag className="w-3.5 h-3.5" />
+                Add
+              </>
+            )}
+          </button>
         </div>
       </div>
-    </div>
+    </article>
   );
 };

@@ -83,12 +83,12 @@ export default function HomePage() {
   ];
 
   const instagram = [
-    "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=500",
-    "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=500",
-    "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=500",
-    "https://images.unsplash.com/photo-1563178406-4cdc2923acbc?auto=format&fit=crop&q=80&w=500",
-    "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=500",
-    "https://images.unsplash.com/photo-1563178406-4cdc2923acbc?auto=format&fit=crop&q=80&w=500",
+    "https://images.pexels.com/photos/28664165/pexels-photo-28664165.jpeg?auto=compress&cs=tinysrgb&w=500",
+    "https://images.pexels.com/photos/19055592/pexels-photo-19055592.jpeg?auto=compress&cs=tinysrgb&w=500",
+    "https://images.pexels.com/photos/8624586/pexels-photo-8624586.jpeg?auto=compress&cs=tinysrgb&w=500",
+    "https://images.pexels.com/photos/21574949/pexels-photo-21574949.jpeg?auto=compress&cs=tinysrgb&w=500",
+    "https://images.pexels.com/photos/264819/pexels-photo-264819.jpeg?auto=compress&cs=tinysrgb&w=500",
+    "https://images.pexels.com/photos/32817141/pexels-photo-32817141.jpeg?auto=compress&cs=tinysrgb&w=500",
   ];
 
   return (

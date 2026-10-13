@@ -340,13 +340,13 @@ export const Navbar: React.FC = () => {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 34, stiffness: 320 }}
-              className="relative flex h-full w-[86%] max-w-sm flex-col bg-paper border-r border-ink/10 shadow-editorial"
+              className="relative flex h-full w-[74%] max-w-[19rem] flex-col bg-paper border-r border-ink/10 shadow-editorial"
               role="dialog"
               aria-modal="true"
               aria-label="Navigation"
             >
-              <div className="flex items-center justify-between px-6 h-[4.5rem] border-b border-ink/10 flex-shrink-0">
-                <span className="font-serif text-lg font-bold tracking-[0.26em] text-ink pl-[0.26em]">
+              <div className="flex items-center justify-between px-5 h-14 border-b border-ink/10 flex-shrink-0">
+                <span className="font-serif text-base font-bold tracking-[0.24em] text-ink pl-[0.24em]">
                   DEBBY&apos;S
                 </span>
                 <button
@@ -358,7 +358,7 @@ export const Navbar: React.FC = () => {
                 </button>
               </div>
 
-              <nav className="flex-1 overflow-y-auto px-6 py-6">
+              <nav className="flex-1 overflow-y-auto px-5 py-3">
                 {ALL_LINKS.map((link, i) => (
                   <motion.div
                     key={link.label}
@@ -369,12 +369,12 @@ export const Navbar: React.FC = () => {
                     <Link
                       href={link.href}
                       onClick={closeMenu}
-                      className="group flex items-baseline gap-4 py-4 border-b border-ink/10"
+                      className="group flex items-baseline gap-3 py-2.5 border-b border-ink/10"
                     >
-                      <span className="font-serif text-[11px] tabular-nums text-gold-600">
+                      <span className="font-serif text-[10px] tabular-nums text-gold-600">
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      <span className="flex-1 font-serif text-3xl text-ink transition-colors group-hover:text-gold-700">
+                      <span className="flex-1 font-serif text-xl text-ink transition-colors group-hover:text-gold-700">
                         {link.label}
                       </span>
                       <ArrowRight className="w-3.5 h-3.5 -translate-x-1 text-gold-500 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
@@ -390,7 +390,7 @@ export const Navbar: React.FC = () => {
                   <Link
                     href="/account"
                     onClick={closeMenu}
-                    className="mt-6 flex items-center justify-center gap-2 border border-ink/20 py-3.5 text-[11px] uppercase tracking-[0.2em] text-ink hover:border-gold-600 hover:text-gold-700 transition-colors"
+                    className="mt-4 flex items-center justify-center gap-2 border border-ink/20 py-3 text-[11px] uppercase tracking-[0.2em] text-ink hover:border-gold-600 hover:text-gold-700 transition-colors"
                   >
                     <User className="w-4 h-4" />
                     {customer ? "My Account" : "Sign In"}
@@ -398,7 +398,7 @@ export const Navbar: React.FC = () => {
                 </motion.div>
               </nav>
 
-              <div className="flex-shrink-0 border-t border-ink/10 bg-paper-deep/50 px-6 py-6">
+              <div className="flex-shrink-0 border-t border-ink/10 bg-paper-deep/50 px-5 py-4">
                 <p className="mb-3 text-[10px] uppercase tracking-[0.24em] text-ink-soft/60">
                   Concierge
                 </p>

@@ -18,8 +18,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       { size: "25ml", price: 30000 }
     ],
     images: [
-      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=800"
+      "https://images.pexels.com/photos/34143831/pexels-photo-34143831.jpeg?auto=compress&cs=tinysrgb&w=800"
     ],
     rating: 4.9,
     reviewCount: 148,
@@ -44,8 +43,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       { size: "25ml", price: 34000 }
     ],
     images: [
-      "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=800"
+      "https://images.pexels.com/photos/7850600/pexels-photo-7850600.jpeg?auto=compress&cs=tinysrgb&w=800"
     ],
     rating: 4.8,
     reviewCount: 215,
@@ -71,8 +69,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       { size: "25ml", price: 24000 }
     ],
     images: [
-      "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1615397349754-cfa2066a298e?auto=format&fit=crop&q=80&w=800"
+      "https://images.pexels.com/photos/13875783/pexels-photo-13875783.jpeg?auto=compress&cs=tinysrgb&w=800"
     ],
     rating: 4.7,
     reviewCount: 92,
@@ -97,8 +94,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       { size: "25ml", price: 40000 }
     ],
     images: [
-      "https://images.unsplash.com/photo-1563178406-4cdc2923acbc?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800"
+      "https://images.pexels.com/photos/37127787/pexels-photo-37127787.jpeg?auto=compress&cs=tinysrgb&w=800"
     ],
     rating: 5.0,
     reviewCount: 310,
@@ -123,8 +119,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       { size: "25ml", price: 27500 }
     ],
     images: [
-      "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=800"
+      "https://images.pexels.com/photos/22589377/pexels-photo-22589377.jpeg?auto=compress&cs=tinysrgb&w=800"
     ],
     rating: 4.9,
     reviewCount: 178,
@@ -149,8 +144,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       { size: "25ml", price: 32500 }
     ],
     images: [
-      "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800"
+      "https://images.pexels.com/photos/36295148/pexels-photo-36295148.jpeg?auto=compress&cs=tinysrgb&w=800"
     ],
     rating: 4.8,
     reviewCount: 88,
@@ -176,8 +170,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       { size: "25ml", price: 36000 }
     ],
     images: [
-      "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=800"
+      "https://images.pexels.com/photos/22589332/pexels-photo-22589332.jpeg?auto=compress&cs=tinysrgb&w=800"
     ],
     rating: 4.9,
     reviewCount: 164,
@@ -202,8 +195,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       { size: "25ml", price: 22500 }
     ],
     images: [
-      "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=800"
+      "https://images.pexels.com/photos/10413737/pexels-photo-10413737.jpeg?auto=compress&cs=tinysrgb&w=800"
     ],
     rating: 4.6,
     reviewCount: 120,
@@ -229,8 +221,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       { size: "25ml", price: 26000 }
     ],
     images: [
-      "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=800"
+      "https://images.pexels.com/photos/13284500/pexels-photo-13284500.jpeg?auto=compress&cs=tinysrgb&w=800"
     ],
     rating: 4.9,
     reviewCount: 280,
@@ -255,8 +246,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       { size: "25ml", price: 35000 }
     ],
     images: [
-      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1563178406-4cdc2923acbc?auto=format&fit=crop&q=80&w=800"
+      "https://images.pexels.com/photos/30263576/pexels-photo-30263576.jpeg?auto=compress&cs=tinysrgb&w=800"
     ],
     rating: 4.8,
     reviewCount: 105,
@@ -281,7 +271,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       { size: "25ml", price: 32000 }
     ],
     images: [
-      "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=800"
+      "https://images.pexels.com/photos/34089129/pexels-photo-34089129.jpeg?auto=compress&cs=tinysrgb&w=800"
     ],
     rating: 4.7,
     reviewCount: 65,
@@ -304,7 +294,7 @@ export const INITIAL_PRODUCTS: Product[] = [
       { size: "25ml", price: 49000 }
     ],
     images: [
-      "https://images.unsplash.com/photo-1563178406-4cdc2923acbc?auto=format&fit=crop&q=80&w=800"
+      "https://images.pexels.com/photos/7702669/pexels-photo-7702669.jpeg?auto=compress&cs=tinysrgb&w=800"
     ],
     rating: 5.0,
     reviewCount: 420,
