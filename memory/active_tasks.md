@@ -61,7 +61,7 @@
   - **Product-visibility fix:** shop price ceiling now auto-fits the live catalogue (nullable `maxPrice`, `Math.min(sizes)`) so new/expensive products are never hidden.
   - Delivery copy → 1–3 business days (contact FAQ, product detail, chat prompt).
 - **Verified:** `tsc --noEmit` clean; `next build --no-lint` BUILD_EXIT=0, 13 static pages.
-- **Status:** ✅ Committed + pushed — Vercel auto-deploying.
+- **Status:** ✅ Committed + pushed (`6889d23`) — Vercel auto-deploying.
 - **Open follow-ups:** Dashboard `orderCount: 0` bug; swap placeholder Pexels photos for real bottle shots; delete `%TEMP%\opencode\` secrets; Vercel `ADMIN_PASSWORD` fallback reconciliation.
 
 <!-- Template:

@@ -386,5 +386,5 @@
 - **Verification:** `tsc --noEmit` ✅ clean (**TSC_EXIT=0**); `next build --no-lint` ✅ **BUILD_EXIT=0**, **13** static pages (one fewer than before — the /about route is gone).
 - **Tools used:** file editing, `git`, `tsc`, `next build`.
 - **Outputs:** 15 files touched (see git diff) — types, AdminProducts, page, Footer, Navbar, CartToast, shop, contact, ProductDetail, chat route, sitemap, plus `about/page.tsx` deleted.
-- **Status:** ✅ Committed + pushed — Vercel auto-deploying.
+- **Status:** ✅ Committed + pushed (`6889d23`, `60f93f3..6889d23 master -> master`) — Vercel auto-deploying to production.
 - **Notes:** Environment quirk this session — PowerShell commands occasionally hang after `Remove-Item`/long builds because an orphaned `node` build worker keeps the console open; `taskkill /F /PID <node>` clears it (the build itself completed fine once the orphan was killed). `tsconfig.tsbuildinfo` left unstaged as before.
