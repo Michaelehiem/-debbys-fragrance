@@ -40,8 +40,8 @@ export const siteConfig = {
   // The admin panel is NOT linked anywhere on the site. It is only
   // reachable by typing the exact keyword below into the search bar,
   // which unlocks and redirects to the /admin login page.
-  adminAccessKeyword: "youmygirl",
-  adminPassword: "mikeybaby",
+  adminAccessKeyword: "baby",
+  adminPassword: "debby",
 
   // ── SEO Defaults ───────────────────────────────────────────
   seo: {

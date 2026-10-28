@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { ADMIN_SESSION_SECRET_ENV } from "@/lib/constants";
+import { siteConfig } from "@/config/site";
 import { getSettings } from "@/lib/store";
 
 export const SESSION_COOKIE = "debby_admin_session";
@@ -38,12 +39,13 @@ export function verifySessionToken(token: string | undefined | null): boolean {
 }
 
 export async function passwordMatches(candidate: string): Promise<boolean> {
+  const fallback = siteConfig.adminPassword?.trim() || process.env.ADMIN_PASSWORD;
   let stored: string | undefined;
   try {
     const settings = await getSettings();
-    stored = settings.adminPassword?.trim() || process.env.ADMIN_PASSWORD;
+    stored = settings.adminPassword?.trim() || fallback;
   } catch {
-    stored = process.env.ADMIN_PASSWORD;
+    stored = fallback;
   }
   if (!stored) return false;
   const a = Buffer.from(stored);
